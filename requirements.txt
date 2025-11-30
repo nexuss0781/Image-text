@@ -1,0 +1,5 @@
+# The Math Engine (For High-Precision Float64 Vector Logic)
+numpy>=1.24.0
+
+# The Eye (For IO support of JPG/PNG/BMP formats)
+Pillow>=10.0.0
