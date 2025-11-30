@@ -1,6 +1,9 @@
 # ⚛️ Atomic Logic Vision System (ALVS)
 
-**The Pure Math Image Processor: Deconstructing Reality into Logic Atoms.**
+[![Python](https://img.shields.io/badge/Python-3.x-blue?style=for-the-badge&logo=python)](https://www.python.org/)
+[![Dependencies](https://img.shields.io/badge/Dependencies-Numpy%20%7C%20Pillow-brightgreen?style=for-the-badge)](https://pypi.org/project/numpy/)
+
+## The Pure Math Image Processor: Deconstructing Reality into Logic Atoms.
 
 ---
 
@@ -119,4 +122,3 @@ python main.py city.jpg city_flow.png --mode visualize_flow
 | `atomizer.py` | **The Brain (Logic Core)** | Calculates the `Energy` (Luminance) and `Flow` (Gradient) layers to create the `Atomic Context`. |
 | `synthesizer.py` | **The Hand (Reality Builder)** | Applies logic rules to the `Atomic Context` to generate the final output image. |
 | `main.py` | **The Conductor** | Parses command-line arguments and orchestrates the three core modules. |
-\`
