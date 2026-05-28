@@ -1,0 +1,102 @@
+========================================
+   ALVS Performance Benchmark Suite    
+========================================
+
+Test Configuration:
+  Scale Factor: 0.75
+  Iterations: 10
+  SIMD: AVX2 Enabled
+
+--- Testing: 1MP (1024x1024 RGB) ---
+Data size: 3 MB
+  Scalar:
+    Time: 3.69 ms
+    Throughput: 813.96 MB/s
+  SIMD:
+    Time: 7.83 ms
+    Throughput: 383.34 MB/s
+  Speedup: 0.47x
+  PSNR (Scalar vs SIMD): 60.18 dB
+
+--- Testing: 4K UHD (4096x2160 RGB) ---
+Data size: 25.31 MB
+  Scalar:
+    Time: 37.52 ms
+    Throughput: 674.66 MB/s
+  SIMD:
+    Time: 75.70 ms
+    Throughput: 334.36 MB/s
+  Speedup: 0.50x
+  PSNR (Scalar vs SIMD): 60.17 dB
+
+--- Testing: 8K UHD (7680x4320 RGB) ---
+Data size: 94.92 MB
+  Scalar:
+    Time: 204.15 ms
+    Throughput: 464.95 MB/s
+  SIMD:
+    Time: 350.74 ms
+    Throughput: 270.63 MB/s
+  Speedup: 0.58x
+  PSNR (Scalar vs SIMD): 60.17 dB
+
+--- Memory Bandwidth Test ---
+  Data Size: 100 MB
+  Processing Time: 356 ms
+  Effective Bandwidth: 280.90 MB/s
+
+========================================
+         Benchmark Complete            
+========================================
+========================================
+   ALVS Performance Benchmark Suite    
+         Optimized Version             
+========================================
+
+Test Configuration:
+  Scale Factor: 0.75
+  Iterations: 20
+  SIMD: AVX2 Enabled
+  Compiler: O3 + Native
+
+--- Testing: 1MP (1024x1024 RGB) ---
+Data size: 3 MB
+  Scalar:
+    Time: 1.99 ms
+    Throughput: 1508.94 MB/s
+  SIMD:
+    Time: 9.85 ms
+    Throughput: 304.58 MB/s
+  Speedup: 0.20x (overhead)
+  PSNR (Scalar vs SIMD): 66.20 dB
+
+--- Testing: 4K UHD (4096x2160 RGB) ---
+Data size: 25.31 MB
+  Scalar:
+    Time: 29.91 ms
+    Throughput: 846.36 MB/s
+  SIMD:
+    Time: 72.99 ms
+    Throughput: 346.80 MB/s
+  Speedup: 0.41x (overhead)
+  PSNR (Scalar vs SIMD): 66.20 dB
+
+--- Testing: 8K UHD (7680x4320 RGB) ---
+Data size: 94.92 MB
+  Scalar:
+    Time: 186.74 ms
+    Throughput: 508.32 MB/s
+  SIMD:
+    Time: 338.20 ms
+    Throughput: 280.67 MB/s
+  Speedup: 0.55x (overhead)
+  PSNR (Scalar vs SIMD): 66.20 dB
+
+--- Memory Bandwidth Test ---
+  Data Size: 100 MB
+  Processing Time: 366 ms
+  Effective Bandwidth: 273.22 MB/s
+
+========================================
+         Benchmark Complete            
+========================================
