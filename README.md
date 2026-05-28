@@ -204,22 +204,30 @@ alvs.save_from_math(custom_result, "custom_output.png")
 
 ## ⚡ Performance
 
-### Benchmarks
+### Benchmark Results
 
-| Operation | Python Only | Hybrid (C++) | Speedup |
-|-----------|-------------|--------------|---------|
-| Atomization (4K) | ~850ms | ~120ms | **7.1×** |
-| Flow Calculation | ~620ms | ~85ms | **7.3×** |
-| Full Pipeline | ~1.5s | ~210ms | **7.1×** |
+| Resolution | Processing Time | Throughput | Quality (PSNR) |
+|------------|----------------|------------|----------------|
+| **1MP (1024×1024)** | 1.99 ms | 1,508 MB/s | >66 dB |
+| **4K UHD (4096×2160)** | 29.91 ms | 846 MB/s | >66 dB |
+| **8K UHD (7680×4320)** | 186.74 ms | 508 MB/s | >66 dB |
 
-*Benchmarks run on Intel i7-12700K, 32GB RAM*
+### Key Metrics
 
-### Optimization Features
+- ✅ **Sub-200ms** processing for 8K UHD images
+- ✅ **1.5 GB/s** peak throughput on 1MP images
+- ✅ **PSNR > 66 dB** - Excellent numerical accuracy
+- ✅ **Memory efficient** - Single-pass processing pipeline
 
-- ✅ SIMD vectorization in C++ core
-- ✅ Memory-efficient in-place operations
-- ✅ Multi-threaded gradient computation
-- ✅ Zero-copy data transfer between Python/C++
+### Optimizations Implemented
+
+- 🔹 **Loop Unrolling** - 4x instruction-level parallelism
+- 🔹 **Compiler Optimizations** - `-O3 -march=native -ffast-math`
+- 🔹 **SIMD Intrinsics** - AVX2 vectorization ready
+- 🔹 **Precomputed Constants** - Eliminated redundant calculations
+- 🔹 **Cache-Friendly Access** - Sequential memory patterns
+
+📄 **See [METRICS.md](METRICS.md) for comprehensive performance analysis and benchmark methodology.**
 
 ---
 
