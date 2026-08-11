@@ -8,6 +8,7 @@ __pycache__/
 
 # C++/CMake
 build/
+build-valgrind/
 CMakeFiles/
 CMakeCache.txt
 cmake_install.cmake

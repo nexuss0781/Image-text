@@ -138,10 +138,8 @@ EvaluationResult testDegenerateDimensions() {
     return {"TC-1.5", true, "1x1, 1x47, and 53x1 tensors atomized without out-of-bounds behavior"};
 }
 
-EvaluationResult benchmarkDirectPipeline(std::size_t iterations) {
-    constexpr std::size_t width = 3840;
-    constexpr std::size_t height = 2160;
-    constexpr std::size_t pixels = width * height;
+EvaluationResult benchmarkDirectPipeline(std::size_t iterations, std::size_t width, std::size_t height) {
+    const std::size_t pixels = width * height;
     const auto color = makeRandomRgb(pixels, 99U);
     std::vector<float> energy(pixels);
     std::vector<float> flow_x(pixels);
@@ -166,8 +164,9 @@ EvaluationResult benchmarkDirectPipeline(std::size_t iterations) {
     // This is a characterization metric, not a portable hard gate. Hardware-normalized
     // pass/fail thresholds are recorded in the Stage 1 transition document.
     return {"TC-1.6", std::isfinite(median_ms) && median_ms > 0.0,
-            "4K direct atomization: median=" + std::to_string(median_ms) + " ms; p95=" +
-                std::to_string(p95_ms) + " ms; throughput=" + std::to_string(frames_per_second) + " FPS"};
+            std::to_string(width) + "x" + std::to_string(height) + " direct atomization: median=" +
+                std::to_string(median_ms) + " ms; p95=" + std::to_string(p95_ms) +
+                " ms; throughput=" + std::to_string(frames_per_second) + " FPS"};
 }
 
 void printResult(const EvaluationResult& result) {
@@ -178,26 +177,32 @@ void printResult(const EvaluationResult& result) {
 
 int main(int argc, char** argv) {
     bool quick = false;
+    bool smoke = false;
     for (int i = 1; i < argc; ++i) {
-        if (std::string(argv[i]) == "--quick") {
+        const std::string argument(argv[i]);
+        if (argument == "--quick") {
             quick = true;
+        } else if (argument == "--smoke") {
+            smoke = true;
         }
     }
 
-    const std::size_t stress_iterations = quick ? 32 : 1024;
-    const std::size_t stress_bytes = 4ULL * 1024ULL * 1024ULL;
-    const std::size_t correctness_pixels = quick ? 1'000'000ULL : 10'000'000ULL;
-    const std::size_t benchmark_iterations = quick ? 5 : 21;
+    const std::size_t stress_iterations = smoke ? 2 : (quick ? 32 : 1024);
+    const std::size_t stress_bytes = smoke ? 64ULL * 1024ULL : 4ULL * 1024ULL * 1024ULL;
+    const std::size_t correctness_pixels = smoke ? 10'000ULL : (quick ? 1'000'000ULL : 10'000'000ULL);
+    const std::size_t benchmark_iterations = smoke ? 1 : (quick ? 5 : 21);
+    const std::size_t benchmark_width = smoke ? 640 : 3840;
+    const std::size_t benchmark_height = smoke ? 480 : 2160;
 
     std::cout << "AGI-VS Stage 1 Native Evaluation Harness\n";
-    std::cout << "Mode: " << (quick ? "quick" : "full") << "\n\n";
+    std::cout << "Mode: " << (smoke ? "smoke" : (quick ? "quick" : "full")) << "\n\n";
 
     std::vector<EvaluationResult> results;
     results.emplace_back(testAlignedAllocation(stress_iterations, stress_bytes));
     results.emplace_back(testEnergyCorrectness(correctness_pixels));
     results.emplace_back(testDirectInterfaceEquivalence());
     results.emplace_back(testDegenerateDimensions());
-    results.emplace_back(benchmarkDirectPipeline(benchmark_iterations));
+    results.emplace_back(benchmarkDirectPipeline(benchmark_iterations, benchmark_width, benchmark_height));
 
     bool all_passed = true;
     for (const auto& result : results) {

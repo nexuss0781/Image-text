@@ -1,0 +1,10 @@
+AGI-VS Stage 1 Native Evaluation Harness
+Mode: smoke
+
+[PASS] TC-1.1 — allocated and released 2 aligned buffers (0.000122 GiB cumulative; checksum=1)
+[PASS] TC-1.3 — backend=scalar; pixels=10000; maximum absolute error=0.000000; threshold=0.000001
+[PASS] TC-1.4 — direct path equivalence maximum error=0.000000; threshold=0.000001
+[PASS] TC-1.5 — 1x1, 1x47, and 53x1 tensors atomized without out-of-bounds behavior
+[PASS] TC-1.6 — 640x480 direct atomization: median=10.315479 ms; p95=10.315479 ms; throughput=96.941693 FPS
+
+Stage 1 native harness: PASS

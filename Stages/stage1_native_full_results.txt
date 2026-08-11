@@ -1,0 +1,10 @@
+AGI-VS Stage 1 Native Evaluation Harness
+Mode: full
+
+[PASS] TC-1.1 — allocated and released 1024 aligned buffers (4.000000 GiB cumulative; checksum=132096)
+[PASS] TC-1.3 — backend=AVX-512F; pixels=10000000; maximum absolute error=0.000000; threshold=0.000001
+[PASS] TC-1.4 — direct path equivalence maximum error=0.000000; threshold=0.000001
+[PASS] TC-1.5 — 1x1, 1x47, and 53x1 tensors atomized without out-of-bounds behavior
+[PASS] TC-1.6 — 3840x2160 direct atomization: median=54.349440 ms; p95=57.903845 ms; throughput=18.399454 FPS
+
+Stage 1 native harness: PASS
