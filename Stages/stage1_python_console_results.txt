@@ -1,0 +1,31 @@
+{
+  "harness": "AGI-VS Stage 1 Python Binding Evaluation",
+  "input_shape": [
+    2160,
+    3840,
+    3
+  ],
+  "input_bytes": 99532800,
+  "simd_backend": "AVX-512F",
+  "tc_1_2": {
+    "name": "zero-copy pybind11 handoff",
+    "input_address_matches_native_pointer": true,
+    "binding_declares_no_input_copy": true,
+    "median_metadata_handoff_ms": 0.001058,
+    "p95_metadata_handoff_ms": 0.001132,
+    "threshold_ms": 0.15,
+    "pass": true
+  },
+  "tc_1_3_python": {
+    "name": "direct-path Rec. 709 numerical check",
+    "maximum_absolute_error": 1.1920928955078125e-07,
+    "threshold": 1e-06,
+    "output_shape_valid": true,
+    "pass": true
+  },
+  "tc_1_7": {
+    "name": "non-contiguous input rejection",
+    "pass": true
+  },
+  "overall_pass": true
+}

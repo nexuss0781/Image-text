@@ -4,21 +4,35 @@
 #include "alvs_core.h"
 
 #include <stdexcept>
+#include <string>
 #include <vector>
 
 namespace py = pybind11;
 
 namespace {
 
-using CFloatArray = py::array_t<float, py::array::c_style>;
-
-void requireColorShape(const py::buffer_info& buffer) {
-    if (buffer.ndim != 3 || buffer.shape[2] != 3) {
-        throw std::invalid_argument("Input must be a C-contiguous HxWx3 float32 array");
+void requireFloat32CArray(const py::array& array, const char* name) {
+    if (!array.dtype().is(py::dtype::of<float>())) {
+        throw std::invalid_argument(std::string(name) + " must have dtype float32");
+    }
+    if ((array.flags() & py::array::c_style) == 0) {
+        throw std::invalid_argument(std::string(name) + " must be C-contiguous; implicit copies are prohibited");
     }
 }
 
-void requireLayerShape(const py::buffer_info& buffer, py::ssize_t height, py::ssize_t width, const char* name) {
+void requireColorShape(const py::array& array, const py::buffer_info& buffer) {
+    requireFloat32CArray(array, "color_array");
+    if (buffer.ndim != 3 || buffer.shape[2] != 3) {
+        throw std::invalid_argument("color_array must be a C-contiguous HxWx3 float32 array");
+    }
+}
+
+void requireLayerShape(const py::array& array,
+                       const py::buffer_info& buffer,
+                       py::ssize_t height,
+                       py::ssize_t width,
+                       const char* name) {
+    requireFloat32CArray(array, name);
     if (buffer.ndim != 2 || buffer.shape[0] != height || buffer.shape[1] != width) {
         throw std::invalid_argument(std::string(name) + " must be a C-contiguous HxW float32 array matching color input");
     }
@@ -29,6 +43,7 @@ void requireLayerShape(const py::buffer_info& buffer, py::ssize_t height, py::ss
 PYBIND11_MODULE(alvs_cpp, m) {
     m.doc() = "High-performance C++ backend for Atomic Logic Vision System";
     m.attr("stage1_direct_numpy_path") = true;
+    m.attr("implicit_input_copies_prohibited") = true;
 
     py::class_<alvs::Pixel>(m, "Pixel")
         .def(py::init<>())
@@ -52,12 +67,11 @@ PYBIND11_MODULE(alvs_cpp, m) {
         .def(py::init<>())
         .def("simd_available", &alvs::Atomizer::simdAvailable)
         .def("simd_backend", [](const alvs::Atomizer& self) { return self.simdBackend(); })
-        .def("atomize_numpy", [](const alvs::Atomizer& self, const CFloatArray& color_array) {
+        .def("atomize_numpy", [](const alvs::Atomizer& self, const py::array& color_array) {
             const py::buffer_info color = color_array.request();
-            requireColorShape(color);
+            requireColorShape(color_array, color);
             const py::ssize_t height = color.shape[0];
             const py::ssize_t width = color.shape[1];
-            const std::size_t pixels = static_cast<std::size_t>(height) * static_cast<std::size_t>(width);
 
             auto energy = py::array_t<float>({height, width});
             auto flow_x = py::array_t<float>({height, width});
@@ -75,19 +89,18 @@ PYBIND11_MODULE(alvs_cpp, m) {
                                         static_cast<float*>(flow_x_info.ptr),
                                         static_cast<float*>(flow_y_info.ptr));
             }
-
             return py::make_tuple(energy, flow_x, flow_y);
         }, py::arg("color_array"),
         R"pbdoc(
             Atomize a C-contiguous HxWx3 float32 NumPy array.
 
-            The input array is passed directly to the C++ core without an
-            image-sized conversion or copy. The returned layers are newly
-            allocated HxW float32 NumPy arrays owned by Python.
+            The input array is passed directly to the C++ core without image-
+            sized conversion or copying. Non-float32 or non-contiguous arrays
+            are rejected rather than silently copied.
         )pbdoc")
-        .def("zero_copy_probe", [](const alvs::Atomizer& self, const CFloatArray& color_array) {
+        .def("zero_copy_probe", [](const alvs::Atomizer& self, const py::array& color_array) {
             const py::buffer_info color = color_array.request();
-            requireColorShape(color);
+            requireColorShape(color_array, color);
             const py::ssize_t height = color.shape[0];
             const py::ssize_t width = color.shape[1];
             auto energy = py::array_t<float>({height, width});
@@ -98,7 +111,6 @@ PYBIND11_MODULE(alvs_cpp, m) {
             const auto flow_x_info = flow_x.request();
             const auto flow_y_info = flow_y.request();
             const auto input_address = reinterpret_cast<std::uintptr_t>(color.ptr);
-            const auto observed_address = reinterpret_cast<std::uintptr_t>(color.ptr);
 
             {
                 py::gil_scoped_release release;
@@ -112,16 +124,16 @@ PYBIND11_MODULE(alvs_cpp, m) {
 
             py::dict report;
             report["input_address"] = py::int_(input_address);
-            report["observed_address"] = py::int_(observed_address);
+            report["observed_address"] = py::int_(input_address);
             report["input_copied"] = py::bool_(false);
             report["energy"] = energy;
             report["flow_x"] = flow_x;
             report["flow_y"] = flow_y;
             return report;
         }, py::arg("color_array"))
-        .def("zero_copy_metadata", [](const alvs::Atomizer&, const CFloatArray& color_array) {
+        .def("zero_copy_metadata", [](const alvs::Atomizer&, const py::array& color_array) {
             const py::buffer_info color = color_array.request();
-            requireColorShape(color);
+            requireColorShape(color_array, color);
             py::dict report;
             report["input_address"] = py::int_(reinterpret_cast<std::uintptr_t>(color.ptr));
             report["input_copied"] = py::bool_(false);
@@ -133,21 +145,21 @@ PYBIND11_MODULE(alvs_cpp, m) {
     py::class_<alvs::Synthesizer>(m, "Synthesizer")
         .def(py::init<>())
         .def("smart_remix_numpy", [](alvs::Synthesizer& self,
-                                      const CFloatArray& color_array,
-                                      const CFloatArray& energy_array,
-                                      const CFloatArray& flow_x_array,
-                                      const CFloatArray& flow_y_array,
+                                      const py::array& color_array,
+                                      const py::array& energy_array,
+                                      const py::array& flow_x_array,
+                                      const py::array& flow_y_array,
                                       const std::string& mode) {
             const auto color = color_array.request();
-            requireColorShape(color);
+            requireColorShape(color_array, color);
             const auto energy = energy_array.request();
             const auto flow_x = flow_x_array.request();
             const auto flow_y = flow_y_array.request();
             const py::ssize_t height = color.shape[0];
             const py::ssize_t width = color.shape[1];
-            requireLayerShape(energy, height, width, "energy_array");
-            requireLayerShape(flow_x, height, width, "flow_x_array");
-            requireLayerShape(flow_y, height, width, "flow_y_array");
+            requireLayerShape(energy_array, energy, height, width, "energy_array");
+            requireLayerShape(flow_x_array, flow_x, height, width, "flow_x_array");
+            requireLayerShape(flow_y_array, flow_y, height, width, "flow_y_array");
 
             const std::size_t pixels = static_cast<std::size_t>(height) * static_cast<std::size_t>(width);
             const auto* color_ptr = static_cast<const float*>(color.ptr);
