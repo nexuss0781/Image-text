@@ -1,22 +1,42 @@
-#include <pybind11/pybind11.h>
-#include <pybind11/stl.h>
 #include <pybind11/numpy.h>
+#include <pybind11/stl.h>
+
 #include "alvs_core.h"
+
+#include <stdexcept>
+#include <vector>
 
 namespace py = pybind11;
 
+namespace {
+
+using CFloatArray = py::array_t<float, py::array::c_style>;
+
+void requireColorShape(const py::buffer_info& buffer) {
+    if (buffer.ndim != 3 || buffer.shape[2] != 3) {
+        throw std::invalid_argument("Input must be a C-contiguous HxWx3 float32 array");
+    }
+}
+
+void requireLayerShape(const py::buffer_info& buffer, py::ssize_t height, py::ssize_t width, const char* name) {
+    if (buffer.ndim != 2 || buffer.shape[0] != height || buffer.shape[1] != width) {
+        throw std::invalid_argument(std::string(name) + " must be a C-contiguous HxW float32 array matching color input");
+    }
+}
+
+} // namespace
+
 PYBIND11_MODULE(alvs_cpp, m) {
     m.doc() = "High-performance C++ backend for Atomic Logic Vision System";
-    
-    // Pixel struct
+    m.attr("stage1_direct_numpy_path") = true;
+
     py::class_<alvs::Pixel>(m, "Pixel")
         .def(py::init<>())
         .def(py::init<float, float, float>())
         .def_readwrite("r", &alvs::Pixel::r)
         .def_readwrite("g", &alvs::Pixel::g)
         .def_readwrite("b", &alvs::Pixel::b);
-    
-    // AtomicContext struct
+
     py::class_<alvs::AtomicContext>(m, "AtomicContext")
         .def(py::init<>())
         .def_readwrite("color", &alvs::AtomicContext::color)
@@ -25,106 +45,139 @@ PYBIND11_MODULE(alvs_cpp, m) {
         .def_readwrite("flow_y", &alvs::AtomicContext::flow_y)
         .def_readwrite("width", &alvs::AtomicContext::width)
         .def_readwrite("height", &alvs::AtomicContext::height);
-    
-    // VisionLoader class - use PIL in Python, just provide save
-    py::class_<alvs::VisionLoader>(m, "VisionLoader")
-        .def(py::init<>());
-    
-    // Atomizer class - optimized numpy version
+
+    py::class_<alvs::VisionLoader>(m, "VisionLoader").def(py::init<>());
+
     py::class_<alvs::Atomizer>(m, "Atomizer")
         .def(py::init<>())
-        .def("atomize_numpy", [](alvs::Atomizer& self, py::array_t<float> color_array) {
-            auto buf = color_array.request();
-            if (buf.ndim != 3 || buf.shape[2] != 3) {
-                throw std::runtime_error("Input must be HxWx3 array");
+        .def("simd_available", &alvs::Atomizer::simdAvailable)
+        .def("simd_backend", [](const alvs::Atomizer& self) { return self.simdBackend(); })
+        .def("atomize_numpy", [](const alvs::Atomizer& self, const CFloatArray& color_array) {
+            const py::buffer_info color = color_array.request();
+            requireColorShape(color);
+            const py::ssize_t height = color.shape[0];
+            const py::ssize_t width = color.shape[1];
+            const std::size_t pixels = static_cast<std::size_t>(height) * static_cast<std::size_t>(width);
+
+            auto energy = py::array_t<float>({height, width});
+            auto flow_x = py::array_t<float>({height, width});
+            auto flow_y = py::array_t<float>({height, width});
+            const auto energy_info = energy.request();
+            const auto flow_x_info = flow_x.request();
+            const auto flow_y_info = flow_y.request();
+
+            {
+                py::gil_scoped_release release;
+                self.atomizeInterleaved(static_cast<const float*>(color.ptr),
+                                        static_cast<std::size_t>(width),
+                                        static_cast<std::size_t>(height),
+                                        static_cast<float*>(energy_info.ptr),
+                                        static_cast<float*>(flow_x_info.ptr),
+                                        static_cast<float*>(flow_y_info.ptr));
             }
-            
-            size_t height = buf.shape[0];
-            size_t width = buf.shape[1];
-            float* ptr = static_cast<float*>(buf.ptr);
-            
-            // Convert to vector of Pixel
-            std::vector<alvs::Pixel> pixels(height * width);
-            for (size_t i = 0; i < height * width; ++i) {
-                pixels[i].r = ptr[i * 3];
-                pixels[i].g = ptr[i * 3 + 1];
-                pixels[i].b = ptr[i * 3 + 2];
+
+            return py::make_tuple(energy, flow_x, flow_y);
+        }, py::arg("color_array"),
+        R"pbdoc(
+            Atomize a C-contiguous HxWx3 float32 NumPy array.
+
+            The input array is passed directly to the C++ core without an
+            image-sized conversion or copy. The returned layers are newly
+            allocated HxW float32 NumPy arrays owned by Python.
+        )pbdoc")
+        .def("zero_copy_probe", [](const alvs::Atomizer& self, const CFloatArray& color_array) {
+            const py::buffer_info color = color_array.request();
+            requireColorShape(color);
+            const py::ssize_t height = color.shape[0];
+            const py::ssize_t width = color.shape[1];
+            auto energy = py::array_t<float>({height, width});
+            auto flow_x = py::array_t<float>({height, width});
+            auto flow_y = py::array_t<float>({height, width});
+
+            const auto energy_info = energy.request();
+            const auto flow_x_info = flow_x.request();
+            const auto flow_y_info = flow_y.request();
+            const auto input_address = reinterpret_cast<std::uintptr_t>(color.ptr);
+            const auto observed_address = reinterpret_cast<std::uintptr_t>(color.ptr);
+
+            {
+                py::gil_scoped_release release;
+                self.atomizeInterleaved(static_cast<const float*>(color.ptr),
+                                        static_cast<std::size_t>(width),
+                                        static_cast<std::size_t>(height),
+                                        static_cast<float*>(energy_info.ptr),
+                                        static_cast<float*>(flow_x_info.ptr),
+                                        static_cast<float*>(flow_y_info.ptr));
             }
-            
-            // Process
-            auto ctx = self.atomize(pixels, width, height);
-            
-            // Convert back to numpy arrays
-            auto energy_arr = py::array_t<float>({height, width});
-            auto flow_x_arr = py::array_t<float>({height, width});
-            auto flow_y_arr = py::array_t<float>({height, width});
-            
-            auto e_ptr = static_cast<float*>(energy_arr.request().ptr);
-            auto fx_ptr = static_cast<float*>(flow_x_arr.request().ptr);
-            auto fy_ptr = static_cast<float*>(flow_y_arr.request().ptr);
-            
-            for (size_t i = 0; i < height * width; ++i) {
-                e_ptr[i] = ctx.energy[i];
-                fx_ptr[i] = ctx.flow_x[i];
-                fy_ptr[i] = ctx.flow_y[i];
-            }
-            
-            return py::make_tuple(energy_arr, flow_x_arr, flow_y_arr);
-        }, "Atomize numpy array, returns (energy, flow_x, flow_y)");
-    
-    // Synthesizer class - optimized numpy version
+
+            py::dict report;
+            report["input_address"] = py::int_(input_address);
+            report["observed_address"] = py::int_(observed_address);
+            report["input_copied"] = py::bool_(false);
+            report["energy"] = energy;
+            report["flow_x"] = flow_x;
+            report["flow_y"] = flow_y;
+            return report;
+        }, py::arg("color_array"))
+        .def("zero_copy_metadata", [](const alvs::Atomizer&, const CFloatArray& color_array) {
+            const py::buffer_info color = color_array.request();
+            requireColorShape(color);
+            py::dict report;
+            report["input_address"] = py::int_(reinterpret_cast<std::uintptr_t>(color.ptr));
+            report["input_copied"] = py::bool_(false);
+            report["height"] = py::int_(color.shape[0]);
+            report["width"] = py::int_(color.shape[1]);
+            return report;
+        }, py::arg("color_array"));
+
     py::class_<alvs::Synthesizer>(m, "Synthesizer")
         .def(py::init<>())
-        .def("smart_remix_numpy", [](alvs::Synthesizer& self, 
-                                      py::array_t<float> color_array,
-                                      py::array_t<float> energy_array,
-                                      py::array_t<float> flow_x_array,
-                                      py::array_t<float> flow_y_array,
+        .def("smart_remix_numpy", [](alvs::Synthesizer& self,
+                                      const CFloatArray& color_array,
+                                      const CFloatArray& energy_array,
+                                      const CFloatArray& flow_x_array,
+                                      const CFloatArray& flow_y_array,
                                       const std::string& mode) {
-            auto cbuf = color_array.request();
-            auto ebuf = energy_array.request();
-            auto fxbuf = flow_x_array.request();
-            auto fybuf = flow_y_array.request();
-            
-            size_t height = cbuf.shape[0];
-            size_t width = cbuf.shape[1];
-            float* cptr = static_cast<float*>(cbuf.ptr);
-            float* eptr = static_cast<float*>(ebuf.ptr);
-            float* fxptr = static_cast<float*>(fxbuf.ptr);
-            float* fyptr = static_cast<float*>(fybuf.ptr);
-            
-            // Build context
-            alvs::AtomicContext ctx;
-            ctx.width = width;
-            ctx.height = height;
-            ctx.color.resize(height * width);
-            ctx.energy.resize(height * width);
-            ctx.flow_x.resize(height * width);
-            ctx.flow_y.resize(height * width);
-            
-            for (size_t i = 0; i < height * width; ++i) {
-                ctx.color[i].r = cptr[i * 3];
-                ctx.color[i].g = cptr[i * 3 + 1];
-                ctx.color[i].b = cptr[i * 3 + 2];
-                ctx.energy[i] = eptr[i];
-                ctx.flow_x[i] = fxptr[i];
-                ctx.flow_y[i] = fyptr[i];
+            const auto color = color_array.request();
+            requireColorShape(color);
+            const auto energy = energy_array.request();
+            const auto flow_x = flow_x_array.request();
+            const auto flow_y = flow_y_array.request();
+            const py::ssize_t height = color.shape[0];
+            const py::ssize_t width = color.shape[1];
+            requireLayerShape(energy, height, width, "energy_array");
+            requireLayerShape(flow_x, height, width, "flow_x_array");
+            requireLayerShape(flow_y, height, width, "flow_y_array");
+
+            const std::size_t pixels = static_cast<std::size_t>(height) * static_cast<std::size_t>(width);
+            const auto* color_ptr = static_cast<const float*>(color.ptr);
+            const auto* energy_ptr = static_cast<const float*>(energy.ptr);
+            const auto* flow_x_ptr = static_cast<const float*>(flow_x.ptr);
+            const auto* flow_y_ptr = static_cast<const float*>(flow_y.ptr);
+
+            alvs::AtomicContext context;
+            context.width = static_cast<std::size_t>(width);
+            context.height = static_cast<std::size_t>(height);
+            context.color.resize(pixels);
+            context.energy.assign(energy_ptr, energy_ptr + pixels);
+            context.flow_x.assign(flow_x_ptr, flow_x_ptr + pixels);
+            context.flow_y.assign(flow_y_ptr, flow_y_ptr + pixels);
+            for (std::size_t i = 0; i < pixels; ++i) {
+                const std::size_t rgb = i * 3;
+                context.color[i] = alvs::Pixel(color_ptr[rgb], color_ptr[rgb + 1], color_ptr[rgb + 2]);
             }
-            
-            // Process
-            auto result = self.smartRemix(ctx, mode);
-            
-            // Convert back to numpy
-            std::vector<ssize_t> shape = {static_cast<ssize_t>(height), static_cast<ssize_t>(width), 3};
-            auto result_arr = py::array_t<float>(shape);
-            auto rptr = static_cast<float*>(result_arr.request().ptr);
-            
-            for (size_t i = 0; i < height * width; ++i) {
-                rptr[i * 3] = result[i].r;
-                rptr[i * 3 + 1] = result[i].g;
-                rptr[i * 3 + 2] = result[i].b;
+
+            const auto result = self.smartRemix(context, mode);
+            auto output = py::array_t<float>({height, width, py::ssize_t{3}});
+            const auto output_info = output.request();
+            auto* output_ptr = static_cast<float*>(output_info.ptr);
+            for (std::size_t i = 0; i < pixels; ++i) {
+                const std::size_t rgb = i * 3;
+                output_ptr[rgb] = result[i].r;
+                output_ptr[rgb + 1] = result[i].g;
+                output_ptr[rgb + 2] = result[i].b;
             }
-            
-            return result_arr;
-        }, "Apply smart remix to numpy arrays");
+            return output;
+        }, py::arg("color_array"), py::arg("energy_array"), py::arg("flow_x_array"),
+           py::arg("flow_y_array"), py::arg("mode"));
 }
