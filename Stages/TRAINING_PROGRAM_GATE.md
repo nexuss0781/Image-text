@@ -1,8 +1,8 @@
 # AGI-VS Data Curation, Training & Fine-Tuning Program Gate
 
 **Project**: AGI Vision Substrate (AGI-VS)  
-**Status**: Proposed post-Stage-5 program; **no corpus has been downloaded, reconstructed, or used for training**  
-**Decision Required**: Explicit approval is required before data acquisition, corpus reconstruction, model training, or fine-tuning begins.
+**Status**: T2.3 permissioned-source discovery complete; **no corpus has been downloaded, reconstructed, retained, embedded, or used for training**
+**Decision Required**: The owner must select a named source for T2.4 review; explicit approval remains required before pilot acquisition, corpus reconstruction, model training, or fine-tuning begins.
 
 ---
 
@@ -23,12 +23,12 @@ The selection strategy is **permissioned-first, provenance-first, quality-first*
 | Priority | Candidate Source Family | Intended Contribution | Required Decision Before Use |
 | :--- | :--- | :--- |
 | **1** | Permissioned, first-party, or commissioned image–text data | Core production-quality visual grounding and domain coverage | Written use permission, documented consent where applicable, and versioned source agreement. |
-| **2** | Open Images | Object/relationship/segmentation-oriented supervised grounding; the official description identifies roughly 9 million annotated images and multiple annotation modalities [5]. | Confirm current image and annotation terms, attribution handling, and downstream-use compatibility for the selected split. |
-| **3** | COCO and other benchmark-specific datasets | Held-out evaluation for recognition, detection, segmentation, and captioning; COCO describes itself as a large-scale object-detection, segmentation, and captioning dataset [6]. | Benchmark licence and split-specific use review; keep evaluation sets isolated from training. |
-| **4** | DataComp-style filtered candidate pools | Controlled data-curation experiments; DataComp is explicitly designed to benchmark dataset design for fixed CLIP-style models [7]. | Review the applicable access terms and construct a provenance-filtered subset; do not treat a web pool as pre-cleared training data. |
+| **2** | First-party CC0 allow-lists from institutions | Narrow, bounded cultural-heritage/object pilot for pipeline and governance validation; only item-level CC0-designated assets may be considered. | Record per-item rights status, third-party-rights caveats, safety/privacy review, removal process, and split plan. |
+| **3** | Synthetic data from a named licensed generator | Controlled interface and annotation validation; useful only for a constrained pilot and not evidence of real-world generalization. | Capture plan-specific output-use terms, generation manifest, content controls, quality review, and held-out prompt-family design. |
+| **4** | Open Images | Object/relationship/segmentation-oriented supervised grounding; the official description identifies roughly 9 million annotated images and multiple annotation modalities [5]. | **Not eligible for the initial retained pilot.** T2.2 denied retention; any future route requires separately approved, item-level rights, privacy/safety, removal, deduplication, and split evidence. |
 | **5** | LAION/Common-Crawl-derived discovery indexes | Research-only candidate discovery and retrieval analysis; LAION-5B reports image–text pairs with quality and content-detection metadata [3]. | Per-item provenance/rights screening, content filters, takedown support, and explicit approval for every retained subset. |
 
-**Initial recommendation:** begin with a small, documented mix of permissioned or clearly licensed data plus curated Open Images-style supervised material. Use COCO-like assets only as held-out benchmarks where permitted. Defer all web-index reconstruction until the allow-list, provenance database, and removal mechanism have passed review.
+**Current recommendation:** select a named user-owned/commissioned corpus or a named provider with written training permission. If neither is available, review a finite allow-list of first-party CC0-designated institutional assets for a domain-limited pipeline pilot. Do not treat Open Images V7, COCO, DataComp, LAION, Common Crawl, a public URL, or an index as initial-pilot training approval. Defer all web-index reconstruction until an item-level allow-list, provenance database, and removal mechanism have passed review.
 
 ---
 
@@ -52,7 +52,7 @@ The first trainable component should be a **cross-modal adapter**, not an unboun
 | :--- | :--- | :--- |
 | **T0: Governance** | Intended-use statement, risk register, acquisition policy, data-retention/takedown process, and evaluation protocol | Owner approval and legal/privacy review appropriate to the deployment jurisdiction. |
 | **T1: Dataset registry** | Machine-readable ledger with dataset version, source, licence/terms, access date, content filters, provenance confidence, and split assignment | No missing required fields; every pilot item linked to a reviewable source record. |
-| **T2: Pilot curation** | Small representative pilot corpus and frozen held-out set | Duplicate/leakage audit, PII/content-filter report, and sampling-quality review pass. |
+| **T2: Pilot curation** | T2.3 pathway comparison complete; next is T2.4 source-specific retained-pilot proposal, followed by a distinct acquisition gate | Named finite source, compatible rights evidence, privacy/safety/removal plan, duplicate/split plan, and owner approval before any pilot acquisition. |
 | **T3: Adapter baseline** | Reproducible training configuration, random seeds, checkpoints, loss curves, and substrate ablations | Training stable; no regression in Stage 1–5 contracts; held-out task baseline recorded. |
 | **T4: Fine-tuning** | Parameter-efficient fine-tune only where licence and model terms allow it | Better than frozen baseline on predeclared held-out metrics without unacceptable safety, fairness, or provenance failures. |
 | **T5: Scale decision** | Cost, hardware, energy, safety, and quality report | Owner approves a bounded scale-up budget after reviewing evidence. |
@@ -78,11 +78,11 @@ The project should use the phrase **AGI-Vision eligibility** only as an internal
 
 ## 6. Immediate Approval Gate
 
-Approval to begin this program should unlock **T0–T1 only**: governance, dataset discovery, candidate comparison, and creation of the provenance registry. It must **not** automatically authorize downloading/reconstructing copyrighted media, ingesting personal data, or starting large-scale training.
+T0–T2.3 are complete as documentation and discovery work only. The next decision is **source selection for T2.4**, not acquisition or training. The owner must name a user-owned/commissioned source, commercial/provider source, first-party CC0 pathway, or synthetic provider plan before a source-specific retained-pilot proposal can be prepared.
 
-A separate approval will be requested before T2 pilot acquisition and again before T3 model training. This staged approach prevents irreversible training decisions before corpus rights, provenance, safety controls, and evaluation criteria have been examined.
+A separate approval will be requested before any pilot acquisition and again before T3 model training. This staged approach prevents irreversible training decisions before corpus rights, provenance, safety controls, and evaluation criteria have been examined.
 
-**Required response to unlock T0–T1:** `Approve Training Program T0-T1`
+**Current required response:** select one source option in `Training/T2_3_TO_T2_4_SOURCE_SELECTION_GATE.md`. `Approve T3 Training` is not valid at this point.
 
 ---
 
