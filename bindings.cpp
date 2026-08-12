@@ -98,6 +98,69 @@ PYBIND11_MODULE(alvs_cpp, m) {
             sized conversion or copying. Non-float32 or non-contiguous arrays
             are rejected rather than silently copied.
         )pbdoc")
+        .def("atomize_multiscale_numpy", [](const alvs::Atomizer& self,
+                                             const py::array& color_array,
+                                             std::size_t max_levels) {
+            const py::buffer_info color = color_array.request();
+            requireColorShape(color_array, color);
+            const py::ssize_t height = color.shape[0];
+            const py::ssize_t width = color.shape[1];
+            auto energy = py::array_t<float>({height, width});
+            auto flow_x = py::array_t<float>({height, width});
+            auto flow_y = py::array_t<float>({height, width});
+            const auto energy_info = energy.request();
+            const auto flow_x_info = flow_x.request();
+            const auto flow_y_info = flow_y.request();
+            alvs::HaarWaveletPyramid pyramid;
+            alvs::SemanticGateFeatures features;
+            alvs::SemanticGateOutput gate;
+            {
+                py::gil_scoped_release release;
+                self.atomizeMultiScaleInterleaved(static_cast<const float*>(color.ptr),
+                                                   static_cast<std::size_t>(width),
+                                                   static_cast<std::size_t>(height),
+                                                   static_cast<float*>(energy_info.ptr),
+                                                   static_cast<float*>(flow_x_info.ptr),
+                                                   static_cast<float*>(flow_y_info.ptr),
+                                                   pyramid, features, gate, max_levels);
+            }
+
+            auto copyBand = [](const std::vector<float>& values, std::size_t height, std::size_t width) {
+                auto array = py::array_t<float>({static_cast<py::ssize_t>(height), static_cast<py::ssize_t>(width)});
+                auto* destination = static_cast<float*>(array.request().ptr);
+                std::copy(values.begin(), values.end(), destination);
+                return array;
+            };
+            py::list levels;
+            for (const alvs::WaveletLevel& level : pyramid.levels) {
+                py::dict item;
+                item["input_shape"] = py::make_tuple(level.input_height, level.input_width);
+                item["approximation"] = copyBand(level.approximation, level.output_height, level.output_width);
+                item["detail_horizontal"] = copyBand(level.detail_horizontal, level.output_height, level.output_width);
+                item["detail_vertical"] = copyBand(level.detail_vertical, level.output_height, level.output_width);
+                item["detail_diagonal"] = copyBand(level.detail_diagonal, level.output_height, level.output_width);
+                levels.append(std::move(item));
+            }
+            auto feature_array = py::array_t<float>(std::vector<py::ssize_t>{4});
+            auto weight_array = py::array_t<float>(std::vector<py::ssize_t>{6});
+            std::copy(features.values.begin(), features.values.end(), static_cast<float*>(feature_array.request().ptr));
+            std::copy(gate.weights.begin(), gate.weights.end(), static_cast<float*>(weight_array.request().ptr));
+            py::dict result;
+            result["energy"] = energy;
+            result["flow_x"] = flow_x;
+            result["flow_y"] = flow_y;
+            result["wavelet_levels"] = levels;
+            result["gate_features"] = feature_array;
+            result["gate_weights"] = weight_array;
+            result["complexity"] = gate.complexity;
+            result["entropy"] = gate.entropy;
+            return result;
+        }, py::arg("color_array"), py::arg("max_levels") = 2,
+        R"pbdoc(
+            Perform direct Stage 2 atomization on a C-contiguous HxWx3
+            float32 NumPy tensor, returning base layers, a Haar pyramid, and
+            deterministic semantic gate metadata without copying the RGB input.
+        )pbdoc")
         .def("zero_copy_probe", [](const alvs::Atomizer& self, const py::array& color_array) {
             const py::buffer_info color = color_array.request();
             requireColorShape(color_array, color);

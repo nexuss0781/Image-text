@@ -2,6 +2,7 @@
 #define ALVS_CORE_H
 
 #include <algorithm>
+#include <array>
 #include <cstddef>
 #include <cstdint>
 #include <cstdlib>
@@ -63,12 +64,72 @@ struct Pixel {
 };
 static_assert(sizeof(Pixel) == sizeof(float) * 3, "Pixel must remain tightly packed");
 
+/** One orthonormal Haar analysis level; all sub-bands have output_width x output_height samples. */
+struct WaveletLevel {
+    std::size_t input_width{0};
+    std::size_t input_height{0};
+    std::size_t output_width{0};
+    std::size_t output_height{0};
+    std::vector<float> approximation;
+    std::vector<float> detail_horizontal;
+    std::vector<float> detail_vertical;
+    std::vector<float> detail_diagonal;
+};
+
+/** Multi-scale, edge-replicated Haar pyramid that preserves the original tensor geometry. */
+struct HaarWaveletPyramid {
+    std::size_t original_width{0};
+    std::size_t original_height{0};
+    std::vector<WaveletLevel> levels;
+
+    [[nodiscard]] bool empty() const noexcept { return levels.empty(); }
+};
+
+struct SemanticGateFeatures {
+    // Bias, normalized energy variance, normalized flow variance, normalized detail energy.
+    std::array<float, 4> values{1.0f, 0.0f, 0.0f, 0.0f};
+};
+
+struct SemanticGateOutput {
+    // RGB, Energy, Flow-X, Flow-Y, Wavelet details, Wavelet approximation.
+    std::array<float, 6> weights{1.0f / 6.0f, 1.0f / 6.0f, 1.0f / 6.0f,
+                                 1.0f / 6.0f, 1.0f / 6.0f, 1.0f / 6.0f};
+    float complexity{0.0f};
+    float entropy{0.0f};
+};
+
+/**
+ * A compact, trainable softmax gate. It consumes deterministic visual-statistic
+ * features and distributes attention over atomic visual representations.
+ */
+class SemanticAttentionGate {
+public:
+    static constexpr std::size_t kFeatureCount = 4;
+    static constexpr std::size_t kOutputCount = 6;
+
+    SemanticAttentionGate();
+
+    [[nodiscard]] SemanticGateOutput infer(const SemanticGateFeatures& features) const;
+    float trainStep(const SemanticGateFeatures& features,
+                    const std::array<float, kOutputCount>& target,
+                    float learning_rate,
+                    float* gradient_l2_norm = nullptr);
+    void reset() noexcept;
+
+private:
+    std::array<std::array<float, kFeatureCount>, kOutputCount> weights_{};
+    std::array<float, kOutputCount> biases_{};
+};
+
 // Atomic context holding all computed layers.
 struct AtomicContext {
     std::vector<Pixel> color;
     std::vector<float> energy;
     std::vector<float> flow_x;
     std::vector<float> flow_y;
+    HaarWaveletPyramid wavelet;
+    SemanticGateFeatures gate_features;
+    SemanticGateOutput semantic_gate;
     std::size_t width{0};
     std::size_t height{0};
 };
@@ -94,6 +155,37 @@ public:
 
     // Legacy owning interface retained for existing callers.
     AtomicContext atomize(const std::vector<Pixel>& color_matrix, std::size_t width, std::size_t height);
+
+    /**
+     * Stage 2 semantic atomization: extends the base context with an
+     * orthonormal multi-scale Haar pyramid and deterministic gate output.
+     */
+    AtomicContext atomizeMultiScale(const std::vector<Pixel>& color_matrix,
+                                    std::size_t width,
+                                    std::size_t height,
+                                    std::size_t max_levels = 2) const;
+
+    /**
+     * Direct Stage 2 interface. The RGB input remains caller-owned; only
+     * output layers and the explicitly requested wavelet pyramid are created.
+     */
+    void atomizeMultiScaleInterleaved(const float* color_interleaved,
+                                      std::size_t width,
+                                      std::size_t height,
+                                      float* energy_out,
+                                      float* flow_x_out,
+                                      float* flow_y_out,
+                                      HaarWaveletPyramid& wavelet_out,
+                                      SemanticGateFeatures& gate_features_out,
+                                      SemanticGateOutput& semantic_gate_out,
+                                      std::size_t max_levels = 2) const;
+
+    HaarWaveletPyramid decomposeEnergyPyramid(const float* energy,
+                                              std::size_t width,
+                                              std::size_t height,
+                                              std::size_t max_levels = 2) const;
+    std::vector<float> reconstructEnergyPyramid(const HaarWaveletPyramid& pyramid) const;
+    SemanticGateFeatures extractGateFeatures(const AtomicContext& context) const;
 
     /**
      * Direct, non-owning interleaved-RGB interface.

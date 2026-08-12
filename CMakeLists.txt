@@ -8,6 +8,7 @@ set(CMAKE_POSITION_INDEPENDENT_CODE ON)
 
 option(ALVS_BUILD_PYTHON_MODULE "Build the pybind11 Python extension" ON)
 option(ALVS_BUILD_STAGE1_EVALUATION "Build the Stage 1 native evaluation harness" ON)
+option(ALVS_BUILD_STAGE2_EVALUATION "Build the Stage 2 native evaluation harness" ON)
 
 add_library(alvs_core STATIC alvs_core.cpp)
 target_include_directories(alvs_core PUBLIC ${CMAKE_CURRENT_SOURCE_DIR})
@@ -58,5 +59,27 @@ if(ALVS_BUILD_STAGE1_EVALUATION)
     include(CTest)
     if(BUILD_TESTING)
         add_test(NAME stage1_native_evaluation COMMAND stage1_evaluation --quick)
+    endif()
+endif()
+
+if(ALVS_BUILD_STAGE2_EVALUATION)
+    add_executable(stage2_evaluation stage2_evaluation.cpp)
+    target_link_libraries(stage2_evaluation PRIVATE alvs_core)
+    target_compile_definitions(stage2_evaluation PRIVATE ALVS_SOURCE_DIR="${CMAKE_CURRENT_SOURCE_DIR}")
+    target_compile_options(stage2_evaluation PRIVATE
+        $<$<CXX_COMPILER_ID:GNU,Clang>:-Wall;-Wextra;-Wpedantic>
+        $<$<CXX_COMPILER_ID:MSVC>:/W4>
+    )
+    if(CMAKE_BUILD_TYPE MATCHES "Release|RelWithDebInfo")
+        if(MSVC)
+            target_compile_options(stage2_evaluation PRIVATE /O2)
+        else()
+            target_compile_options(stage2_evaluation PRIVATE -O3 -march=native)
+        endif()
+    endif()
+
+    include(CTest)
+    if(BUILD_TESTING)
+        add_test(NAME stage2_native_evaluation COMMAND stage2_evaluation --quick)
     endif()
 endif()

@@ -117,6 +117,322 @@ bool AlignedTensorBuffer::is_aligned() const noexcept {
     return data_ == nullptr || (reinterpret_cast<std::uintptr_t>(data_.get()) % kAlignment) == 0;
 }
 
+SemanticAttentionGate::SemanticAttentionGate() {
+    reset();
+}
+
+void SemanticAttentionGate::reset() noexcept {
+    for (auto& row : weights_) {
+        row.fill(0.0f);
+    }
+    biases_.fill(0.0f);
+
+    // Deterministic priors: favor detail and flow as visual complexity rises,
+    // while retaining low-frequency energy information for smooth scenes.
+    biases_[0] = 0.30f;  // RGB
+    weights_[1][1] = 0.60f;  // Energy variance
+    weights_[2][2] = 0.95f;  // Flow-X variance
+    weights_[3][2] = 0.95f;  // Flow-Y variance
+    weights_[4][2] = 0.40f;  // Wavelet detail
+    weights_[4][3] = 1.35f;
+    weights_[5][1] = 0.45f;  // Wavelet approximation
+}
+
+SemanticGateOutput SemanticAttentionGate::infer(const SemanticGateFeatures& features) const {
+    std::array<float, kOutputCount> logits{};
+    float maximum = -std::numeric_limits<float>::infinity();
+    for (std::size_t output = 0; output < kOutputCount; ++output) {
+        float value = biases_[output];
+        for (std::size_t feature = 0; feature < kFeatureCount; ++feature) {
+            value += weights_[output][feature] * features.values[feature];
+        }
+        logits[output] = value;
+        maximum = std::max(maximum, value);
+    }
+
+    SemanticGateOutput result;
+    float normalizer = 0.0f;
+    for (std::size_t output = 0; output < kOutputCount; ++output) {
+        result.weights[output] = std::exp(logits[output] - maximum);
+        normalizer += result.weights[output];
+    }
+    for (float& weight : result.weights) {
+        weight /= normalizer;
+    }
+
+    constexpr float kInverseLogOutputs = 1.0f / 1.7917594692280550f; // 1 / ln(6)
+    float entropy = 0.0f;
+    for (const float weight : result.weights) {
+        entropy -= weight * std::log(std::max(weight, 1.0e-12f));
+    }
+    result.entropy = entropy * kInverseLogOutputs;
+    result.complexity = std::clamp(0.30f * features.values[1] +
+                                   0.35f * features.values[2] +
+                                   0.35f * features.values[3],
+                                   0.0f, 1.0f);
+    return result;
+}
+
+float SemanticAttentionGate::trainStep(const SemanticGateFeatures& features,
+                                       const std::array<float, kOutputCount>& target,
+                                       float learning_rate,
+                                       float* gradient_l2_norm) {
+    if (!(learning_rate > 0.0f) || !std::isfinite(learning_rate)) {
+        throw std::invalid_argument("Semantic gate learning rate must be finite and positive");
+    }
+    float target_total = 0.0f;
+    for (const float target_weight : target) {
+        if (target_weight < 0.0f || !std::isfinite(target_weight)) {
+            throw std::invalid_argument("Semantic gate target weights must be finite and non-negative");
+        }
+        target_total += target_weight;
+    }
+    if (std::abs(target_total - 1.0f) > 1.0e-4f) {
+        throw std::invalid_argument("Semantic gate target weights must sum to one");
+    }
+
+    const SemanticGateOutput prediction = infer(features);
+    float loss = 0.0f;
+    float norm_squared = 0.0f;
+    for (std::size_t output = 0; output < kOutputCount; ++output) {
+        loss -= target[output] * std::log(std::max(prediction.weights[output], 1.0e-12f));
+        const float gradient = prediction.weights[output] - target[output];
+        norm_squared += gradient * gradient;
+        biases_[output] = std::clamp(biases_[output] - learning_rate * gradient, -4.0f, 4.0f);
+        for (std::size_t feature = 0; feature < kFeatureCount; ++feature) {
+            const float parameter_gradient = gradient * features.values[feature];
+            norm_squared += parameter_gradient * parameter_gradient;
+            weights_[output][feature] = std::clamp(weights_[output][feature] - learning_rate * parameter_gradient,
+                                                    -4.0f, 4.0f);
+        }
+    }
+    if (gradient_l2_norm != nullptr) {
+        *gradient_l2_norm = std::sqrt(norm_squared);
+    }
+    return loss;
+}
+
+HaarWaveletPyramid Atomizer::decomposeEnergyPyramid(const float* energy,
+                                                     std::size_t width,
+                                                     std::size_t height,
+                                                     std::size_t max_levels) const {
+    std::size_t pixel_count = 0;
+    if (!checkedPixelCount(width, height, pixel_count)) {
+        throw std::overflow_error("Wavelet input dimensions exceed supported tensor size");
+    }
+    if (pixel_count > 0 && energy == nullptr) {
+        throw std::invalid_argument("Wavelet decomposition requires a non-null energy buffer");
+    }
+
+    HaarWaveletPyramid pyramid;
+    pyramid.original_width = width;
+    pyramid.original_height = height;
+    if (pixel_count == 0 || max_levels == 0) {
+        return pyramid;
+    }
+
+    std::vector<float> current(energy, energy + pixel_count);
+    std::size_t current_width = width;
+    std::size_t current_height = height;
+    for (std::size_t level_index = 0; level_index < max_levels; ++level_index) {
+        if (current_width == 1 && current_height == 1) {
+            break;
+        }
+        WaveletLevel level;
+        level.input_width = current_width;
+        level.input_height = current_height;
+        level.output_width = (current_width + 1) / 2;
+        level.output_height = (current_height + 1) / 2;
+        const std::size_t output_count = level.output_width * level.output_height;
+        level.approximation.resize(output_count);
+        level.detail_horizontal.resize(output_count);
+        level.detail_vertical.resize(output_count);
+        level.detail_diagonal.resize(output_count);
+
+        for (std::size_t y = 0; y < level.output_height; ++y) {
+            const std::size_t y0 = y * 2;
+            const std::size_t y1 = std::min(y0 + 1, current_height - 1);
+            for (std::size_t x = 0; x < level.output_width; ++x) {
+                const std::size_t x0 = x * 2;
+                const std::size_t x1 = std::min(x0 + 1, current_width - 1);
+                const float a = current[y0 * current_width + x0];
+                const float b = current[y0 * current_width + x1];
+                const float c = current[y1 * current_width + x0];
+                const float d = current[y1 * current_width + x1];
+                const std::size_t out = y * level.output_width + x;
+                level.approximation[out] = 0.5f * (a + b + c + d);
+                level.detail_horizontal[out] = 0.5f * (a - b + c - d);
+                level.detail_vertical[out] = 0.5f * (a + b - c - d);
+                level.detail_diagonal[out] = 0.5f * (a - b - c + d);
+            }
+        }
+
+        current = level.approximation;
+        current_width = level.output_width;
+        current_height = level.output_height;
+        pyramid.levels.emplace_back(std::move(level));
+    }
+    return pyramid;
+}
+
+std::vector<float> Atomizer::reconstructEnergyPyramid(const HaarWaveletPyramid& pyramid) const {
+    if (pyramid.empty()) {
+        return {};
+    }
+
+    std::vector<float> current = pyramid.levels.back().approximation;
+    for (auto iterator = pyramid.levels.rbegin(); iterator != pyramid.levels.rend(); ++iterator) {
+        const WaveletLevel& level = *iterator;
+        const std::size_t expected_count = level.output_width * level.output_height;
+        if (current.size() != expected_count || level.detail_horizontal.size() != expected_count ||
+            level.detail_vertical.size() != expected_count || level.detail_diagonal.size() != expected_count) {
+            throw std::invalid_argument("Wavelet pyramid has inconsistent sub-band sizes");
+        }
+
+        std::vector<float> reconstructed(level.input_width * level.input_height);
+        for (std::size_t y = 0; y < level.output_height; ++y) {
+            const std::size_t y0 = y * 2;
+            const std::size_t y1 = y0 + 1;
+            for (std::size_t x = 0; x < level.output_width; ++x) {
+                const std::size_t x0 = x * 2;
+                const std::size_t x1 = x0 + 1;
+                const std::size_t index = y * level.output_width + x;
+                const float ll = current[index];
+                const float lh = level.detail_horizontal[index];
+                const float hl = level.detail_vertical[index];
+                const float hh = level.detail_diagonal[index];
+                const float a = 0.5f * (ll + lh + hl + hh);
+                const float b = 0.5f * (ll - lh + hl - hh);
+                const float c = 0.5f * (ll + lh - hl - hh);
+                const float d = 0.5f * (ll - lh - hl + hh);
+                reconstructed[y0 * level.input_width + x0] = a;
+                if (x1 < level.input_width) {
+                    reconstructed[y0 * level.input_width + x1] = b;
+                }
+                if (y1 < level.input_height) {
+                    reconstructed[y1 * level.input_width + x0] = c;
+                    if (x1 < level.input_width) {
+                        reconstructed[y1 * level.input_width + x1] = d;
+                    }
+                }
+            }
+        }
+        current = std::move(reconstructed);
+    }
+    return current;
+}
+
+SemanticGateFeatures Atomizer::extractGateFeatures(const AtomicContext& context) const {
+    const std::size_t pixel_count = context.width * context.height;
+    if (pixel_count == 0 || context.energy.size() != pixel_count ||
+        context.flow_x.size() != pixel_count || context.flow_y.size() != pixel_count) {
+        throw std::invalid_argument("Atomic context does not contain complete base layers");
+    }
+
+    double energy_mean = 0.0;
+    for (const float value : context.energy) {
+        energy_mean += value;
+    }
+    energy_mean /= static_cast<double>(pixel_count);
+    double energy_variance = 0.0;
+    double flow_power = 0.0;
+    for (std::size_t index = 0; index < pixel_count; ++index) {
+        const double energy_delta = static_cast<double>(context.energy[index]) - energy_mean;
+        energy_variance += energy_delta * energy_delta;
+        flow_power += static_cast<double>(context.flow_x[index]) * context.flow_x[index] +
+                      static_cast<double>(context.flow_y[index]) * context.flow_y[index];
+    }
+    energy_variance /= static_cast<double>(pixel_count);
+    flow_power /= static_cast<double>(pixel_count);
+
+    double detail_power = 0.0;
+    std::size_t detail_count = 0;
+    for (const WaveletLevel& level : context.wavelet.levels) {
+        for (std::size_t index = 0; index < level.detail_horizontal.size(); ++index) {
+            detail_power += static_cast<double>(level.detail_horizontal[index]) * level.detail_horizontal[index] +
+                            static_cast<double>(level.detail_vertical[index]) * level.detail_vertical[index] +
+                            static_cast<double>(level.detail_diagonal[index]) * level.detail_diagonal[index];
+            detail_count += 3;
+        }
+    }
+    detail_power = detail_count == 0 ? 0.0 : detail_power / static_cast<double>(detail_count);
+
+    SemanticGateFeatures features;
+    features.values[0] = 1.0f;
+    features.values[1] = static_cast<float>(energy_variance / (energy_variance + 0.02));
+    features.values[2] = static_cast<float>(flow_power / (flow_power + 0.01));
+    features.values[3] = static_cast<float>(detail_power / (detail_power + 0.01));
+    return features;
+}
+
+void Atomizer::atomizeMultiScaleInterleaved(const float* color_interleaved,
+                                             std::size_t width,
+                                             std::size_t height,
+                                             float* energy_out,
+                                             float* flow_x_out,
+                                             float* flow_y_out,
+                                             HaarWaveletPyramid& wavelet_out,
+                                             SemanticGateFeatures& gate_features_out,
+                                             SemanticGateOutput& semantic_gate_out,
+                                             std::size_t max_levels) const {
+    atomizeInterleaved(color_interleaved, width, height, energy_out, flow_x_out, flow_y_out);
+    wavelet_out = decomposeEnergyPyramid(energy_out, width, height, max_levels);
+    if (width == 0 || height == 0) {
+        gate_features_out = SemanticGateFeatures{};
+        SemanticAttentionGate gate;
+        semantic_gate_out = gate.infer(gate_features_out);
+        return;
+    }
+
+    const std::size_t pixel_count = width * height;
+    double energy_mean = 0.0;
+    for (std::size_t index = 0; index < pixel_count; ++index) {
+        energy_mean += energy_out[index];
+    }
+    energy_mean /= static_cast<double>(pixel_count);
+    double energy_variance = 0.0;
+    double flow_power = 0.0;
+    for (std::size_t index = 0; index < pixel_count; ++index) {
+        const double energy_delta = static_cast<double>(energy_out[index]) - energy_mean;
+        energy_variance += energy_delta * energy_delta;
+        flow_power += static_cast<double>(flow_x_out[index]) * flow_x_out[index] +
+                      static_cast<double>(flow_y_out[index]) * flow_y_out[index];
+    }
+    energy_variance /= static_cast<double>(pixel_count);
+    flow_power /= static_cast<double>(pixel_count);
+    double detail_power = 0.0;
+    std::size_t detail_count = 0;
+    for (const WaveletLevel& level : wavelet_out.levels) {
+        for (std::size_t index = 0; index < level.detail_horizontal.size(); ++index) {
+            detail_power += static_cast<double>(level.detail_horizontal[index]) * level.detail_horizontal[index] +
+                            static_cast<double>(level.detail_vertical[index]) * level.detail_vertical[index] +
+                            static_cast<double>(level.detail_diagonal[index]) * level.detail_diagonal[index];
+            detail_count += 3;
+        }
+    }
+    detail_power = detail_count == 0 ? 0.0 : detail_power / static_cast<double>(detail_count);
+
+    gate_features_out.values = {1.0f,
+                                static_cast<float>(energy_variance / (energy_variance + 0.02)),
+                                static_cast<float>(flow_power / (flow_power + 0.01)),
+                                static_cast<float>(detail_power / (detail_power + 0.01))};
+    SemanticAttentionGate gate;
+    semantic_gate_out = gate.infer(gate_features_out);
+}
+
+AtomicContext Atomizer::atomizeMultiScale(const std::vector<Pixel>& color_matrix,
+                                          std::size_t width,
+                                          std::size_t height,
+                                          std::size_t max_levels) const {
+    Atomizer mutable_atomizer;
+    AtomicContext context = mutable_atomizer.atomize(color_matrix, width, height);
+    context.wavelet = decomposeEnergyPyramid(context.energy.data(), width, height, max_levels);
+    context.gate_features = extractGateFeatures(context);
+    SemanticAttentionGate gate;
+    context.semantic_gate = gate.infer(context.gate_features);
+    return context;
+}
+
 std::vector<unsigned char> VisionLoader::loadImageFile(const std::string& file_path,
                                                         std::size_t& width,
                                                         std::size_t& height,
