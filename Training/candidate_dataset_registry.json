@@ -1,0 +1,105 @@
+{
+  "schema_version": "1.0",
+  "registry_status": "T1 discovery only — no media, metadata bulk export, or corpus content acquired",
+  "program": "AGI-VS Data Curation, Training & Fine-Tuning",
+  "created_scope": "T0–T1",
+  "global_controls": {
+    "permissioned_first": true,
+    "source_level_provenance_required": true,
+    "unknown_or_conflicting_terms_rejected_for_pilot": true,
+    "evaluation_splits_must_be_isolated": true,
+    "web_index_reconstruction_requires_separate_approval": true,
+    "model_training_authorized": false
+  },
+  "candidates": [
+    {
+      "id": "permissioned_first_party_multimodal",
+      "class": "permissioned or first-party",
+      "source_url": null,
+      "candidate_status": "priority_discovery_required",
+      "proposed_role": "primary pilot training source for visual-language grounding",
+      "modality": ["image", "text", "structured annotation"],
+      "licence_or_terms_status": "not yet identified — only written permission or terms explicitly compatible with the approved use may proceed",
+      "provenance_confidence": "not_applicable_until_source_identified",
+      "training_eligibility": "blocked_pending_source_selection_and_review",
+      "risks": ["consent scope", "privacy", "purpose limitation", "retention"],
+      "required_evidence": ["provider agreement or explicit terms", "collection description", "data card", "removal contact", "representative-sample review"],
+      "source_evidence_urls": []
+    },
+    {
+      "id": "open_images_v7",
+      "class": "public supervised visual grounding",
+      "source_url": "https://storage.googleapis.com/openimages/web/factsfigures_v7.html",
+      "candidate_status": "candidate_review_required",
+      "proposed_role": "candidate supervised visual grounding and spatial-relation training source",
+      "modality": ["image", "image labels", "bounding boxes", "segmentation", "visual relationships", "localized narratives"],
+      "published_scale_summary": "Official description reports about 9 million images and multiple annotation modalities.",
+      "licence_or_terms_status": "requires split-specific current-terms, attribution, and downstream-use review before acquisition",
+      "provenance_confidence": "medium — official source description located; item-level/source-specific review remains required",
+      "training_eligibility": "blocked_pending_terms_review_and_pilot_approval",
+      "risks": ["source-image terms", "attribution", "personal data in imagery", "content suitability", "benchmark leakage"],
+      "required_evidence": ["current licence/terms snapshot", "selected split definition", "attribution plan", "PII/content filter plan", "held-out split declaration"],
+      "source_evidence_urls": ["https://storage.googleapis.com/openimages/web/factsfigures_v7.html"]
+    },
+    {
+      "id": "coco_held_out_evaluation",
+      "class": "public benchmark",
+      "source_url": "https://cocodataset.org/",
+      "candidate_status": "evaluation_candidate_only",
+      "proposed_role": "held-out evaluation for perception, captioning, and grounding metrics; not proposed for pilot training",
+      "modality": ["image", "detection", "segmentation", "captioning"],
+      "licence_or_terms_status": "requires current terms-of-use and split-specific review before any access",
+      "provenance_confidence": "medium — official site and terms entry point identified",
+      "training_eligibility": "blocked_and_not_recommended_for_training_in_initial_pilot",
+      "risks": ["benchmark contamination", "terms scope", "leakage through pretrained backbones"],
+      "required_evidence": ["terms snapshot", "split isolation declaration", "pretraining contamination assessment", "evaluation protocol"],
+      "source_evidence_urls": ["https://cocodataset.org/"]
+    },
+    {
+      "id": "datacomp_methodology",
+      "class": "curation benchmark and public-web candidate pool",
+      "source_url": "https://github.com/mlfoundations/datacomp",
+      "candidate_status": "methodology_candidate_only",
+      "proposed_role": "benchmarking curation methodology and data-filter design; not a pre-approved media source",
+      "modality": ["image", "caption", "metadata"],
+      "licence_or_terms_status": "public-web pool requires source-level rights and provenance review; no automatic acquisition",
+      "provenance_confidence": "low_for_individual_media — benchmark-level documentation does not clear individual content",
+      "training_eligibility": "blocked_pending_source_level_allow_list_and_pilot_approval",
+      "risks": ["web-source rights", "safety content", "personal data", "scale", "storage/compute", "provenance gaps"],
+      "required_evidence": ["candidate-item allow-list", "source terms records", "content-policy filter report", "small-scale pilot approval"],
+      "source_evidence_urls": ["https://github.com/mlfoundations/datacomp"]
+    },
+    {
+      "id": "laion_web_index_discovery",
+      "class": "web index",
+      "source_url": "https://laion.ai/faq/",
+      "candidate_status": "discovery_only",
+      "proposed_role": "research discovery and metadata-policy analysis only",
+      "modality": ["URL", "alt text", "similarity and content metadata where published"],
+      "licence_or_terms_status": "index availability does not clear reconstruction or downstream training use",
+      "provenance_confidence": "low_for_individual_media — item-level source verification required",
+      "training_eligibility": "blocked_pending_source-level review and separate reconstruction authorization",
+      "risks": ["copyright", "takedowns", "unsafe content", "privacy", "source volatility", "licence ambiguity"],
+      "required_evidence": ["per-item source record", "rights/terms decision", "removal workflow", "content review", "explicit reconstruction approval"],
+      "source_evidence_urls": [
+        "https://laion.ai/faq/",
+        "https://proceedings.neurips.cc/paper_files/paper/2022/hash/a1859debfb3b59d094f3504d5ebb6c25-Abstract-Datasets_and_Benchmarks.html"
+      ]
+    },
+    {
+      "id": "common_crawl_discovery",
+      "class": "open-web crawl",
+      "source_url": "https://commoncrawl.org/",
+      "candidate_status": "discovery_only",
+      "proposed_role": "source-discovery and text/web-document analysis only",
+      "modality": ["web archive", "web text", "linked media references"],
+      "licence_or_terms_status": "crawl availability does not establish rights to linked content or downstream model-training eligibility",
+      "provenance_confidence": "low_for_individual_media — source-level evidence and allow-list required",
+      "training_eligibility": "blocked_pending source-level review and explicit pilot approval",
+      "risks": ["copyright", "robots/terms evolution", "PII", "malware links", "unsafe content", "provenance gaps"],
+      "required_evidence": ["source-specific terms", "allow-list", "security scanning plan", "PII/content filter plan", "explicit acquisition approval"],
+      "source_evidence_urls": ["https://commoncrawl.org/"]
+    }
+  ],
+  "next_required_gate": "Pilot-acquisition review: approve only named, reviewed sources and selected splits after terms, privacy, safety, and split-isolation evidence is attached."
+}
