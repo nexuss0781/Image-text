@@ -1,0 +1,35 @@
+{
+  "harness": "AGI-VS Stage 5 Python Production Validation",
+  "input_shape": [
+    64,
+    80,
+    3
+  ],
+  "tc_5_python_pipeline": {
+    "backend": "cpu-openmp-avx",
+    "maximum_layer_error": 0.0,
+    "embedding_shape": [
+      80,
+      4096
+    ],
+    "expected_embedding_shape": [
+      80,
+      4096
+    ],
+    "pass": true
+  },
+  "tc_5_python_direct_contract": {
+    "input_unchanged": true,
+    "input_copied": false,
+    "pass": true
+  },
+  "tc_5_python_latency": {
+    "median_ms": 12.707368,
+    "p95_ms": 13.7563766,
+    "pass": true
+  },
+  "tc_5_python_layout_contract": {
+    "pass": true
+  },
+  "overall_pass": true
+}

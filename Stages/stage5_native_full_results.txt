@@ -1,0 +1,8 @@
+AGI-VS Stage 5 Production Validation Harness
+Mode: full
+
+[PASS] TC-5.1 — full CPU pipeline: 80 tokens x 4096 dimensions; Stage 2/3 layer deviation=0.000000; source unchanged
+[PASS] TC-5.2 — frames=500; post-warm-up RSS growth=0 bytes; bounded-suite threshold=16777216 bytes
+[PASS] TC-5.3 — CPU full-pipeline median=12.998576 ms; p95=13.285131 ms; deployment target latency intentionally deferred
+
+Stage 5 native harness: PASS

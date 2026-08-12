@@ -11,6 +11,7 @@ option(ALVS_BUILD_STAGE1_EVALUATION "Build the Stage 1 native evaluation harness
 option(ALVS_BUILD_STAGE2_EVALUATION "Build the Stage 2 native evaluation harness" ON)
 option(ALVS_BUILD_STAGE3_EVALUATION "Build the Stage 3 native evaluation harness" ON)
 option(ALVS_BUILD_STAGE4_EVALUATION "Build the Stage 4 native evaluation harness" ON)
+option(ALVS_BUILD_STAGE5_EVALUATION "Build the Stage 5 native evaluation harness" ON)
 
 add_library(alvs_core STATIC alvs_core.cpp)
 target_include_directories(alvs_core PUBLIC ${CMAKE_CURRENT_SOURCE_DIR})
@@ -131,5 +132,26 @@ if(ALVS_BUILD_STAGE4_EVALUATION)
     include(CTest)
     if(BUILD_TESTING)
         add_test(NAME stage4_native_evaluation COMMAND stage4_evaluation --quick)
+    endif()
+endif()
+
+if(ALVS_BUILD_STAGE5_EVALUATION)
+    add_executable(stage5_evaluation stage5_evaluation.cpp)
+    target_link_libraries(stage5_evaluation PRIVATE alvs_core)
+    target_compile_options(stage5_evaluation PRIVATE
+        $<$<CXX_COMPILER_ID:GNU,Clang>:-Wall;-Wextra;-Wpedantic>
+        $<$<CXX_COMPILER_ID:MSVC>:/W4>
+    )
+    if(CMAKE_BUILD_TYPE MATCHES "Release|RelWithDebInfo")
+        if(MSVC)
+            target_compile_options(stage5_evaluation PRIVATE /O2)
+        else()
+            target_compile_options(stage5_evaluation PRIVATE -O3 -march=native)
+        endif()
+    endif()
+
+    include(CTest)
+    if(BUILD_TESTING)
+        add_test(NAME stage5_native_evaluation COMMAND stage5_evaluation --quick)
     endif()
 endif()
