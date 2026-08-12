@@ -1,0 +1,9 @@
+AGI-VS Stage 2 Native Evaluation Harness
+
+[PASS] TC-2.1 — minimum energy-layer reconstruction PSNR=150.919678 dB; threshold=58.000000 dB
+[PASS] TC-2.2 — initial loss=1.670745; final loss=1.598994; max gradient L2=0.585269; threshold=10.000000
+[PASS] TC-2.3 — Haar basis max cross-correlation=0.000000; max norm error=0.000000; threshold=0.000100
+[PASS] TC-2.4 — levels=2; weight sum=1.000000; complexity=0.293491; normalized entropy=0.998367
+[PASS] TC-2.5 — direct RGB input unchanged; Energy/Flow PSNRs=inf/inf/inf dB; levels=2
+
+Stage 2 native harness: PASS
