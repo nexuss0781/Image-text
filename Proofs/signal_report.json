@@ -1,0 +1,1329 @@
+{
+  "acquisition_manifest_sha256": "54bd8d54b7cb139c1acef6e1ef68706b81fbe1a3d1504705c282bfbd29fc2ffe",
+  "claim": "Frozen AGI-VS Stage 1\u20134 substrate produced deterministic, non-identical structured signals for each approved real-world proof image; no training or core modification occurred.",
+  "configuration": {
+    "measured_runs": 30,
+    "stage4_embedding_dimension": 4096,
+    "stage4_max_levels": 2,
+    "stage4_max_tokens": 32,
+    "stage4_patch_size": 16,
+    "stage4_retention_ratio": 0.25,
+    "standardized_input": "512x512 RGB float32 letterbox; no crop",
+    "training_or_parameter_update": false,
+    "warmup_runs": 5
+  },
+  "environment": {
+    "module_dir": "build-production",
+    "platform": "Linux-6.1.102-x86_64-with-glibc2.39",
+    "python": "3.12.3 (main, Jun 19 2026, 12:46:00) [GCC 13.3.0]",
+    "simd_backend": "AVX-512F"
+  },
+  "records": [
+    {
+      "asset_id": "animal_bird",
+      "input_contract": {
+        "letterbox_offset": [
+          0,
+          64
+        ],
+        "original_size": [
+          1280,
+          960
+        ],
+        "resized_content_size": [
+          512,
+          384
+        ],
+        "rgb_float32_c_contiguous": true,
+        "standardized_input_sha256": "6fd0cc281e6bd9c369e4842fb89560e14a0ca9b6a64d66bb7746400e81b439d4",
+        "standardized_size": [
+          512,
+          512
+        ]
+      },
+      "interface_integrity": {
+        "accelerated_backend": "cpu-openmp-avx",
+        "accelerated_parallel_enabled": true,
+        "accelerated_worker_threads": 6,
+        "project_input_copied": false,
+        "simd_available": true,
+        "simd_backend": "AVX-512F",
+        "zero_copy_probe_address_match": true,
+        "zero_copy_probe_input_copied": false
+      },
+      "performance": {
+        "fps_equivalent_from_median": 99.72582379264688,
+        "maximum_ms": 10.93742,
+        "mean_ms": 10.125439833333333,
+        "median_ms": 10.027493,
+        "minimum_ms": 9.82111,
+        "p95_ms": 10.831548,
+        "runs": 30
+      },
+      "scene_class": "animal",
+      "source_copy_sha256": "80b4588be2ef177fedf7f587eb3700835a1c7159265278e5c066ab6017d7a4f3",
+      "source_file_title": "File:Bird at Wingham Wildlife Park.jpg",
+      "stage1_atomic_signals": {
+        "energy": {
+          "maximum": 1.0,
+          "mean": 0.4062599539756775,
+          "minimum": 0.0,
+          "p05": 0.0,
+          "p50": 0.4260062873363495,
+          "p95": 0.8951824903488159,
+          "stddev": 0.3042517900466919
+        },
+        "flow_x": {
+          "maximum": 0.4333333373069763,
+          "mean": -0.00021208722318988293,
+          "minimum": -0.48235294222831726,
+          "p05": -0.04836601763963699,
+          "p50": 0.0,
+          "p95": 0.049019575119018555,
+          "stddev": 0.03776302561163902
+        },
+        "flow_y": {
+          "maximum": 0.4483660161495209,
+          "mean": 0.0,
+          "minimum": -0.45490193367004395,
+          "p05": -0.05359478294849396,
+          "p50": 0.0,
+          "p95": 0.05751633644104004,
+          "stddev": 0.04372048377990723
+        }
+      },
+      "stage2_multiscale_signals": {
+        "complexity": 0.41944420337677,
+        "entropy": 0.9974226951599121,
+        "gate_features": [
+          1.0,
+          0.822331428527832,
+          0.2502383589744568,
+          0.243318110704422
+        ],
+        "gate_weights": [
+          0.1586700677871704,
+          0.1925249695777893,
+          0.1490904837846756,
+          0.1490904837846756,
+          0.18044061958789825,
+          0.17018331587314606
+        ],
+        "wavelet_level_count": 2,
+        "wavelet_level_shapes": [
+          [
+            512,
+            512
+          ],
+          [
+            256,
+            256
+          ]
+        ]
+      },
+      "stage4_visual_tokens": {
+        "embedding_dimension": 4096,
+        "embedding_sha256": "8689800deb4c00a91390f3bf5cdf394affffb82c9b8886dd78de7c9626df4403",
+        "pooled_embedding_sha256": "f929766ee718f6c2bc566623afb88974e7f072445257a0d3e8534dba728ffa2e",
+        "repeated_projection_max_abs_error": 0.0,
+        "retained_token_count": 32,
+        "source_patch_count": 1024,
+        "token_rms": {
+          "maximum": 0.9999938011169434,
+          "mean": 0.9999922513961792,
+          "minimum": 0.9999904036521912,
+          "p05": 0.999990701675415,
+          "p50": 0.9999921321868896,
+          "p95": 0.9999935030937195,
+          "stddev": 8.231458537011349e-07
+        },
+        "top_importance_patches": [
+          {
+            "importance": 0.5219882726669312,
+            "patch_x": 20,
+            "patch_y": 14
+          },
+          {
+            "importance": 0.5196167826652527,
+            "patch_x": 4,
+            "patch_y": 19
+          },
+          {
+            "importance": 0.5177029967308044,
+            "patch_x": 25,
+            "patch_y": 24
+          },
+          {
+            "importance": 0.5164365768432617,
+            "patch_x": 27,
+            "patch_y": 24
+          },
+          {
+            "importance": 0.5164262056350708,
+            "patch_x": 26,
+            "patch_y": 24
+          },
+          {
+            "importance": 0.515885055065155,
+            "patch_x": 28,
+            "patch_y": 24
+          },
+          {
+            "importance": 0.5155033469200134,
+            "patch_x": 30,
+            "patch_y": 24
+          },
+          {
+            "importance": 0.5154768228530884,
+            "patch_x": 29,
+            "patch_y": 24
+          }
+        ]
+      }
+    },
+    {
+      "asset_id": "animal_iguana",
+      "input_contract": {
+        "letterbox_offset": [
+          0,
+          64
+        ],
+        "original_size": [
+          1280,
+          960
+        ],
+        "resized_content_size": [
+          512,
+          384
+        ],
+        "rgb_float32_c_contiguous": true,
+        "standardized_input_sha256": "3cc31dd95ffc2b2c992b98eaa43e25bd0b3d97c42a3d2fff49d3ebe91759fb26",
+        "standardized_size": [
+          512,
+          512
+        ]
+      },
+      "interface_integrity": {
+        "accelerated_backend": "cpu-openmp-avx",
+        "accelerated_parallel_enabled": true,
+        "accelerated_worker_threads": 6,
+        "project_input_copied": false,
+        "simd_available": true,
+        "simd_backend": "AVX-512F",
+        "zero_copy_probe_address_match": true,
+        "zero_copy_probe_input_copied": false
+      },
+      "performance": {
+        "fps_equivalent_from_median": 100.6613551695998,
+        "maximum_ms": 10.793255,
+        "mean_ms": 10.074297666666666,
+        "median_ms": 9.934299,
+        "minimum_ms": 9.790101,
+        "p95_ms": 10.705514,
+        "runs": 30
+      },
+      "scene_class": "animal",
+      "source_copy_sha256": "613d74708295a177e9fdc4867d8657da2513df48e88b4224093ca6329a991ecb",
+      "source_file_title": "File:Iguana de Venezuela.jpg",
+      "stage1_atomic_signals": {
+        "energy": {
+          "maximum": 1.0,
+          "mean": 0.3564082384109497,
+          "minimum": 0.0,
+          "p05": 0.0,
+          "p50": 0.4453004002571106,
+          "p95": 0.6724995374679565,
+          "stddev": 0.26065611839294434
+        },
+        "flow_x": {
+          "maximum": 0.3921568691730499,
+          "mean": 5.740000051446259e-05,
+          "minimum": -0.37777775526046753,
+          "p05": -0.12941177189350128,
+          "p50": 0.0,
+          "p95": 0.132679745554924,
+          "stddev": 0.07254748791456223
+        },
+        "flow_y": {
+          "maximum": 0.38954249024391174,
+          "mean": 0.0,
+          "minimum": -0.40522876381874084,
+          "p05": -0.1326797604560852,
+          "p50": 0.0,
+          "p95": 0.13398690521717072,
+          "stddev": 0.07360436767339706
+        }
+      },
+      "stage2_multiscale_signals": {
+        "complexity": 0.5841032862663269,
+        "entropy": 0.989385724067688,
+        "gate_features": [
+          1.0,
+          0.7725763916969299,
+          0.5164583921432495,
+          0.49019986391067505
+        ],
+        "gate_weights": [
+          0.1349184215068817,
+          0.15889063477516174,
+          0.1632537543773651,
+          0.1632537543773651,
+          0.23817923665046692,
+          0.14150424301624298
+        ],
+        "wavelet_level_count": 2,
+        "wavelet_level_shapes": [
+          [
+            512,
+            512
+          ],
+          [
+            256,
+            256
+          ]
+        ]
+      },
+      "stage4_visual_tokens": {
+        "embedding_dimension": 4096,
+        "embedding_sha256": "4e9913437d367b29417e355edd1a5fec85881f453731eeef532466c5c56eaa63",
+        "pooled_embedding_sha256": "a075e0beea364ca29c873565096bf709ff632caff1a03e82c1c240aa6b295a2d",
+        "repeated_projection_max_abs_error": 0.0,
+        "retained_token_count": 32,
+        "source_patch_count": 1024,
+        "token_rms": {
+          "maximum": 0.9999857544898987,
+          "mean": 0.9999791979789734,
+          "minimum": 0.9999697208404541,
+          "p05": 0.9999708533287048,
+          "p50": 0.9999799728393555,
+          "p95": 0.9999849796295166,
+          "stddev": 4.185449597571278e-06
+        },
+        "top_importance_patches": [
+          {
+            "importance": 0.3880392909049988,
+            "patch_x": 0,
+            "patch_y": 16
+          },
+          {
+            "importance": 0.38325852155685425,
+            "patch_x": 26,
+            "patch_y": 12
+          },
+          {
+            "importance": 0.3597404658794403,
+            "patch_x": 24,
+            "patch_y": 11
+          },
+          {
+            "importance": 0.3566987216472626,
+            "patch_x": 25,
+            "patch_y": 12
+          },
+          {
+            "importance": 0.3565749228000641,
+            "patch_x": 19,
+            "patch_y": 11
+          },
+          {
+            "importance": 0.35518041253089905,
+            "patch_x": 23,
+            "patch_y": 11
+          },
+          {
+            "importance": 0.3543570041656494,
+            "patch_x": 4,
+            "patch_y": 15
+          },
+          {
+            "importance": 0.3437314033508301,
+            "patch_x": 25,
+            "patch_y": 11
+          }
+        ]
+      }
+    },
+    {
+      "asset_id": "building_paulista",
+      "input_contract": {
+        "letterbox_offset": [
+          0,
+          41
+        ],
+        "original_size": [
+          1280,
+          1074
+        ],
+        "resized_content_size": [
+          512,
+          430
+        ],
+        "rgb_float32_c_contiguous": true,
+        "standardized_input_sha256": "002a3902aba8023105fb11e1ef2f61c80ded57bf9334e4d3f235c8c480af6054",
+        "standardized_size": [
+          512,
+          512
+        ]
+      },
+      "interface_integrity": {
+        "accelerated_backend": "cpu-openmp-avx",
+        "accelerated_parallel_enabled": true,
+        "accelerated_worker_threads": 6,
+        "project_input_copied": false,
+        "simd_available": true,
+        "simd_backend": "AVX-512F",
+        "zero_copy_probe_address_match": true,
+        "zero_copy_probe_input_copied": false
+      },
+      "performance": {
+        "fps_equivalent_from_median": 100.03347119946335,
+        "maximum_ms": 10.403806,
+        "mean_ms": 10.0525466,
+        "median_ms": 9.996654,
+        "minimum_ms": 9.797196,
+        "p95_ms": 10.391386,
+        "runs": 30
+      },
+      "scene_class": "building",
+      "source_copy_sha256": "2630c04a6318e1300b84127a8db9aca33293dbb0b9f6a078172f89d45e6902f8",
+      "source_file_title": "File:Building in Paulista Avenue 09.jpg",
+      "stage1_atomic_signals": {
+        "energy": {
+          "maximum": 1.0,
+          "mean": 0.5017014145851135,
+          "minimum": 0.0,
+          "p05": 0.0,
+          "p50": 0.5839349031448364,
+          "p95": 0.8935427069664001,
+          "stddev": 0.3091942369937897
+        },
+        "flow_x": {
+          "maximum": 0.4673202633857727,
+          "mean": -0.0001083797833416611,
+          "minimum": -0.4562091529369354,
+          "p05": -0.16405229270458221,
+          "p50": 0.0,
+          "p95": 0.14771242439746857,
+          "stddev": 0.09139739722013474
+        },
+        "flow_y": {
+          "maximum": 0.4588235318660736,
+          "mean": 0.0,
+          "minimum": -0.4758169949054718,
+          "p05": -0.13137254118919373,
+          "p50": 0.0,
+          "p95": 0.11045750975608826,
+          "stddev": 0.0787106305360794
+        }
+      },
+      "stage2_multiscale_signals": {
+        "complexity": 0.6819528937339783,
+        "entropy": 0.9768757224082947,
+        "gate_features": [
+          1.0,
+          0.8269912600517273,
+          0.5926491022109985,
+          0.6469380855560303
+        ],
+        "gate_weights": [
+          0.12281785160303116,
+          0.14944031834602356,
+          0.15976740419864655,
+          0.15976740419864655,
+          0.27620089054107666,
+          0.13200613856315613
+        ],
+        "wavelet_level_count": 2,
+        "wavelet_level_shapes": [
+          [
+            512,
+            512
+          ],
+          [
+            256,
+            256
+          ]
+        ]
+      },
+      "stage4_visual_tokens": {
+        "embedding_dimension": 4096,
+        "embedding_sha256": "1dbe4e010f043e3b666f81ce7fce06a8f2cda6330abfa4d6d0908e3d552f4c15",
+        "pooled_embedding_sha256": "85334272eef2df8c55f0cc94875b4f4366fb81fff5f179dd79be6328fbbbba79",
+        "repeated_projection_max_abs_error": 0.0,
+        "retained_token_count": 32,
+        "source_patch_count": 1024,
+        "token_rms": {
+          "maximum": 0.9999871253967285,
+          "mean": 0.9999852180480957,
+          "minimum": 0.9999836683273315,
+          "p05": 0.9999838471412659,
+          "p50": 0.99998539686203,
+          "p95": 0.9999866485595703,
+          "stddev": 9.488308023719583e-07
+        },
+        "top_importance_patches": [
+          {
+            "importance": 0.381935715675354,
+            "patch_x": 6,
+            "patch_y": 4
+          },
+          {
+            "importance": 0.3809744715690613,
+            "patch_x": 8,
+            "patch_y": 4
+          },
+          {
+            "importance": 0.3807217478752136,
+            "patch_x": 9,
+            "patch_y": 4
+          },
+          {
+            "importance": 0.37980201840400696,
+            "patch_x": 7,
+            "patch_y": 4
+          },
+          {
+            "importance": 0.37918391823768616,
+            "patch_x": 2,
+            "patch_y": 6
+          },
+          {
+            "importance": 0.3783591687679291,
+            "patch_x": 11,
+            "patch_y": 4
+          },
+          {
+            "importance": 0.37833645939826965,
+            "patch_x": 0,
+            "patch_y": 3
+          },
+          {
+            "importance": 0.3780677020549774,
+            "patch_x": 12,
+            "patch_y": 4
+          }
+        ]
+      }
+    },
+    {
+      "asset_id": "city_kaohsiung",
+      "input_contract": {
+        "letterbox_offset": [
+          0,
+          85
+        ],
+        "original_size": [
+          1280,
+          853
+        ],
+        "resized_content_size": [
+          512,
+          341
+        ],
+        "rgb_float32_c_contiguous": true,
+        "standardized_input_sha256": "c44be8b7d6c9d3a02913a9ecdf3e09654a7d01c78fad64a962b3043f9c40b848",
+        "standardized_size": [
+          512,
+          512
+        ]
+      },
+      "interface_integrity": {
+        "accelerated_backend": "cpu-openmp-avx",
+        "accelerated_parallel_enabled": true,
+        "accelerated_worker_threads": 6,
+        "project_input_copied": false,
+        "simd_available": true,
+        "simd_backend": "AVX-512F",
+        "zero_copy_probe_address_match": true,
+        "zero_copy_probe_input_copied": false
+      },
+      "performance": {
+        "fps_equivalent_from_median": 100.3081265029919,
+        "maximum_ms": 11.814441,
+        "mean_ms": 10.050113366666666,
+        "median_ms": 9.969282,
+        "minimum_ms": 9.800783,
+        "p95_ms": 10.406413,
+        "runs": 30
+      },
+      "scene_class": "city",
+      "source_copy_sha256": "db0f70736d1f1f926cbcea60ef478c845777f965e16496277683c378cbbae691",
+      "source_file_title": "File:Urban skyline of Kaohsiung, Taiwan at night.jpg",
+      "stage1_atomic_signals": {
+        "energy": {
+          "maximum": 1.0,
+          "mean": 0.10084192454814911,
+          "minimum": 0.0,
+          "p05": 0.0,
+          "p50": 0.09660157561302185,
+          "p95": 0.34180954098701477,
+          "stddev": 0.12609413266181946
+        },
+        "flow_x": {
+          "maximum": 0.4130719304084778,
+          "mean": -2.2943035219213925e-05,
+          "minimum": -0.3928104639053345,
+          "p05": -0.038562092930078506,
+          "p50": 0.0,
+          "p95": 0.03856208920478821,
+          "stddev": 0.033013880252838135
+        },
+        "flow_y": {
+          "maximum": 0.3830065429210663,
+          "mean": -5.820766091346741e-11,
+          "minimum": -0.3947712481021881,
+          "p05": -0.039215683937072754,
+          "p50": 0.0,
+          "p95": 0.039215683937072754,
+          "stddev": 0.03533431515097618
+        }
+      },
+      "stage2_multiscale_signals": {
+        "complexity": 0.28231069445610046,
+        "entropy": 0.998242974281311,
+        "gate_features": [
+          1.0,
+          0.44289276003837585,
+          0.18952415883541107,
+          0.23745548725128174
+        ],
+        "gate_weights": [
+          0.1740456521511078,
+          0.1681831032037735,
+          0.15437203645706177,
+          0.15437203645706177,
+          0.19165410101413727,
+          0.1573730856180191
+        ],
+        "wavelet_level_count": 2,
+        "wavelet_level_shapes": [
+          [
+            512,
+            512
+          ],
+          [
+            256,
+            256
+          ]
+        ]
+      },
+      "stage4_visual_tokens": {
+        "embedding_dimension": 4096,
+        "embedding_sha256": "63c29186c3e0ec47096f0e02885247f360b42c1ba6ddf65ef3096c73755495f9",
+        "pooled_embedding_sha256": "01c9f9b748362d2d8b9c8b96cfc50a65cd1e02d5085d5023327a469d2d0c9e6d",
+        "repeated_projection_max_abs_error": 0.0,
+        "retained_token_count": 32,
+        "source_patch_count": 1024,
+        "token_rms": {
+          "maximum": 0.9999867081642151,
+          "mean": 0.9999554753303528,
+          "minimum": 0.9999310374259949,
+          "p05": 0.9999316930770874,
+          "p50": 0.9999594688415527,
+          "p95": 0.9999762773513794,
+          "stddev": 1.4087130693951622e-05
+        },
+        "top_importance_patches": [
+          {
+            "importance": 0.382978230714798,
+            "patch_x": 7,
+            "patch_y": 8
+          },
+          {
+            "importance": 0.32955867052078247,
+            "patch_x": 6,
+            "patch_y": 8
+          },
+          {
+            "importance": 0.28906726837158203,
+            "patch_x": 15,
+            "patch_y": 16
+          },
+          {
+            "importance": 0.28022500872612,
+            "patch_x": 7,
+            "patch_y": 7
+          },
+          {
+            "importance": 0.27318084239959717,
+            "patch_x": 13,
+            "patch_y": 24
+          },
+          {
+            "importance": 0.2652479410171509,
+            "patch_x": 16,
+            "patch_y": 16
+          },
+          {
+            "importance": 0.26354238390922546,
+            "patch_x": 16,
+            "patch_y": 18
+          },
+          {
+            "importance": 0.2602292597293854,
+            "patch_x": 7,
+            "patch_y": 9
+          }
+        ]
+      }
+    },
+    {
+      "asset_id": "city_victoria_harbour",
+      "input_contract": {
+        "letterbox_offset": [
+          0,
+          86
+        ],
+        "original_size": [
+          1280,
+          851
+        ],
+        "resized_content_size": [
+          512,
+          340
+        ],
+        "rgb_float32_c_contiguous": true,
+        "standardized_input_sha256": "bdae2519c651dc86f724400736968dfe322ab82576da0adeb13c6684da1b16cd",
+        "standardized_size": [
+          512,
+          512
+        ]
+      },
+      "interface_integrity": {
+        "accelerated_backend": "cpu-openmp-avx",
+        "accelerated_parallel_enabled": true,
+        "accelerated_worker_threads": 6,
+        "project_input_copied": false,
+        "simd_available": true,
+        "simd_backend": "AVX-512F",
+        "zero_copy_probe_address_match": true,
+        "zero_copy_probe_input_copied": false
+      },
+      "performance": {
+        "fps_equivalent_from_median": 98.67252399925462,
+        "maximum_ms": 13.308611,
+        "mean_ms": 10.4334173,
+        "median_ms": 10.1345335,
+        "minimum_ms": 9.917461,
+        "p95_ms": 11.977979,
+        "runs": 30
+      },
+      "scene_class": "city",
+      "source_copy_sha256": "3c7ac87ffbd200d11b1bbb59414362a8623d0991b396e426a3fab639fed297b5",
+      "source_file_title": "File:Victoria Harbour skyscrapers.jpg",
+      "stage1_atomic_signals": {
+        "energy": {
+          "maximum": 1.0,
+          "mean": 0.11710985004901886,
+          "minimum": 0.0,
+          "p05": 0.0,
+          "p50": 0.03514980524778366,
+          "p95": 0.503397524356842,
+          "stddev": 0.17319044470787048
+        },
+        "flow_x": {
+          "maximum": 0.4300653636455536,
+          "mean": -0.00027833826607093215,
+          "minimum": -0.49934640526771545,
+          "p05": -0.08300653100013733,
+          "p50": 0.0,
+          "p95": 0.08039215952157974,
+          "stddev": 0.05465318635106087
+        },
+        "flow_y": {
+          "maximum": 0.47516340017318726,
+          "mean": -5.820766091346741e-11,
+          "minimum": -0.43921568989753723,
+          "p05": -0.09738562256097794,
+          "p50": 0.0,
+          "p95": 0.09673202782869339,
+          "stddev": 0.060192450881004333
+        }
+      },
+      "stage2_multiscale_signals": {
+        "complexity": 0.4793715476989746,
+        "entropy": 0.9906468391418457,
+        "gate_features": [
+          1.0,
+          0.5999594330787659,
+          0.39795956015586853,
+          0.45742249488830566
+        ],
+        "gate_weights": [
+          0.14694269001483917,
+          0.15602532029151917,
+          0.15887285768985748,
+          0.15887285768985748,
+          0.23668895661830902,
+          0.1425972729921341
+        ],
+        "wavelet_level_count": 2,
+        "wavelet_level_shapes": [
+          [
+            512,
+            512
+          ],
+          [
+            256,
+            256
+          ]
+        ]
+      },
+      "stage4_visual_tokens": {
+        "embedding_dimension": 4096,
+        "embedding_sha256": "61468c5d3b7612997421d01be3c6e79b80e925066eb84ad7e82b53e2a6cea136",
+        "pooled_embedding_sha256": "6e78891147dd71209ee79e1bb5aaeca532f1f6e06b6b9e435c14f75a3a67c067",
+        "repeated_projection_max_abs_error": 0.0,
+        "retained_token_count": 32,
+        "source_patch_count": 1024,
+        "token_rms": {
+          "maximum": 0.9999776482582092,
+          "mean": 0.9999586343765259,
+          "minimum": 0.9999362230300903,
+          "p05": 0.9999474287033081,
+          "p50": 0.9999593496322632,
+          "p95": 0.9999690055847168,
+          "stddev": 7.806623216310982e-06
+        },
+        "top_importance_patches": [
+          {
+            "importance": 0.3345031440258026,
+            "patch_x": 6,
+            "patch_y": 21
+          },
+          {
+            "importance": 0.29393038153648376,
+            "patch_x": 7,
+            "patch_y": 7
+          },
+          {
+            "importance": 0.2935371994972229,
+            "patch_x": 7,
+            "patch_y": 21
+          },
+          {
+            "importance": 0.2819075882434845,
+            "patch_x": 16,
+            "patch_y": 14
+          },
+          {
+            "importance": 0.27773988246917725,
+            "patch_x": 4,
+            "patch_y": 18
+          },
+          {
+            "importance": 0.27665480971336365,
+            "patch_x": 20,
+            "patch_y": 16
+          },
+          {
+            "importance": 0.2742807865142822,
+            "patch_x": 26,
+            "patch_y": 21
+          },
+          {
+            "importance": 0.2738924026489258,
+            "patch_x": 7,
+            "patch_y": 22
+          }
+        ]
+      }
+    },
+    {
+      "asset_id": "house_quebec",
+      "input_contract": {
+        "letterbox_offset": [
+          0,
+          117
+        ],
+        "original_size": [
+          1280,
+          693
+        ],
+        "resized_content_size": [
+          512,
+          277
+        ],
+        "rgb_float32_c_contiguous": true,
+        "standardized_input_sha256": "44e3bd32dadac8ca477127cabdcfe2df038a6621660e9bfe5524d802ae26c40a",
+        "standardized_size": [
+          512,
+          512
+        ]
+      },
+      "interface_integrity": {
+        "accelerated_backend": "cpu-openmp-avx",
+        "accelerated_parallel_enabled": true,
+        "accelerated_worker_threads": 6,
+        "project_input_copied": false,
+        "simd_available": true,
+        "simd_backend": "AVX-512F",
+        "zero_copy_probe_address_match": true,
+        "zero_copy_probe_input_copied": false
+      },
+      "performance": {
+        "fps_equivalent_from_median": 99.47165629757542,
+        "maximum_ms": 12.276982,
+        "mean_ms": 10.165171766666667,
+        "median_ms": 10.053115,
+        "minimum_ms": 9.817536,
+        "p95_ms": 10.771744,
+        "runs": 30
+      },
+      "scene_class": "building",
+      "source_copy_sha256": "3ce60af9fa97e7ffbb34b837e78787dd970bf5e4bd4a04adf203c60e19cd0eff",
+      "source_file_title": "File:House facade in Quebec city, Canada.jpg",
+      "stage1_atomic_signals": {
+        "energy": {
+          "maximum": 0.9781694412231445,
+          "mean": 0.28676414489746094,
+          "minimum": 0.0,
+          "p05": 0.0,
+          "p50": 0.20818352699279785,
+          "p95": 0.7630934715270996,
+          "stddev": 0.30698490142822266
+        },
+        "flow_x": {
+          "maximum": 0.3346405029296875,
+          "mean": 3.3798722142819315e-05,
+          "minimum": -0.31111109256744385,
+          "p05": -0.024183005094528198,
+          "p50": 0.0,
+          "p95": 0.023529410362243652,
+          "stddev": 0.029002178460359573
+        },
+        "flow_y": {
+          "maximum": 0.2921568751335144,
+          "mean": 1.1641532182693481e-10,
+          "minimum": -0.41372549533843994,
+          "p05": -0.04901960492134094,
+          "p50": 0.0,
+          "p95": 0.05228763818740845,
+          "stddev": 0.04327086731791496
+        }
+      },
+      "stage2_multiscale_signals": {
+        "complexity": 0.4180183410644531,
+        "entropy": 0.9963980317115784,
+        "gate_features": [
+          1.0,
+          0.8249295949935913,
+          0.21343426406383514,
+          0.27382126450538635
+        ],
+        "gate_weights": [
+          0.15945269167423248,
+          0.1937764286994934,
+          0.14467789232730865,
+          0.14467789232730865,
+          0.18619224429130554,
+          0.17122279107570648
+        ],
+        "wavelet_level_count": 2,
+        "wavelet_level_shapes": [
+          [
+            512,
+            512
+          ],
+          [
+            256,
+            256
+          ]
+        ]
+      },
+      "stage4_visual_tokens": {
+        "embedding_dimension": 4096,
+        "embedding_sha256": "6de70cf84620df2ef0710ad3b54138b081f41e8f15233baf0a487c483ddbd99d",
+        "pooled_embedding_sha256": "ddfee8dd72490236c8fb15f239f3f6d7a8e123e1e67808173160e2674834ecbc",
+        "repeated_projection_max_abs_error": 0.0,
+        "retained_token_count": 32,
+        "source_patch_count": 1024,
+        "token_rms": {
+          "maximum": 0.9999915957450867,
+          "mean": 0.9999892711639404,
+          "minimum": 0.9999881386756897,
+          "p05": 0.9999882578849792,
+          "p50": 0.9999891519546509,
+          "p95": 0.9999906420707703,
+          "stddev": 7.991246775418404e-07
+        },
+        "top_importance_patches": [
+          {
+            "importance": 0.4531366229057312,
+            "patch_x": 21,
+            "patch_y": 23
+          },
+          {
+            "importance": 0.45254647731781006,
+            "patch_x": 22,
+            "patch_y": 23
+          },
+          {
+            "importance": 0.45200681686401367,
+            "patch_x": 23,
+            "patch_y": 23
+          },
+          {
+            "importance": 0.44378143548965454,
+            "patch_x": 24,
+            "patch_y": 23
+          },
+          {
+            "importance": 0.44291654229164124,
+            "patch_x": 25,
+            "patch_y": 23
+          },
+          {
+            "importance": 0.4426577389240265,
+            "patch_x": 20,
+            "patch_y": 23
+          },
+          {
+            "importance": 0.43854138255119324,
+            "patch_x": 27,
+            "patch_y": 22
+          },
+          {
+            "importance": 0.43844273686408997,
+            "patch_x": 19,
+            "patch_y": 23
+          }
+        ]
+      }
+    },
+    {
+      "asset_id": "landscape_utah_dunes",
+      "input_contract": {
+        "letterbox_offset": [
+          0,
+          88
+        ],
+        "original_size": [
+          1280,
+          841
+        ],
+        "resized_content_size": [
+          512,
+          336
+        ],
+        "rgb_float32_c_contiguous": true,
+        "standardized_input_sha256": "0d7b204831e4797b2eb18c23327f14aeec17259273ec3b7df993aa13a20f818f",
+        "standardized_size": [
+          512,
+          512
+        ]
+      },
+      "interface_integrity": {
+        "accelerated_backend": "cpu-openmp-avx",
+        "accelerated_parallel_enabled": true,
+        "accelerated_worker_threads": 6,
+        "project_input_copied": false,
+        "simd_available": true,
+        "simd_backend": "AVX-512F",
+        "zero_copy_probe_address_match": true,
+        "zero_copy_probe_input_copied": false
+      },
+      "performance": {
+        "fps_equivalent_from_median": 99.40206674789141,
+        "maximum_ms": 11.116125,
+        "mean_ms": 10.146425366666668,
+        "median_ms": 10.060153,
+        "minimum_ms": 9.81917,
+        "p95_ms": 10.635027,
+        "runs": 30
+      },
+      "scene_class": "landscape",
+      "source_copy_sha256": "1e4395b74bc1151f78279797e691807cdc8aaa61cedcae1c37e23bf60ba41fa2",
+      "source_file_title": "File:Utah Dunes Landscape - West Desert District.jpg",
+      "stage1_atomic_signals": {
+        "energy": {
+          "maximum": 0.9997168779373169,
+          "mean": 0.364398717880249,
+          "minimum": 0.0,
+          "p05": 0.0,
+          "p50": 0.40753018856048584,
+          "p95": 0.8323451280593872,
+          "stddev": 0.3069595694541931
+        },
+        "flow_x": {
+          "maximum": 0.2509803771972656,
+          "mean": 3.8453650631709024e-05,
+          "minimum": -0.2993464171886444,
+          "p05": -0.02222222089767456,
+          "p50": 0.0,
+          "p95": 0.02222222089767456,
+          "stddev": 0.019172605127096176
+        },
+        "flow_y": {
+          "maximum": 0.49934640526771545,
+          "mean": 2.3283064365386963e-10,
+          "minimum": -0.4104575216770172,
+          "p05": -0.047058820724487305,
+          "p50": 0.0,
+          "p95": 0.04509800672531128,
+          "stddev": 0.04621100798249245
+        }
+      },
+      "stage2_multiscale_signals": {
+        "complexity": 0.35804295539855957,
+        "entropy": 0.9965279698371887,
+        "gate_features": [
+          1.0,
+          0.8249057531356812,
+          0.20019499957561493,
+          0.11572272330522537
+        ],
+        "gate_weights": [
+          0.16613127291202545,
+          0.2018897533416748,
+          0.1488536298274994,
+          0.1488536298274994,
+          0.15587928891181946,
+          0.1783924400806427
+        ],
+        "wavelet_level_count": 2,
+        "wavelet_level_shapes": [
+          [
+            512,
+            512
+          ],
+          [
+            256,
+            256
+          ]
+        ]
+      },
+      "stage4_visual_tokens": {
+        "embedding_dimension": 4096,
+        "embedding_sha256": "b98f7affd2132b28cbaa3356ce60a9bacba312013e5cea25601a841005d9f3b3",
+        "pooled_embedding_sha256": "a254c4c0ba6483f9d4fe30fe8b2ccd0883f71ccb22d1f4fca2a1bee16e8053af",
+        "repeated_projection_max_abs_error": 0.0,
+        "retained_token_count": 32,
+        "source_patch_count": 1024,
+        "token_rms": {
+          "maximum": 0.9999937415122986,
+          "mean": 0.9999924898147583,
+          "minimum": 0.9999913573265076,
+          "p05": 0.9999917149543762,
+          "p50": 0.9999924898147583,
+          "p95": 0.9999934434890747,
+          "stddev": 5.55155736492452e-07
+        },
+        "top_importance_patches": [
+          {
+            "importance": 0.5281073451042175,
+            "patch_x": 19,
+            "patch_y": 6
+          },
+          {
+            "importance": 0.5268433094024658,
+            "patch_x": 18,
+            "patch_y": 6
+          },
+          {
+            "importance": 0.5260427594184875,
+            "patch_x": 5,
+            "patch_y": 6
+          },
+          {
+            "importance": 0.5208775401115417,
+            "patch_x": 6,
+            "patch_y": 6
+          },
+          {
+            "importance": 0.5190220475196838,
+            "patch_x": 4,
+            "patch_y": 6
+          },
+          {
+            "importance": 0.516143798828125,
+            "patch_x": 17,
+            "patch_y": 6
+          },
+          {
+            "importance": 0.5155563950538635,
+            "patch_x": 2,
+            "patch_y": 6
+          },
+          {
+            "importance": 0.5146884918212891,
+            "patch_x": 3,
+            "patch_y": 6
+          }
+        ]
+      }
+    },
+    {
+      "asset_id": "vehicle_place_etoile",
+      "input_contract": {
+        "letterbox_offset": [
+          0,
+          70
+        ],
+        "original_size": [
+          1280,
+          931
+        ],
+        "resized_content_size": [
+          512,
+          372
+        ],
+        "rgb_float32_c_contiguous": true,
+        "standardized_input_sha256": "2d715184f3793e830bfacb4a491a8e51863062e86fef241464f8e00e1c27556e",
+        "standardized_size": [
+          512,
+          512
+        ]
+      },
+      "interface_integrity": {
+        "accelerated_backend": "cpu-openmp-avx",
+        "accelerated_parallel_enabled": true,
+        "accelerated_worker_threads": 6,
+        "project_input_copied": false,
+        "simd_available": true,
+        "simd_backend": "AVX-512F",
+        "zero_copy_probe_address_match": true,
+        "zero_copy_probe_input_copied": false
+      },
+      "performance": {
+        "fps_equivalent_from_median": 100.85048220145306,
+        "maximum_ms": 11.886699,
+        "mean_ms": 10.009427866666666,
+        "median_ms": 9.915669000000001,
+        "minimum_ms": 9.821629,
+        "p95_ms": 10.271871,
+        "runs": 30
+      },
+      "scene_class": "vehicle",
+      "source_copy_sha256": "4100c2fd38521f4e5df6b2e6666dfb7d0c708ba1df2eca5e1fbf34e17b6d9ead",
+      "source_file_title": "File:Auto op de Place de l'\u00c9toile, in de koplamp is de weerspiegeling van de Arc de T, Bestanddeelnr 191-0354.jpg",
+      "stage1_atomic_signals": {
+        "energy": {
+          "maximum": 1.0,
+          "mean": 0.3741856813430786,
+          "minimum": 0.0,
+          "p05": 0.0,
+          "p50": 0.42352941632270813,
+          "p95": 0.7921569347381592,
+          "stddev": 0.30818215012550354
+        },
+        "flow_x": {
+          "maximum": 0.45098042488098145,
+          "mean": -0.00019190923194400966,
+          "minimum": -0.4529411792755127,
+          "p05": -0.039215683937072754,
+          "p50": 0.0,
+          "p95": 0.03921569138765335,
+          "stddev": 0.04088205099105835
+        },
+        "flow_y": {
+          "maximum": 0.4470588266849518,
+          "mean": 0.0,
+          "minimum": -0.5,
+          "p05": -0.039215683937072754,
+          "p50": 0.0,
+          "p95": 0.03333333507180214,
+          "stddev": 0.04670235514640808
+        }
+      },
+      "stage2_multiscale_signals": {
+        "complexity": 0.45978325605392456,
+        "entropy": 0.9963221549987793,
+        "gate_features": [
+          1.0,
+          0.8260509967803955,
+          0.27810806035995483,
+          0.3275147080421448
+        ],
+        "gate_weights": [
+          0.15364548563957214,
+          0.1868448406457901,
+          0.14824266731739044,
+          0.14824266731739044,
+          0.19795426726341248,
+          0.16507019102573395
+        ],
+        "wavelet_level_count": 2,
+        "wavelet_level_shapes": [
+          [
+            512,
+            512
+          ],
+          [
+            256,
+            256
+          ]
+        ]
+      },
+      "stage4_visual_tokens": {
+        "embedding_dimension": 4096,
+        "embedding_sha256": "c6455cab3df874d13ff7a7425bcd96b4d225c6c9f424b967a75c7df0180a2ce2",
+        "pooled_embedding_sha256": "7c32e74495e3aee5c2df57ae31ad7673f328795a78cbae0ddb45e9ae06dd0e24",
+        "repeated_projection_max_abs_error": 0.0,
+        "retained_token_count": 32,
+        "source_patch_count": 1024,
+        "token_rms": {
+          "maximum": 0.9999933242797852,
+          "mean": 0.9999901056289673,
+          "minimum": 0.99998539686203,
+          "p05": 0.9999869465827942,
+          "p50": 0.9999902248382568,
+          "p95": 0.9999929070472717,
+          "stddev": 2.147706481991918e-06
+        },
+        "top_importance_patches": [
+          {
+            "importance": 0.5095623731613159,
+            "patch_x": 15,
+            "patch_y": 11
+          },
+          {
+            "importance": 0.5032303333282471,
+            "patch_x": 16,
+            "patch_y": 12
+          },
+          {
+            "importance": 0.5010045766830444,
+            "patch_x": 17,
+            "patch_y": 13
+          },
+          {
+            "importance": 0.5001541376113892,
+            "patch_x": 16,
+            "patch_y": 11
+          },
+          {
+            "importance": 0.4993879497051239,
+            "patch_x": 15,
+            "patch_y": 12
+          },
+          {
+            "importance": 0.49562719464302063,
+            "patch_x": 17,
+            "patch_y": 11
+          },
+          {
+            "importance": 0.4948713481426239,
+            "patch_x": 17,
+            "patch_y": 12
+          },
+          {
+            "importance": 0.4926910996437073,
+            "patch_x": 14,
+            "patch_y": 10
+          }
+        ]
+      }
+    }
+  ],
+  "schema_version": "1.0",
+  "signal_diversity": {
+    "distance_matrix_csv": "Proofs/signal_distance_matrix.csv",
+    "distance_metric": "cosine distance between per-image mean-pooled frozen Stage 4 embeddings",
+    "maximum_pairwise_distance": 1.0572909038388962,
+    "mean_pairwise_distance": 0.4816356205869859,
+    "minimum_pairwise_distance": 0.029984635603367615,
+    "pair_count": 28
+  },
+  "status": "pass"
+}
