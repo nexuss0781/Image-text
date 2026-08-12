@@ -1,0 +1,47 @@
+==7632== Memcheck, a memory error detector
+==7632== Copyright (C) 2002-2022, and GNU GPL'd, by Julian Seward et al.
+==7632== Using Valgrind-3.22.0 and LibVEX; rerun with -h for copyright info
+==7632== Command: ./build-valgrind/stage4_evaluation
+==7632== 
+AGI-VS Stage 4 Native Evaluation Harness
+
+[PASS] TC-4.1 — shape=[80,4096]; max RMSNorm error=0.000018
+[PASS] TC-4.2 — source patches=320; retained=80; reduction=0.750000
+[PASS] TC-4.3 — projection is byte-deterministic; source RGB tensor remains unchanged
+[PASS] TC-4.4 — max-token cap honored; invalid retention ratio explicitly rejected
+
+Stage 4 native harness: PASS
+==7632== 
+==7632== HEAP SUMMARY:
+==7632==     in use at exit: 104 bytes in 2 blocks
+==7632==   total heap usage: 61 allocs, 59 frees, 5,789,110 bytes allocated
+==7632== 
+==7632== 8 bytes in 1 blocks are still reachable in loss record 1 of 2
+==7632==    at 0x4846828: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==7632==    by 0x48764A4: ??? (in /usr/lib/x86_64-linux-gnu/libgomp.so.1.0.0)
+==7632==    by 0x488D10E: ??? (in /usr/lib/x86_64-linux-gnu/libgomp.so.1.0.0)
+==7632==    by 0x4874C5B: ??? (in /usr/lib/x86_64-linux-gnu/libgomp.so.1.0.0)
+==7632==    by 0x400571E: call_init.part.0 (dl-init.c:74)
+==7632==    by 0x4005823: call_init (dl-init.c:120)
+==7632==    by 0x4005823: _dl_init (dl-init.c:121)
+==7632==    by 0x401F59F: ??? (in /usr/lib/x86_64-linux-gnu/ld-linux-x86-64.so.2)
+==7632== 
+==7632== 96 bytes in 1 blocks are still reachable in loss record 2 of 2
+==7632==    at 0x484D953: calloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==7632==    by 0x48764DC: ??? (in /usr/lib/x86_64-linux-gnu/libgomp.so.1.0.0)
+==7632==    by 0x4874BA0: ??? (in /usr/lib/x86_64-linux-gnu/libgomp.so.1.0.0)
+==7632==    by 0x4874C77: ??? (in /usr/lib/x86_64-linux-gnu/libgomp.so.1.0.0)
+==7632==    by 0x400571E: call_init.part.0 (dl-init.c:74)
+==7632==    by 0x4005823: call_init (dl-init.c:120)
+==7632==    by 0x4005823: _dl_init (dl-init.c:121)
+==7632==    by 0x401F59F: ??? (in /usr/lib/x86_64-linux-gnu/ld-linux-x86-64.so.2)
+==7632== 
+==7632== LEAK SUMMARY:
+==7632==    definitely lost: 0 bytes in 0 blocks
+==7632==    indirectly lost: 0 bytes in 0 blocks
+==7632==      possibly lost: 0 bytes in 0 blocks
+==7632==    still reachable: 104 bytes in 2 blocks
+==7632==         suppressed: 0 bytes in 0 blocks
+==7632== 
+==7632== For lists of detected and suppressed errors, rerun with: -s
+==7632== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 0 from 0)

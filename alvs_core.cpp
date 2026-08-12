@@ -15,6 +15,7 @@
 
 #include <cstring>
 #include <limits>
+#include <numeric>
 
 namespace {
 
@@ -119,6 +120,163 @@ void AlignedTensorBuffer::reset() noexcept {
 
 bool AlignedTensorBuffer::is_aligned() const noexcept {
     return data_ == nullptr || (reinterpret_cast<std::uintptr_t>(data_.get()) % kAlignment) == 0;
+}
+
+VisualTokenProjection VisualTokenProjector::project(const float* energy,
+                                                     const float* flow_x,
+                                                     const float* flow_y,
+                                                     std::size_t width,
+                                                     std::size_t height,
+                                                     const HaarWaveletPyramid& wavelet,
+                                                     const SemanticGateOutput& gate,
+                                                     const ProjectionConfig& config) const {
+    std::size_t pixel_count = 0;
+    if (!checkedPixelCount(width, height, pixel_count)) {
+        throw std::overflow_error("Projection dimensions exceed supported tensor size");
+    }
+    if (pixel_count == 0) {
+        return {};
+    }
+    if (energy == nullptr || flow_x == nullptr || flow_y == nullptr) {
+        throw std::invalid_argument("Projection requires non-null atomic layer buffers");
+    }
+    if (config.patch_size == 0 || config.embedding_dimension == 0 ||
+        !std::isfinite(config.retention_ratio) || config.retention_ratio <= 0.0f ||
+        config.retention_ratio > 1.0f) {
+        throw std::invalid_argument("Projection configuration has an invalid patch size, dimension, or retention ratio");
+    }
+    const float gate_total = std::accumulate(gate.weights.begin(), gate.weights.end(), 0.0f);
+    if (!std::isfinite(gate_total) || std::abs(gate_total - 1.0f) > 1.0e-4f) {
+        throw std::invalid_argument("Projection requires normalized semantic gate weights");
+    }
+
+    struct Candidate {
+        std::size_t patch_y;
+        std::size_t patch_x;
+        float importance;
+        std::array<float, 6> features;
+    };
+
+    const std::size_t patch_rows = (height + config.patch_size - 1) / config.patch_size;
+    const std::size_t patch_columns = (width + config.patch_size - 1) / config.patch_size;
+    std::vector<Candidate> candidates;
+    candidates.reserve(patch_rows * patch_columns);
+
+    const WaveletLevel* finest = wavelet.levels.empty() ? nullptr : &wavelet.levels.front();
+    auto sampleBand = [finest](const std::vector<float>& band, std::size_t x, std::size_t y) {
+        if (finest == nullptr || band.empty() || finest->output_width == 0 || finest->output_height == 0) {
+            return 0.0f;
+        }
+        const std::size_t wave_x = std::min(x / 2, finest->output_width - 1);
+        const std::size_t wave_y = std::min(y / 2, finest->output_height - 1);
+        return band[wave_y * finest->output_width + wave_x];
+    };
+
+    for (std::size_t patch_y = 0; patch_y < patch_rows; ++patch_y) {
+        const std::size_t start_y = patch_y * config.patch_size;
+        const std::size_t end_y = std::min(start_y + config.patch_size, height);
+        for (std::size_t patch_x = 0; patch_x < patch_columns; ++patch_x) {
+            const std::size_t start_x = patch_x * config.patch_size;
+            const std::size_t end_x = std::min(start_x + config.patch_size, width);
+            float energy_sum = 0.0f;
+            float abs_flow_x_sum = 0.0f;
+            float abs_flow_y_sum = 0.0f;
+            float flow_magnitude_sum = 0.0f;
+            float approximation_sum = 0.0f;
+            float detail_sum = 0.0f;
+            std::size_t samples = 0;
+
+            for (std::size_t y = start_y; y < end_y; ++y) {
+                for (std::size_t x = start_x; x < end_x; ++x) {
+                    const std::size_t index = y * width + x;
+                    energy_sum += energy[index];
+                    abs_flow_x_sum += std::abs(flow_x[index]);
+                    abs_flow_y_sum += std::abs(flow_y[index]);
+                    flow_magnitude_sum += std::sqrt(flow_x[index] * flow_x[index] + flow_y[index] * flow_y[index]);
+                    if (finest != nullptr) {
+                        approximation_sum += sampleBand(finest->approximation, x, y);
+                        detail_sum += (std::abs(sampleBand(finest->detail_horizontal, x, y)) +
+                                       std::abs(sampleBand(finest->detail_vertical, x, y)) +
+                                       std::abs(sampleBand(finest->detail_diagonal, x, y))) / 3.0f;
+                    }
+                    ++samples;
+                }
+            }
+            const float inverse_samples = 1.0f / static_cast<float>(samples);
+            Candidate candidate;
+            candidate.patch_y = patch_y;
+            candidate.patch_x = patch_x;
+            candidate.features = {energy_sum * inverse_samples,
+                                  abs_flow_x_sum * inverse_samples,
+                                  abs_flow_y_sum * inverse_samples,
+                                  flow_magnitude_sum * inverse_samples,
+                                  approximation_sum * inverse_samples,
+                                  detail_sum * inverse_samples};
+            candidate.importance = gate.weights[1] * candidate.features[0] +
+                                   gate.weights[2] * candidate.features[1] +
+                                   gate.weights[3] * candidate.features[2] +
+                                   gate.weights[4] * candidate.features[5] +
+                                   gate.weights[5] * candidate.features[4] +
+                                   0.10f * candidate.features[3];
+            candidates.emplace_back(candidate);
+        }
+    }
+
+    std::stable_sort(candidates.begin(), candidates.end(), [](const Candidate& left, const Candidate& right) {
+        if (left.importance != right.importance) {
+            return left.importance > right.importance;
+        }
+        if (left.patch_y != right.patch_y) {
+            return left.patch_y < right.patch_y;
+        }
+        return left.patch_x < right.patch_x;
+    });
+
+    std::size_t retained = static_cast<std::size_t>(std::ceil(candidates.size() * config.retention_ratio));
+    retained = std::max<std::size_t>(1, retained);
+    if (config.max_tokens > 0) {
+        retained = std::min(retained, config.max_tokens);
+    }
+    retained = std::min(retained, candidates.size());
+
+    VisualTokenProjection projection;
+    projection.embedding_dimension = config.embedding_dimension;
+    projection.source_patch_count = candidates.size();
+    projection.retained_token_count = retained;
+    projection.patch_y.resize(retained);
+    projection.patch_x.resize(retained);
+    projection.importance.resize(retained);
+    projection.embeddings.resize(retained * config.embedding_dimension);
+
+    constexpr std::array<std::size_t, 6> kFeatureGateIndex = {1, 2, 3, 0, 5, 4};
+    for (std::size_t token = 0; token < retained; ++token) {
+        const Candidate& candidate = candidates[token];
+        projection.patch_y[token] = candidate.patch_y;
+        projection.patch_x[token] = candidate.patch_x;
+        projection.importance[token] = candidate.importance;
+        float square_sum = 0.0f;
+        for (std::size_t dimension = 0; dimension < config.embedding_dimension; ++dimension) {
+            const float phase = static_cast<float>(dimension + 1) * 0.013f +
+                                static_cast<float>(candidate.patch_x + 1) * 0.071f +
+                                static_cast<float>(candidate.patch_y + 1) * 0.113f;
+            float value = 0.0f;
+            for (std::size_t channel = 0; channel < candidate.features.size(); ++channel) {
+                const float frequency = static_cast<float>(channel + 1) * 0.37f;
+                const float basis = (dimension + channel) % 2 == 0
+                    ? std::sin(phase * frequency)
+                    : std::cos(phase * frequency);
+                value += candidate.features[channel] * gate.weights[kFeatureGateIndex[channel]] * basis;
+            }
+            value += candidate.importance * 0.05f;
+            projection.embeddings[token * config.embedding_dimension + dimension] = value;
+            square_sum += value * value;
+        }
+        const float inverse_rms = 1.0f / std::sqrt(square_sum / static_cast<float>(config.embedding_dimension) + 1.0e-6f);
+        for (std::size_t dimension = 0; dimension < config.embedding_dimension; ++dimension) {
+            projection.embeddings[token * config.embedding_dimension + dimension] *= inverse_rms;
+        }
+    }
+    return projection;
 }
 
 SemanticAttentionGate::SemanticAttentionGate() {
