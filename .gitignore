@@ -34,6 +34,7 @@ Training/t21_openimages_metadata_fragment.csv
 Training/t21_openimages_metadata_fragment.csv.headers.txt
 Training/t21_openimages_review_queue.json
 Training/t21_openimages_review_queue_audited.json
+Training/t22_source_page_review_log.json
 
 # Environment
 .env
