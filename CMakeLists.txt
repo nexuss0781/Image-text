@@ -9,6 +9,7 @@ set(CMAKE_POSITION_INDEPENDENT_CODE ON)
 option(ALVS_BUILD_PYTHON_MODULE "Build the pybind11 Python extension" ON)
 option(ALVS_BUILD_STAGE1_EVALUATION "Build the Stage 1 native evaluation harness" ON)
 option(ALVS_BUILD_STAGE2_EVALUATION "Build the Stage 2 native evaluation harness" ON)
+option(ALVS_BUILD_STAGE3_EVALUATION "Build the Stage 3 native evaluation harness" ON)
 
 add_library(alvs_core STATIC alvs_core.cpp)
 target_include_directories(alvs_core PUBLIC ${CMAKE_CURRENT_SOURCE_DIR})
@@ -17,6 +18,12 @@ target_compile_options(alvs_core PRIVATE
     $<$<CXX_COMPILER_ID:GNU,Clang>:-Wall;-Wextra;-Wpedantic>
     $<$<CXX_COMPILER_ID:MSVC>:/W4>
 )
+
+find_package(OpenMP QUIET)
+if(OpenMP_CXX_FOUND)
+    target_link_libraries(alvs_core PUBLIC OpenMP::OpenMP_CXX)
+    target_compile_definitions(alvs_core PUBLIC ALVS_HAS_OPENMP=1)
+endif()
 
 if(CMAKE_BUILD_TYPE MATCHES "Release|RelWithDebInfo")
     if(MSVC)
@@ -81,5 +88,26 @@ if(ALVS_BUILD_STAGE2_EVALUATION)
     include(CTest)
     if(BUILD_TESTING)
         add_test(NAME stage2_native_evaluation COMMAND stage2_evaluation --quick)
+    endif()
+endif()
+
+if(ALVS_BUILD_STAGE3_EVALUATION)
+    add_executable(stage3_evaluation stage3_evaluation.cpp)
+    target_link_libraries(stage3_evaluation PRIVATE alvs_core)
+    target_compile_options(stage3_evaluation PRIVATE
+        $<$<CXX_COMPILER_ID:GNU,Clang>:-Wall;-Wextra;-Wpedantic>
+        $<$<CXX_COMPILER_ID:MSVC>:/W4>
+    )
+    if(CMAKE_BUILD_TYPE MATCHES "Release|RelWithDebInfo")
+        if(MSVC)
+            target_compile_options(stage3_evaluation PRIVATE /O2)
+        else()
+            target_compile_options(stage3_evaluation PRIVATE -O3 -march=native)
+        endif()
+    endif()
+
+    include(CTest)
+    if(BUILD_TESTING)
+        add_test(NAME stage3_native_evaluation COMMAND stage3_evaluation --quick)
     endif()
 endif()

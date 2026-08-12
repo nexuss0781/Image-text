@@ -9,6 +9,10 @@
 #include <immintrin.h>
 #endif
 
+#ifdef ALVS_HAS_OPENMP
+#include <omp.h>
+#endif
+
 #include <cstring>
 #include <limits>
 
@@ -562,6 +566,54 @@ void Atomizer::atomizeInterleaved(const float* color_interleaved,
     computeFlowInterleaved(color_interleaved, width, height, flow_x_out, flow_y_out);
 }
 
+void Atomizer::atomizeAcceleratedInterleaved(const float* color_interleaved,
+                                             std::size_t width,
+                                             std::size_t height,
+                                             float* energy_out,
+                                             float* flow_x_out,
+                                             float* flow_y_out,
+                                             ExecutionReport& report) const {
+    std::size_t pixel_count = 0;
+    if (!checkedPixelCount(width, height, pixel_count)) {
+        throw std::overflow_error("Image dimensions exceed supported tensor size");
+    }
+    if (pixel_count == 0) {
+        report = ExecutionReport{};
+        report.backend = parallelAvailable() ? "cpu-openmp-avx" : "cpu-reference";
+        report.worker_threads = availableWorkerThreads();
+        report.simd_enabled = simdAvailable();
+        report.parallel_enabled = parallelAvailable();
+        return;
+    }
+    if (color_interleaved == nullptr || energy_out == nullptr || flow_x_out == nullptr || flow_y_out == nullptr) {
+        throw std::invalid_argument("Accelerated atomizer requires non-null input and output buffers");
+    }
+
+#ifdef ALVS_HAS_OPENMP
+    if (height > 1 && parallelAvailable()) {
+        #pragma omp parallel for schedule(static)
+        for (std::ptrdiff_t row = 0; row < static_cast<std::ptrdiff_t>(height); ++row) {
+            const std::size_t y = static_cast<std::size_t>(row);
+            computeEnergyInterleaved(color_interleaved + y * width * 3, energy_out + y * width, width);
+        }
+        computeFlowInterleavedParallel(color_interleaved, width, height, flow_x_out, flow_y_out);
+        report.backend = simdAvailable() ? "cpu-openmp-avx" : "cpu-openmp-scalar";
+        report.worker_threads = static_cast<std::size_t>(omp_get_max_threads());
+        report.simd_enabled = simdAvailable();
+        report.parallel_enabled = true;
+        report.gpu_available = false;
+        return;
+    }
+#endif
+
+    atomizeInterleaved(color_interleaved, width, height, energy_out, flow_x_out, flow_y_out);
+    report.backend = simdAvailable() ? "cpu-avx-reference" : "cpu-reference";
+    report.worker_threads = 1;
+    report.simd_enabled = simdAvailable();
+    report.parallel_enabled = false;
+    report.gpu_available = false;
+}
+
 void Atomizer::computeEnergyInterleaved(const float* color_interleaved,
                                         float* energy_out,
                                         std::size_t pixel_count) const {
@@ -616,6 +668,66 @@ void Atomizer::computeFlowInterleaved(const float* color_interleaved,
             }
         }
     }
+}
+
+void Atomizer::computeFlowInterleavedParallel(const float* color_interleaved,
+                                              std::size_t width,
+                                              std::size_t height,
+                                              float* flow_x_out,
+                                              float* flow_y_out) const {
+#ifndef ALVS_HAS_OPENMP
+    computeFlowInterleaved(color_interleaved, width, height, flow_x_out, flow_y_out);
+    return;
+#else
+    auto intensity = [color_interleaved](std::size_t index) noexcept {
+        const std::size_t rgb = index * 3;
+        return (color_interleaved[rgb] + color_interleaved[rgb + 1] + color_interleaved[rgb + 2]) / 3.0f;
+    };
+
+    #pragma omp parallel for schedule(static)
+    for (std::ptrdiff_t row = 0; row < static_cast<std::ptrdiff_t>(height); ++row) {
+        const std::size_t y = static_cast<std::size_t>(row);
+        for (std::size_t x = 0; x < width; ++x) {
+            const std::size_t index = y * width + x;
+            const float center = intensity(index);
+            if (width == 1) {
+                flow_x_out[index] = 0.0f;
+            } else if (x == 0) {
+                flow_x_out[index] = intensity(index + 1) - center;
+            } else if (x + 1 == width) {
+                flow_x_out[index] = center - intensity(index - 1);
+            } else {
+                flow_x_out[index] = (intensity(index + 1) - intensity(index - 1)) * 0.5f;
+            }
+
+            if (height == 1) {
+                flow_y_out[index] = 0.0f;
+            } else if (y == 0) {
+                flow_y_out[index] = intensity(index + width) - center;
+            } else if (y + 1 == height) {
+                flow_y_out[index] = center - intensity(index - width);
+            } else {
+                flow_y_out[index] = (intensity(index + width) - intensity(index - width)) * 0.5f;
+            }
+        }
+    }
+#endif
+}
+
+bool Atomizer::parallelAvailable() const noexcept {
+#ifdef ALVS_HAS_OPENMP
+    return omp_get_max_threads() > 1;
+#else
+    return false;
+#endif
+}
+
+std::size_t Atomizer::availableWorkerThreads() const noexcept {
+#ifdef ALVS_HAS_OPENMP
+    return static_cast<std::size_t>(omp_get_max_threads());
+#else
+    return 1;
+#endif
 }
 
 bool Atomizer::simdAvailable() const noexcept {

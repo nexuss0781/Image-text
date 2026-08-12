@@ -98,6 +98,43 @@ PYBIND11_MODULE(alvs_cpp, m) {
             sized conversion or copying. Non-float32 or non-contiguous arrays
             are rejected rather than silently copied.
         )pbdoc")
+        .def("atomize_accelerated_numpy", [](const alvs::Atomizer& self, const py::array& color_array) {
+            const py::buffer_info color = color_array.request();
+            requireColorShape(color_array, color);
+            const py::ssize_t height = color.shape[0];
+            const py::ssize_t width = color.shape[1];
+            auto energy = py::array_t<float>({height, width});
+            auto flow_x = py::array_t<float>({height, width});
+            auto flow_y = py::array_t<float>({height, width});
+            const auto energy_info = energy.request();
+            const auto flow_x_info = flow_x.request();
+            const auto flow_y_info = flow_y.request();
+            alvs::ExecutionReport report;
+            {
+                py::gil_scoped_release release;
+                self.atomizeAcceleratedInterleaved(static_cast<const float*>(color.ptr),
+                                                   static_cast<std::size_t>(width),
+                                                   static_cast<std::size_t>(height),
+                                                   static_cast<float*>(energy_info.ptr),
+                                                   static_cast<float*>(flow_x_info.ptr),
+                                                   static_cast<float*>(flow_y_info.ptr), report);
+            }
+            py::dict result;
+            result["energy"] = energy;
+            result["flow_x"] = flow_x;
+            result["flow_y"] = flow_y;
+            result["backend"] = report.backend;
+            result["worker_threads"] = report.worker_threads;
+            result["simd_enabled"] = report.simd_enabled;
+            result["parallel_enabled"] = report.parallel_enabled;
+            result["gpu_available"] = report.gpu_available;
+            return result;
+        }, py::arg("color_array"),
+        R"pbdoc(
+            Run the Stage 3 hardware-aware dispatch path over a C-contiguous
+            HxWx3 float32 tensor. The returned backend metadata identifies
+            CPU parallel, CPU reference, or future GPU execution explicitly.
+        )pbdoc")
         .def("atomize_multiscale_numpy", [](const alvs::Atomizer& self,
                                              const py::array& color_array,
                                              std::size_t max_levels) {

@@ -1,0 +1,9 @@
+AGI-VS Stage 3 Native Evaluation Harness
+Mode: full
+
+[PASS] TC-3.1 — maximum reference deviation=0.000000; threshold=0.000001; backend=cpu-openmp-avx; workers=6
+[PASS] TC-3.2 — repeat-run deviation=0.000000; backend=cpu-openmp-avx
+[PASS] TC-3.3 — parallel_available=true; workers=6; SIMD=AVX-512F; CUDA runtime unavailable on validation host
+[PASS] TC-3.4 — 1920x1080; reference=13.810990 ms; dispatched=4.291610 ms; speedup=3.218137x; throughput=233.012785 FPS; backend=cpu-openmp-avx
+
+Stage 3 native harness: PASS

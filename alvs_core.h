@@ -90,6 +90,14 @@ struct SemanticGateFeatures {
     std::array<float, 4> values{1.0f, 0.0f, 0.0f, 0.0f};
 };
 
+struct ExecutionReport {
+    std::string backend{"cpu-reference"};
+    std::size_t worker_threads{1};
+    bool simd_enabled{false};
+    bool parallel_enabled{false};
+    bool gpu_available{false};
+};
+
 struct SemanticGateOutput {
     // RGB, Energy, Flow-X, Flow-Y, Wavelet details, Wavelet approximation.
     std::array<float, 6> weights{1.0f / 6.0f, 1.0f / 6.0f, 1.0f / 6.0f,
@@ -200,6 +208,22 @@ public:
                             float* flow_x_out,
                             float* flow_y_out) const;
 
+    /**
+     * Stage 3 parallel CPU dispatch. It preserves the reference numerical
+     * contract and reports the selected backend; GPU availability is reported
+     * explicitly rather than silently simulated.
+     */
+    void atomizeAcceleratedInterleaved(const float* color_interleaved,
+                                      std::size_t width,
+                                      std::size_t height,
+                                      float* energy_out,
+                                      float* flow_x_out,
+                                      float* flow_y_out,
+                                      ExecutionReport& report) const;
+
+    [[nodiscard]] bool parallelAvailable() const noexcept;
+    [[nodiscard]] std::size_t availableWorkerThreads() const noexcept;
+
     // Computes Rec. 709 energy values from tightly packed RGB float32 pixels.
     void computeEnergyInterleaved(const float* color_interleaved,
                                   float* energy_out,
@@ -221,6 +245,11 @@ private:
                                 std::size_t height,
                                 float* flow_x_out,
                                 float* flow_y_out) const;
+    void computeFlowInterleavedParallel(const float* color_interleaved,
+                                        std::size_t width,
+                                        std::size_t height,
+                                        float* flow_x_out,
+                                        float* flow_y_out) const;
 };
 
 class Synthesizer {

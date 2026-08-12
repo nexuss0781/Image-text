@@ -1,0 +1,32 @@
+{
+  "harness": "AGI-VS Stage 3 Python Dispatch Evaluation",
+  "input_shape": [
+    1080,
+    1920,
+    3
+  ],
+  "tc_3_python_equivalence": {
+    "maximum_abs_error": 0.0,
+    "threshold": 1e-06,
+    "pass": true
+  },
+  "tc_3_python_direct_input": {
+    "pointer_matches": true,
+    "binding_declares_no_input_copy": true,
+    "input_unchanged": true,
+    "pass": true
+  },
+  "tc_3_python_dispatch": {
+    "backend": "cpu-openmp-avx",
+    "worker_threads": 6,
+    "simd_enabled": true,
+    "parallel_enabled": true,
+    "gpu_available": false,
+    "median_dispatch_ms": 6.245148,
+    "pass": true
+  },
+  "tc_3_python_layout_contract": {
+    "pass": true
+  },
+  "overall_pass": true
+}
