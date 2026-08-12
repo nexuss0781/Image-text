@@ -1,0 +1,23 @@
+==5982== Memcheck, a memory error detector
+==5982== Copyright (C) 2002-2022, and GNU GPL'd, by Julian Seward et al.
+==5982== Using Valgrind-3.22.0 and LibVEX; rerun with -h for copyright info
+==5982== Command: ./build-valgrind/stage2_evaluation
+==5982== 
+AGI-VS Stage 2 Native Evaluation Harness
+
+[PASS] TC-2.1 — minimum energy-layer reconstruction PSNR=150.965958 dB; threshold=58.000000 dB
+[PASS] TC-2.2 — initial loss=1.670745; final loss=1.598994; max gradient L2=0.585269; threshold=10.000000
+[PASS] TC-2.3 — Haar basis max cross-correlation=0.000000; max norm error=0.000000; threshold=0.000100
+[PASS] TC-2.4 — levels=2; weight sum=1.000000; complexity=0.293491; normalized entropy=0.998367
+[PASS] TC-2.5 — direct RGB input unchanged; Energy/Flow PSNRs=inf/inf/inf dB; levels=2
+
+Stage 2 native harness: PASS
+==5982== 
+==5982== HEAP SUMMARY:
+==5982==     in use at exit: 0 bytes in 0 blocks
+==5982==   total heap usage: 187 allocs, 187 frees, 171,840,739 bytes allocated
+==5982== 
+==5982== All heap blocks were freed -- no leaks are possible
+==5982== 
+==5982== For lists of detected and suppressed errors, rerun with: -s
+==5982== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 0 from 0)

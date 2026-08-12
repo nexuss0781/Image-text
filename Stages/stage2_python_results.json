@@ -1,0 +1,56 @@
+{
+  "harness": "AGI-VS Stage 2 Python API Evaluation",
+  "input_shape": [
+    193,
+    257,
+    3
+  ],
+  "tc_2_python_direct_input": {
+    "pointer_matches": true,
+    "binding_declares_no_input_copy": true,
+    "input_unchanged": true,
+    "pass": true
+  },
+  "tc_2_python_numerical": {
+    "maximum_energy_error": 1.1920928955078125e-07,
+    "threshold": 1e-06,
+    "pass": true
+  },
+  "tc_2_python_pyramid": {
+    "level_count": 2,
+    "observed_level_shapes": [
+      [
+        97,
+        129
+      ],
+      [
+        49,
+        65
+      ]
+    ],
+    "expected_level_shapes": [
+      [
+        97,
+        129
+      ],
+      [
+        49,
+        65
+      ]
+    ],
+    "all_detail_band_shapes_valid": true,
+    "pass": true
+  },
+  "tc_2_python_gate": {
+    "feature_count": 4,
+    "weight_count": 6,
+    "weight_sum": 1.0,
+    "complexity": 0.758615255355835,
+    "entropy": 0.9492293000221252,
+    "pass": true
+  },
+  "tc_2_python_layout_contract": {
+    "pass": true
+  },
+  "overall_pass": true
+}
