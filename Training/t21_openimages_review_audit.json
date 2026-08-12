@@ -1,0 +1,28 @@
+{
+  "audit_status": "PASS_WITH_ALL_RECORDS_QUARANTINED",
+  "duplicate_record_id_count": 0,
+  "embeddings_generated": 0,
+  "hard_limit_pass": true,
+  "media_downloaded": 0,
+  "missing_required_metadata_fields": {},
+  "proposed_split_counts": {
+    "proposed_development": 62,
+    "proposed_held_out": 59,
+    "proposed_training": 589
+  },
+  "quarantined_records": 710,
+  "queue_record_count": 710,
+  "retained_training_records": 0,
+  "source_row_licence_values": {
+    "https://creativecommons.org/licenses/by/2.0/": 710
+  },
+  "training_eligible_records": 0,
+  "unique_record_id_count": 710,
+  "unresolved_controls": [
+    "per-record source and licence verification",
+    "privacy and sensitive-content review",
+    "rights-caveat review",
+    "perceptual and text similarity deduplication",
+    "removal procedure confirmation"
+  ]
+}
