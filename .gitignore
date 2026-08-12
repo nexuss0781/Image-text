@@ -29,6 +29,12 @@ Makefile
 Stages/stage5_production_validation_console.txt
 Stages/stage5_release_manifest.json
 
+# Bounded source-review inputs and raw per-record manifests
+Training/t21_openimages_metadata_fragment.csv
+Training/t21_openimages_metadata_fragment.csv.headers.txt
+Training/t21_openimages_review_queue.json
+Training/t21_openimages_review_queue_audited.json
+
 # Environment
 .env
 .env.local
