@@ -24,3 +24,9 @@
 
 [7]: https://cocodataset.org/ "COCO — Common Objects in Context"
 [8]: https://github.com/mlfoundations/datacomp "DataComp — Dataset Design Benchmark"
+
+| Open Images V7 licensing section | The official page states Google LLC licenses annotations under CC BY 4.0 and lists images as CC BY 2.0, while expressly warning that it makes no representation or warranty about each image’s licence status and advising users to verify each image. | The T2 proposal may use Open Images only as a **manually verified, finite candidate list**; bulk acquisition, a blanket licence assumption, or unverified item retention is disallowed. |
+| Creative Commons BY 2.0 deed | The deed permits sharing/adaptation subject to attribution, licence-link, and change-indication conditions, while noting no warranties and that privacy, publicity, and moral rights may require additional permissions. | A per-item attribution/provenance record and review for additional rights are mandatory for any candidate item; licence visibility does not eliminate privacy or publicity review. |
+
+[9]: https://storage.googleapis.com/openimages/web/factsfigures_v7.html#licenses "Open Images V7 — Licences"
+[10]: https://creativecommons.org/licenses/by/2.0/ "Creative Commons Attribution 2.0 Generic"

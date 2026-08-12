@@ -1,0 +1,48 @@
+{
+  "schema_version": "1.0",
+  "manifest_status": "template_only — no candidate records populated and no content acquired",
+  "program": "AGI-VS T2 Pilot Acquisition Review",
+  "proposed_source": {
+    "name": "Open Images V7",
+    "canonical_description_url": "https://storage.googleapis.com/openimages/web/factsfigures_v7.html",
+    "licence_evidence_url": "https://storage.googleapis.com/openimages/web/factsfigures_v7.html#licenses",
+    "source_status": "conditional candidate only"
+  },
+  "hard_limits": {
+    "maximum_review_queue_records": 1000,
+    "maximum_retained_training_records_before_later_approval": 0,
+    "bulk_download_permitted": false,
+    "web_media_reconstruction_permitted": false,
+    "embedding_generation_permitted": false,
+    "model_training_permitted": false
+  },
+  "required_record_fields": [
+    "source_record_id",
+    "canonical_source_url",
+    "source_creator_or_attribution_party",
+    "title_if_supplied",
+    "item_level_licence_evidence_url",
+    "licence_evidence_capture_time",
+    "annotation_type_and_version",
+    "annotation_licence_evidence_url",
+    "content_privacy_safety_review_status",
+    "rights_caveat_review_status",
+    "deduplication_review_status",
+    "split_assignment",
+    "removal_contact_or_source_procedure",
+    "retention_expiry_or_review_date",
+    "manifest_entry_checksum"
+  ],
+  "record_acceptance_rule": "Every required field must be populated and pass the documented human and technical review. Any missing, ambiguous, unsafe, private, or unverified record is quarantined and excluded from all model-related use.",
+  "candidate_records": [],
+  "approval_requirements_before_population": [
+    "owner approval of named source package",
+    "current terms and licence evidence review",
+    "attribution procedure approval",
+    "privacy and safety filter specification approval",
+    "manual review and quarantine protocol approval",
+    "retention and removal workflow approval",
+    "split-isolation and deduplication plan approval",
+    "storage and access-control plan approval"
+  ]
+}
