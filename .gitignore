@@ -9,6 +9,7 @@ __pycache__/
 # C++/CMake
 build/
 build-valgrind/
+build-production/
 CMakeFiles/
 CMakeCache.txt
 cmake_install.cmake
@@ -25,6 +26,8 @@ Makefile
 # Logs and temp files
 *.log
 *.tmp
+Stages/stage5_production_validation_console.txt
+Stages/stage5_release_manifest.json
 
 # Environment
 .env

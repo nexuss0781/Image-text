@@ -1,0 +1,15 @@
+.git
+build
+build-valgrind
+__pycache__
+*.pyc
+*.pyo
+*.so
+*.a
+*.o
+*.log
+*.tmp
+Stages/*_console_results.txt
+Stages/*_valgrind_results.txt
+Stages/*_native_full_results.txt
+Stages/*_python_results.json
