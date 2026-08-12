@@ -13,6 +13,8 @@
     "evaluation_splits_must_be_isolated": true,
     "deduplication_required_before_training": true,
     "web_index_reconstruction_requires_separate_approval": true,
+    "external_source_model_training_authorized": false,
+    "controlled_project_owned_pilot_training_completed": true,
     "model_training_authorized": false
   },
   "candidates": [
@@ -50,12 +52,12 @@
       "id": "art_institute_chicago_cc0_allow_list",
       "class": "first-party CC0 public-domain collection",
       "source_url": "https://www.artic.edu/collection-information/open-access/open-access-images",
-      "candidate_status": "no_download_source_specific_review_candidate",
-      "proposed_role": "narrow public-domain pipeline and governance validation pilot; not a claim of broad real-world visual coverage",
+      "candidate_status": "source_review_passed_delivery_blocked_no_media_retained",
+      "proposed_role": "metadata-reviewed public-domain fallback; official image delivery returned a Cloudflare HTTP 403 challenge in the validation environment, so no source media was retained",
       "modality": ["image", "object metadata", "attribution/caption metadata"],
       "licence_or_terms_status": "only assets explicitly carrying the Art Institute's CC0 Public Domain Designation may be considered; user responsibility for any needed third-party permissions remains",
       "provenance_confidence": "high_at_provider_policy_level; asset-level rights and metadata snapshots required",
-      "training_eligibility": "blocked_pending_finite_CC0_allow_list_privacy_safety_review_and_T2_4_source_specific_review",
+      "training_eligibility": "blocked_pending_delivery_access_review; zero source images were retained or used for training",
       "readiness_potential_score": 84,
       "risks": ["third-party rights", "artwork-domain bias", "historical sensitive content", "limited real-world task coverage", "metadata quality"],
       "required_evidence": ["explicit-item CC0 allow-list", "item rights snapshots", "attribution plan", "privacy and safety screen", "removal/retention record", "deduplication and split plan"],
@@ -90,6 +92,21 @@
       "risks": ["provider term changes", "personal likenesses", "brands and protected marks", "unsafe prompts", "synthetic artifacts", "label leakage", "limited real-world validity"],
       "required_evidence": ["provider/plan terms snapshot", "generation manifest", "content controls", "quality and duplicate review", "held-out prompt-family design", "synthetic-use limitation statement"],
       "source_evidence_urls": ["https://www.adobe.com/legal/licenses-terms/adobe-gen-ai-user-guidelines.html"]
+    },
+    {
+      "id": "project_owned_deterministic_visual_scenes",
+      "class": "project-owned procedural visual scene corpus",
+      "source_url": null,
+      "candidate_status": "controlled_pilot_completed",
+      "proposed_role": "governance, frozen-Stage-4 interface, adapter-training, and reproducibility validation on a deliberately constrained visual-relation task",
+      "modality": ["project-owned RGB image", "deterministic caption", "scene specification", "structured attribute annotation"],
+      "licence_or_terms_status": "project-owned output from versioned repository code; no external media or third-party asset licence used",
+      "provenance_confidence": "high — source code, seed, scene specification, image checksum, and split are retained for every record",
+      "training_eligibility": "completed_for_T2_5_controlled_pilot_only; not approval for broader real-world, external, or production training",
+      "readiness_potential_score": 100,
+      "risks": ["synthetic-domain limitation", "procedural bias", "non-transfer to photographs", "non-transfer to open-world language tasks"],
+      "required_evidence": ["generator code", "corpus manifest", "corpus audit", "frozen split record", "adapter report", "checkpoint hash", "limitations statement"],
+      "source_evidence_urls": ["Training/T2_5_PROJECT_OWNED_CORPUS_SELECTION.md", "Training/T2_5_CONTROLLED_PILOT_RESULTS.md"]
     },
     {
       "id": "open_images_v7",
@@ -164,5 +181,5 @@
       "source_evidence_urls": ["https://commoncrawl.org/"]
     }
   ],
-  "next_required_gate": "T2.4 source-specific retained-pilot review: owner selects a named source/path; all rights, privacy/safety, provenance, removal, split, and reproducibility evidence must be reviewed before a distinct pilot-acquisition gate can be requested. T3 training remains unauthorized."
+  "next_required_gate": "T2.5 controlled project-owned pilot is complete. Any broader external-source or real-world training proposal requires a named delivery-accessible source, fresh item-level rights/provenance/privacy/safety/removal review, a retained-pilot approval, and a distinct T3 training authorization."
 }

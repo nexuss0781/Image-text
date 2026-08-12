@@ -1,0 +1,170 @@
+{
+  "checkpoint": {
+    "path": "Training/artifacts/t2_5_adapter_checkpoint.npz",
+    "sha256": "8a65f15ba45d6d4bb8b62a6c82bc9543bc43685d1173e3823b3d43e67c5c4374"
+  },
+  "code": {
+    "module_dir": "build-production",
+    "platform": "Linux-6.1.102-x86_64-with-glibc2.39",
+    "python": "3.12.3 (main, Jun 19 2026, 12:46:00) [GCC 13.3.0]",
+    "runner": "scripts/run_t25_adapter_baseline.py"
+  },
+  "configuration": {
+    "B0_attribute_threshold": -0.25,
+    "B1_attribute_threshold": -0.25,
+    "attribute_threshold_policy": "global threshold selected on development data only and frozen for held-out evaluation",
+    "development_alphas": [
+      0.01,
+      0.1,
+      1.0,
+      10.0,
+      100.0
+    ],
+    "embedding_dimension": 4096,
+    "fitting": "closed-form dual ridge regression on train split only",
+    "seed": 20260812,
+    "selected_alpha": 0.1,
+    "stage4_max_levels": 2,
+    "stage4_max_tokens": 32,
+    "stage4_patch_size": 16,
+    "stage4_retention_ratio": 0.25,
+    "text_target_dimension": 52
+  },
+  "corpus_audit_status": "pass",
+  "data": {
+    "feature_cache_sha256": "29de10c74cf109cc387e140b3e158af71e93534a0f608bb146ce448bb52f80df",
+    "feature_shape": [
+      384,
+      4096
+    ],
+    "held_out_used_for_fit": false,
+    "split_counts": {
+      "dev": 41,
+      "held_out": 56,
+      "train": 287
+    }
+  },
+  "development": {
+    "B0": {
+      "attribute_f1": 0.7768215720022948,
+      "attribute_slot_accuracy": 0.3023255813953488,
+      "mean_reciprocal_rank": 0.10290183126926422,
+      "recall_at_1": 0.024390243902439025,
+      "recall_at_5": 0.07317073170731707,
+      "relation_accuracy": 0.3333333333333333
+    },
+    "B1": {
+      "attribute_f1": 0.9811230585424133,
+      "attribute_slot_accuracy": 0.39825581395348836,
+      "mean_reciprocal_rank": 0.2994896173477173,
+      "recall_at_1": 0.12195121951219512,
+      "recall_at_5": 0.43902439024390244,
+      "relation_accuracy": 0.43333333333333335
+    },
+    "ridge_candidates": [
+      {
+        "alpha": 0.01,
+        "attribute_f1": 0.7098335854765507,
+        "attribute_slot_accuracy": 0.2761627906976744,
+        "attribute_threshold": -0.25,
+        "mean_reciprocal_rank": 0.1169005036354065,
+        "recall_at_1": 0.024390243902439025,
+        "recall_at_5": 0.14634146341463414,
+        "relation_accuracy": 0.26666666666666666
+      },
+      {
+        "alpha": 0.1,
+        "attribute_f1": 0.9811230585424133,
+        "attribute_slot_accuracy": 0.39825581395348836,
+        "attribute_threshold": -0.25,
+        "mean_reciprocal_rank": 0.2994896173477173,
+        "recall_at_1": 0.12195121951219512,
+        "recall_at_5": 0.43902439024390244,
+        "relation_accuracy": 0.43333333333333335
+      },
+      {
+        "alpha": 1.0,
+        "attribute_f1": 0.982824427480916,
+        "attribute_slot_accuracy": 0.39244186046511625,
+        "attribute_threshold": -0.25,
+        "mean_reciprocal_rank": 0.29414916038513184,
+        "recall_at_1": 0.12195121951219512,
+        "recall_at_5": 0.43902439024390244,
+        "relation_accuracy": 0.43333333333333335
+      },
+      {
+        "alpha": 10.0,
+        "attribute_f1": 0.9886148007590133,
+        "attribute_slot_accuracy": 0.39825581395348836,
+        "attribute_threshold": -0.25,
+        "mean_reciprocal_rank": 0.28460824489593506,
+        "recall_at_1": 0.12195121951219512,
+        "recall_at_5": 0.43902439024390244,
+        "relation_accuracy": 0.4666666666666667
+      },
+      {
+        "alpha": 100.0,
+        "attribute_f1": 0.9922004254313401,
+        "attribute_slot_accuracy": 0.38953488372093026,
+        "attribute_threshold": -0.25,
+        "mean_reciprocal_rank": 0.24580636620521545,
+        "recall_at_1": 0.07317073170731707,
+        "recall_at_5": 0.4146341463414634,
+        "relation_accuracy": 0.48333333333333334
+      }
+    ]
+  },
+  "experiment": "T2.5 project-owned controlled visual-to-structured-text adapter",
+  "held_out": {
+    "B0": {
+      "attribute_f1": 0.7658402203856749,
+      "attribute_slot_accuracy": 0.24735729386892177,
+      "mean_reciprocal_rank": 0.07943681627511978,
+      "recall_at_1": 0.03571428571428571,
+      "recall_at_5": 0.05357142857142857,
+      "relation_accuracy": 0.3132530120481928
+    },
+    "B1": {
+      "attribute_f1": 0.9828850855745721,
+      "attribute_slot_accuracy": 0.41014799154334036,
+      "mean_reciprocal_rank": 0.29952725768089294,
+      "recall_at_1": 0.17857142857142858,
+      "recall_at_5": 0.42857142857142855,
+      "relation_accuracy": 0.5060240963855421
+    },
+    "delta_B1_minus_B0": {
+      "attribute_f1": 0.2170448651888972,
+      "attribute_slot_accuracy": 0.1627906976744186,
+      "mean_reciprocal_rank": 0.22009044140577316,
+      "recall_at_1": 0.14285714285714285,
+      "recall_at_5": 0.375,
+      "relation_accuracy": 0.19277108433734935
+    }
+  },
+  "limitations": [
+    "The text target is a local structured attribute embedding, not a pretrained language-model embedding.",
+    "The corpus contains only deterministic geometric scenes and cannot establish real-world visual or language generalization.",
+    "The experiment measures a frozen Stage 4 interface plus a closed-form adapter; it is not end-to-end foundation-model training."
+  ],
+  "manifest_sha256": "c0d0f00ca999eb7f7aa173ad982bdf5ae07eef269140b4bf43f95bc3af4666c0",
+  "runtime": {
+    "feature_extraction_seconds": 4.149740077962633
+  },
+  "stage4_interface": {
+    "backend": "AVX-512F",
+    "deterministic_repeated_first_sample": true,
+    "input_copied": false,
+    "retained_tokens": {
+      "max": 32,
+      "mean": 32.0,
+      "min": 32
+    },
+    "simd_available": true,
+    "source_patches": {
+      "max": 256,
+      "mean": 256.0,
+      "min": 256
+    }
+  },
+  "status": "pass"
+}

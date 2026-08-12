@@ -36,6 +36,11 @@ Training/t21_openimages_review_queue.json
 Training/t21_openimages_review_queue_audited.json
 Training/t22_source_page_review_log.json
 
+# Retained pilot media and local training outputs; manifests and audits remain tracked.
+Training/retained_pilot_media/
+Training/project_owned_pilot_media/
+Training/local_training_runs/
+
 # Environment
 .env
 .env.local

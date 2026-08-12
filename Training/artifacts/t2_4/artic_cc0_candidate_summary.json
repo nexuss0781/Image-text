@@ -1,0 +1,43 @@
+{
+  "created_utc": "2026-08-12T11:03:14+00:00",
+  "exclusion_counts": {
+    "duplicate_normalized_title": 47,
+    "metadata_safety_exclusion:battle": 2,
+    "metadata_safety_exclusion:blood": 1,
+    "metadata_safety_exclusion:body": 1,
+    "metadata_safety_exclusion:buddha": 3,
+    "metadata_safety_exclusion:christ": 27,
+    "metadata_safety_exclusion:church": 3,
+    "metadata_safety_exclusion:dead": 1,
+    "metadata_safety_exclusion:death": 3,
+    "metadata_safety_exclusion:execution": 1,
+    "metadata_safety_exclusion:figure": 110,
+    "metadata_safety_exclusion:human": 3,
+    "metadata_safety_exclusion:nude": 12,
+    "metadata_safety_exclusion:nudity": 1,
+    "metadata_safety_exclusion:people": 26,
+    "metadata_safety_exclusion:person": 9,
+    "metadata_safety_exclusion:portrait": 132,
+    "metadata_safety_exclusion:religion": 7,
+    "metadata_safety_exclusion:religious": 1,
+    "metadata_safety_exclusion:saint": 11,
+    "metadata_safety_exclusion:sword": 4,
+    "metadata_safety_exclusion:violence": 9,
+    "metadata_safety_exclusion:war": 42,
+    "metadata_safety_exclusion:weapon": 7,
+    "missing_department": 1,
+    "missing_image_reference": 1,
+    "not_selected_by_diversity_cap": 335
+  },
+  "manifest_path": "Training/artifacts/t2_4/artic_cc0_candidate_manifest.json",
+  "manifest_sha256": "ca99ae3cfe787ea5f8283750d1f5efc0c8af23d836af70effe68ce9056624083",
+  "media_requested": false,
+  "selected_classification_categories": 45,
+  "selected_records": 200,
+  "source_records_reviewed": 1000,
+  "split_counts": {
+    "dev": 15,
+    "held_out": 44,
+    "train": 141
+  }
+}

@@ -1,0 +1,13 @@
+{
+  "contact_sheet": "Training/artifacts/t2_5_owned_scene_preview.png",
+  "external_media_downloaded": false,
+  "manifest_path": "Training/artifacts/t2_5_owned_scene_manifest.json",
+  "manifest_sha256": "c0d0f00ca999eb7f7aa173ad982bdf5ae07eef269140b4bf43f95bc3af4666c0",
+  "record_count": 384,
+  "split_counts": {
+    "dev": 41,
+    "held_out": 56,
+    "train": 287
+  },
+  "unique_caption_count": 384
+}

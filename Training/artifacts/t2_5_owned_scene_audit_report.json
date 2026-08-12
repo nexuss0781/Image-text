@@ -1,0 +1,19 @@
+{
+  "audit_name": "T2.5 project-owned visual-scene corpus audit",
+  "external_media_downloaded": false,
+  "hard_failures": [],
+  "manifest": "Training/artifacts/t2_5_owned_scene_manifest.json",
+  "manifest_sha256": "c0d0f00ca999eb7f7aa173ad982bdf5ae07eef269140b4bf43f95bc3af4666c0",
+  "record_count": 384,
+  "split_counts": {
+    "dev": 41,
+    "held_out": 56,
+    "train": 287
+  },
+  "status": "pass",
+  "training_permitted": true,
+  "unique_caption_count": 384,
+  "unique_image_checksum_count": 384,
+  "visual_preview_review": "pass \u2014 24-scene contact sheet checked for geometric, non-personal, non-sensitive content",
+  "warnings": []
+}
