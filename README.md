@@ -1,318 +1,285 @@
-# ⚛️ Atomic Logic Vision System (ALVS)
+# AGI Vision Substrate (AGI-VS)
 
 <div align="center">
 
-[![Python](https://img.shields.io/badge/Python-3.8+-blue?style=for-the-badge&logo=python)](https://www.python.org/)
-[![C++](https://img.shields.io/badge/C++-17-dodgerblue?style=for-the-badge&logo=cplusplus)](https://isocpp.org/)
-[![License](https://img.shields.io/badge/License-MIT-green?style=for-the-badge)](LICENSE)
-[![Status](https://img.shields.io/badge/Status-Production%20Ready-success?style=for-the-badge)]()
+[![C++](https://img.shields.io/badge/C%2B%2B-17-00599C?style=for-the-badge&logo=cplusplus&logoColor=white)](https://isocpp.org/)
+[![Python](https://img.shields.io/badge/Python-3.10%2B-3776AB?style=for-the-badge&logo=python&logoColor=white)](https://www.python.org/)
+[![CMake](https://img.shields.io/badge/CMake-3.16%2B-064F8C?style=for-the-badge&logo=cmake&logoColor=white)](https://cmake.org/)
+[![Validation](https://img.shields.io/badge/Validation-5%2F5%20native%20stages-2EA44F?style=for-the-badge)](Stages/)
 
-### Deconstructing Reality into Logic Atoms
+### High-performance visual signal processing for AGI-ready perception pipelines
 
-**High-performance hybrid image processing engine with C++ backend and Python interface**
-
-[Features](#-features) • [Installation](#-installation) • [Usage](#-usage) • [Architecture](#-architecture) • [Performance](#-performance)
+[Architecture](#architecture) · [Quick Start](#quick-start) · [Benchmarks](#benchmark-results) · [Real-World Proof](#real-world-observation-proof) · [Validation](#validation-and-reproducibility) · [Roadmap](#agi-integration-roadmap)
 
 </div>
 
 ---
 
-## 🌟 Overview
+## Vision
 
-The **Atomic Logic Vision System (ALVS)** is a production-grade image processing framework that transforms visual data into mathematical representations for advanced analysis and manipulation. By decomposing images into fundamental "logic atoms," ALVS enables sophisticated transformations grounded in computational physics.
+**AGI Vision Substrate (AGI-VS)** is a production-oriented C++ and Python visual-processing foundation that turns images into compact, deterministic, high-throughput visual signals. It is engineered as the perception layer that precedes semantic encoding, temporal integration, memory, language grounding, reasoning, and action in a broader AGI architecture.
 
-### Why ALVS?
+The substrate receives an RGB image or video frame, extracts energy and directional-flow signals, builds a multi-scale Haar-wavelet representation, applies semantic attention, and projects the result into a compact visual-token stream. The output is designed for efficient downstream consumption by learned encoders and AGI systems.
 
-- 🚀 **Hybrid Architecture**: Python ease-of-use with C++ performance
-- 🧮 **Mathematical Rigor**: True decomposition into Energy and Flow components
-- ⚡ **High Performance**: Optimized C++ core for computationally intensive operations
-- 🎯 **Lossless Processing**: Perfect reconstruction capabilities
-- 🔧 **Extensible**: Modular design for custom transformations
+> **Perception chain:** `image or video frame → visual substrate → structured visual tokens → semantic encoder → AGI memory, language, reasoning, and action`
+
+The repository contains the complete Stage 1–5 substrate, native and Python validation harnesses, production release tooling, an audited real-world observation proof, and an evidence-preserving data-governance workflow.
 
 ---
 
-## ✨ Features
+## Demonstrated System
 
-### Core Capabilities
-
-| Feature | Description |
-|---------|-------------|
-| **Atomic Decomposition** | Breaks images into RGB matrix + Energy (luminance) + Flow (gradient) layers |
-| **Lossless Reconstruction** | Perfect round-trip conversion proving mathematical fidelity |
-| **Flow Visualization** | Heatmap rendering of structural edges and textures |
-| **Energy Manipulation** | Selective brightness enhancement based on luminance thresholds |
-| **Quantum Inverse** | Intelligent color inversion preserving energy structure |
-| **Hybrid Backend** | Seamless switching between Python and C++ implementations |
-
-### Transformation Modes
-
-```bash
-# Perfect reconstruction (lossless)
-python main.py input.jpg output.png --mode reconstruct
-
-# Visualize image structure (edges/textures)
-python main.py input.jpg output.png --mode visualize_flow
-
-# Selective brightness enhancement
-python main.py input.jpg output.png --mode energy_boost
-
-# Smart color inversion
-python main.py input.jpg output.png --mode quantum_inverse
-```
+| Capability | Delivered implementation | Evidence |
+| :--- | :--- | :--- |
+| **Zero-copy visual ingress** | C-contiguous `float32` NumPy inputs enter the C++ pipeline without an input copy. | Address-matching probe and Python harness. |
+| **Atomic visual signals** | RGB, luminance energy, and horizontal/vertical directional-flow signals. | Stage 1 evaluation and real-world signal records. |
+| **Multi-scale structure** | Haar-wavelet pyramid with reversible structure analysis. | Stage 2 reconstruction and basis tests. |
+| **Attention control** | Trainable simplex-constrained semantic attention gate. | Stage 2 gate convergence validation. |
+| **High-throughput dispatch** | AVX-512F, AVX2, scalar fallback, and OpenMP CPU dispatch. | Stage 3 backend and throughput evaluation. |
+| **Visual tokenization** | Deterministic projection to compact 4,096-dimensional visual tokens. | Stage 4 token budget, RMS, and determinism checks. |
+| **Production validation** | Soak testing, latency characterization, release scripts, Docker recipe, and SHA-256 artifact manifest. | Stage 5 production harness and release workflow. |
+| **Real-world observation proof** | Eight rights-reviewed real images individually transformed into verified visual-token signatures. | [`Proofs/`](Proofs/) evidence package. |
 
 ---
 
-## 🏗️ Architecture
-
-### Three-Phase Pipeline
+## Architecture
 
 ```mermaid
-graph LR
-    A[📷 Input Image] --> B[👁️ Vision Loader]
-    B --> C[🧠 Atomizer]
-    C --> D[✋ Synthesizer]
-    D --> E[🖼️ Output Image]
-    
-    subgraph "Atomic Context"
-        C --> F[RGB Matrix]
-        C --> G[Energy Layer]
-        C --> H[Flow Layer]
-    end
+flowchart LR
+    A[Image or Video Frame] --> B[Zero-Copy RGB Ingress]
+    B --> C[Stage 1: Atomic Signals]
+    C --> D[Stage 2: Multi-Scale Wavelet Pyramid]
+    D --> E[Semantic Attention Gate]
+    E --> F[Stage 3: SIMD and OpenMP Dispatch]
+    F --> G[Stage 4: Visual Token Projector]
+    G --> H[Compact Visual Token Stream]
+    H --> I[Semantic Encoder]
+    I --> J[AGI Memory, Language, Reasoning, and Action]
+
+    C --- C1[Energy, Flow X, Flow Y]
+    D --- D1[Haar Levels and Gate Features]
+    G --- G1[Up to 32 Tokens × 4,096 Dimensions]
 ```
 
-### Component Breakdown
+### Stage-by-Stage Substrate
 
-| Component | Role | Implementation |
-|-----------|------|----------------|
-| **Vision Loader** | Image I/O & normalization | Python (PIL/Pillow) |
-| **Atomizer** | Mathematical decomposition | C++ Core + Python fallback |
-| **Synthesizer** | Logic-based transformations | Hybrid (C++ accelerated) |
-| **CLI Interface** | Command-line orchestration | Python |
-| **C++ Backend** | High-performance compute | Native extension (pybind11) |
+| Stage | Focus | Completed deliverables |
+| :--- | :--- | :--- |
+| **1** | Atomic visual substrate | Aligned tensor buffers, zero-copy NumPy contract, energy/flow extraction, AVX-512F path, allocation and boundary tests. |
+| **2** | Multi-scale visual structure | Haar-wavelet pyramid, reconstruction validation, semantic attention gate, direct interleaved multiscale API. |
+| **3** | Parallel execution | OpenMP CPU dispatch, AVX-512F/AVX2/scalar capability reporting, deterministic parallel execution. |
+| **4** | Compact visual representation | Deterministic visual-token projector, token-budget enforcement, RMS normalization, multimodal projection API. |
+| **5** | Production readiness | End-to-end soak harness, latency characterization, Docker recipe, validation script, and release integrity manifest. |
 
-### The Atomic Context
-
-The heart of ALVS is its multi-layered mathematical representation:
-
-1. **RGB Matrix**: Normalized float32 pixel values (0.0–1.0)
-2. **Energy Layer**: Luminance calculated using Rec. 709 standard
-   ```
-   Energy = 0.2126×R + 0.7152×G + 0.0722×B
-   ```
-3. **Flow Layer**: Gradient magnitude representing rate of color change
-   ```
-   Flow = √(∂²/∂x² + ∂²/∂y²)
-   ```
+The primary C++ interfaces are defined in [`alvs_core.h`](alvs_core.h), implemented in [`alvs_core.cpp`](alvs_core.cpp), and exposed to Python through [`bindings.cpp`](bindings.cpp).
 
 ---
 
-## 📦 Installation
+## Performance and Quality
+
+Performance is measured on the validation host described in the test artifacts: an Intel Xeon CPU with six logical workers and AVX-512F support. Measurements are workload- and host-specific and are retained with their corresponding validation harnesses.
+
+| Workload | Measured result | Validation artifact |
+| :--- | :--- | :--- |
+| **1080p accelerated visual dispatch** | **4.3 ms**, **233 FPS**, **3.2×** faster than the 13.8 ms reference path. | [Stage 3 evaluation](stage3_evaluation.cpp) |
+| **Visual-token projection** | **80 × 4,096** token representation with **75%** token reduction and maximum RMS error of **0.000018**. | [Stage 4 evaluation](stage4_evaluation.cpp) |
+| **End-to-end production soak** | **500 frames**, **0-byte RSS growth**, **12.999 ms** median pipeline latency. | [Stage 5 evaluation](stage5_evaluation.cpp) |
+| **Real-world observation proof** | **9.92–10.13 ms** median Stage 1–4 processing at standardized 512 × 512 inputs. | [Proof signal report](Proofs/signal_report.json) |
+
+The release configuration enables `-O3 -march=native` on supported GCC and Clang toolchains, while the build system automatically detects and enables OpenMP where available. The runtime reports the selected CPU execution backend truthfully, including GPU-unavailable status when no GPU backend is present.
+
+---
+
+## Real-World Observation Proof
+
+The [`Proofs/`](Proofs/) package demonstrates the frozen visual substrate against a curated set of real-world images: city skylines, animals, a house facade, a building facade, a natural landscape, and a vehicle. Each input has item-level rights evidence, a source record, a local checksum, a visual review, and an individual signal record.
+
+![AGI-VS real-world visual-signal diversity and latency](Proofs/signal_distance_and_latency.png)
+
+### What the Proof Records
+
+| Measurement | Recorded outcome |
+| :--- | :--- |
+| **Proof inputs** | Eight rights-reviewed CC0 or public-domain source items. |
+| **Per-image representation** | 1,024 source patches compressed to 32 retained tokens of 4,096 dimensions each. |
+| **Determinism** | Repeated projection maximum absolute difference: **0.0** for every proof image. |
+| **Signal separation** | All 28 image pairs produced non-identical mean-pooled Stage 4 signals; minimum cosine distance: **0.029985**. |
+| **Zero-copy integrity** | C-contiguous `float32` inputs, matching input addresses, and no input copy recorded. |
+| **Execution backend** | `AVX-512F` SIMD with `cpu-openmp-avx` accelerated dispatch and six workers on the validation host. |
+
+The complete human-readable account is available in [`Proofs/REAL_WORLD_OBSERVATION_RESULTS.md`](Proofs/REAL_WORLD_OBSERVATION_RESULTS.md). Machine-readable records are retained in [`Proofs/signal_report.json`](Proofs/signal_report.json), [`Proofs/acquisition_manifest.json`](Proofs/acquisition_manifest.json), and [`Proofs/signal_distance_matrix.csv`](Proofs/signal_distance_matrix.csv).
+
+---
+
+## Quick Start
 
 ### Prerequisites
 
-- **Python**: 3.8 or higher
-- **C++ Compiler**: GCC 7+ / Clang 5+ / MSVC 2017+
-- **CMake**: 3.10 or higher
-- **Dependencies**: NumPy, Pillow, pybind11
+| Dependency | Requirement |
+| :--- | :--- |
+| C++ toolchain | C++17-capable GCC, Clang, or MSVC compiler. |
+| CMake | Version 3.16 or newer. |
+| Python | Python 3.10 or newer. |
+| Python packages | `numpy`, `pybind11`, and `Pillow`. |
+| Optional acceleration | OpenMP-capable compiler and AVX-512F or AVX2-capable CPU. |
 
-### Quick Install
+### Build the Native Substrate
 
 ```bash
-# Clone the repository
 git clone https://github.com/nexuss0781/Image-text.git
 cd Image-text
 
-# Install Python dependencies
-pip install numpy pillow pybind11
+python3 -m pip install numpy pillow pybind11
 
-# Build the C++ backend
-mkdir -p build && cd build
-cmake ..
-make -j$(nproc)
-
-# Return to project root
-cd ..
+cmake -S . -B build-production \
+  -DCMAKE_BUILD_TYPE=Release \
+  -DALVS_BUILD_PYTHON_MODULE=ON
+cmake --build build-production --parallel
 ```
 
-### Verification
-
-Run the system test to verify your installation:
+### Run the Native Validation Suite
 
 ```bash
-python system_test.py
+ctest --test-dir build-production --output-on-failure
 ```
 
----
+The suite executes the independent Stage 1–5 native evaluation targets.
 
-## 🚀 Usage
-
-### Command-Line Interface
-
-```bash
-# Basic syntax
-python main.py <INPUT> <OUTPUT> --mode <MODE>
-
-# Examples
-python main.py photo.jpg reconstructed.png --mode reconstruct
-python main.py scene.png edges.png --mode visualize_flow
-python main.py portrait.jpg enhanced.jpg --mode energy_boost
-python main.py artwork.jpg inverted.png --mode quantum_inverse
-```
-
-### Python API
+### Use the Python Visual-Token API
 
 ```python
-from alvs import ALVS
-
-# Initialize the system
-alvs = ALVS()
-
-# Load and process an image
-context = alvs.load_and_atomize("input.jpg")
-
-# Apply transformation
-result = alvs.synthesize(context, mode="energy_boost")
-
-# Save the result
-alvs.save_from_math(result, "output.png")
-```
-
-### Programmatic Usage with Custom Modes
-
-```python
+import sys
 import numpy as np
-from alvs import ALVS
 
-alvs = ALVS()
+sys.path.insert(0, "build-production")
+import alvs_cpp
 
-# Load image to mathematical representation
-atomic_context = alvs.load_to_math("source.png")
+# The substrate accepts an H × W × 3 C-contiguous float32 RGB array in [0, 1].
+pixels = np.zeros((512, 512, 3), dtype=np.float32)
+atomizer = alvs_cpp.Atomizer()
 
-# Access individual layers
-rgb_matrix = atomic_context["matrix"]      # Shape: (H, W, 3)
-energy_map = atomic_context["energy"]      # Shape: (H, W)
-flow_field = atomic_context["flow"]        # Shape: (H, W)
+result = atomizer.project_multimodal_numpy(
+    pixels,
+    max_levels=2,
+    patch_size=16,
+    retention_ratio=0.25,
+    max_tokens=32,
+    embedding_dimension=4096,
+)
 
-# Create custom transformation
-custom_result = rgb_matrix * 1.2  # Example: boost all channels
+print(result["embeddings"].shape)        # (retained_token_count, 4096)
+print(result["retained_token_count"])     # Up to 32
+print(result["input_copied"])             # False for the supported direct-input path
+```
 
-# Save result
-alvs.save_from_math(custom_result, "custom_output.png")
+### Run the Reproducible Real-World Proof Benchmark
+
+The repository includes the reviewed proof set and its fixed manifests. The following command regenerates per-image structured signals and timing evidence from the local proof copies.
+
+```bash
+python3 scripts/benchmark_real_world_proofs.py \
+  --acquisition-manifest Proofs/acquisition_manifest.json \
+  --module-dir build-production \
+  --output Proofs/signal_report.json \
+  --distance-csv Proofs/signal_distance_matrix.csv
 ```
 
 ---
 
-## ⚡ Performance
+## Validation and Reproducibility
 
-### Benchmark Results
+The project uses independent native and Python harnesses for each substrate stage, plus a production release workflow. The validation design focuses on correctness, determinism, performance, memory stability, interface contracts, and artifact integrity.
 
-| Resolution | Processing Time | Throughput | Quality (PSNR) |
-|------------|----------------|------------|----------------|
-| **1MP (1024×1024)** | 1.99 ms | 1,508 MB/s | >66 dB |
-| **4K UHD (4096×2160)** | 29.91 ms | 846 MB/s | >66 dB |
-| **8K UHD (7680×4320)** | 186.74 ms | 508 MB/s | >66 dB |
+| Validation layer | Primary checks |
+| :--- | :--- |
+| **Stage 1** | Aligned allocation, SIMD equivalence, direct-path equivalence, boundaries, and 4K behavior. |
+| **Stage 2** | Haar reconstruction PSNR, attention-gate convergence, basis properties, and direct multiscale input contract. |
+| **Stage 3** | Reference equivalence, dispatch determinism, backend report, and 1080p throughput. |
+| **Stage 4** | Token shape, RMS normalization, token budget, deterministic projection, and configuration safety. |
+| **Stage 5** | End-to-end integration, 500-frame stability, latency characterization, and layout contract. |
+| **Proof package** | Rights evidence, local checksums, visual review, per-image signal signatures, zero-copy verification, and pairwise signal distances. |
 
-### Key Metrics
-
-- ✅ **Sub-200ms** processing for 8K UHD images
-- ✅ **1.5 GB/s** peak throughput on 1MP images
-- ✅ **PSNR > 66 dB** - Excellent numerical accuracy
-- ✅ **Memory efficient** - Single-pass processing pipeline
-
-### Optimizations Implemented
-
-- 🔹 **Loop Unrolling** - 4x instruction-level parallelism
-- 🔹 **Compiler Optimizations** - `-O3 -march=native -ffast-math`
-- 🔹 **SIMD Intrinsics** - AVX2 vectorization ready
-- 🔹 **Precomputed Constants** - Eliminated redundant calculations
-- 🔹 **Cache-Friendly Access** - Sequential memory patterns
-
-📄 **See [METRICS.md](METRICS.md) for comprehensive performance analysis and benchmark methodology.**
+A reproducible release workflow is provided at [`scripts/production_validate.sh`](scripts/production_validate.sh). It creates a fresh build, runs CTest, executes native and Python checks, and generates an integrity manifest with [`scripts/release_manifest.py`](scripts/release_manifest.py).
 
 ---
 
-## 📁 Project Structure
+## Project Layout
 
-```
+```text
 Image-text/
-├── alvs.py                 # Main Python interface
-├── alvs_cli.py             # Command-line interface
-├── alvs_core.cpp           # High-performance C++ core
-├── alvs_core.h             # C++ header definitions
-├── bindings.cpp            # pybind11 Python bindings
-├── atomizer.py             # Atomic decomposition logic
-├── synthesizer.py          # Transformation engine
-├── vision_loader.py        # Image I/O handling
-├── main.py                 # CLI entry point
-├── system_test.py          # Integration tests
-├── CMakeLists.txt          # CMake build configuration
-├── stb_image.h             # Image loading library
-├── stb_image_write.h       # Image writing library
-└── README.md               # This file
+├── alvs_core.h / alvs_core.cpp        # C++17 visual substrate
+├── bindings.cpp                       # pybind11 direct NumPy interface
+├── CMakeLists.txt                     # Release build, OpenMP detection, CTest targets
+├── stage[1-5]_evaluation.cpp          # Independent native stage harnesses
+├── stage[1-5]_python_evaluation.py    # Independent Python stage harnesses
+├── scripts/
+│   ├── production_validate.sh         # Reproducible production validation
+│   ├── release_manifest.py            # SHA-256 release-artifact manifest
+│   ├── benchmark_real_world_proofs.py # Per-image visual-signal benchmark
+│   └── render_proof_signal_chart.py   # Proof visualization
+├── Proofs/                            # Audited real-world observation evidence
+│   ├── images/                        # Eight local rights-reviewed proof copies
+│   ├── proof_set_manifest.json        # Fixed source and reuse evidence
+│   ├── acquisition_manifest.json      # Local checksums and review binding
+│   ├── signal_report.json             # Per-image structured signal record
+│   └── REAL_WORLD_OBSERVATION_RESULTS.md
+├── Training/                          # Governance, source review, and training evidence
+├── Stages/                            # Stage objectives, transitions, and error cycles
+└── Dockerfile                         # CPU production container recipe
 ```
 
 ---
 
-## 🧪 Testing
+## Data Governance and Evidence Controls
 
-Run the comprehensive test suite:
+AGI-VS maintains a fail-closed data workflow for retained corpora and experiments. The governance architecture records source terms, item-level provenance, privacy and safety review, removal handling, split isolation, deduplication, and artifact hashes before data enters a retained pilot path.
+
+The real-world proof package applies these principles in a bounded observation workflow: every local proof image is tied to an exact source item, reuse evidence, reviewed visual boundary, and checksum. The underlying governance charter is available at [`Stages/T0_GOVERNANCE_CHARTER.md`](Stages/T0_GOVERNANCE_CHARTER.md), and the program gate is maintained at [`Stages/TRAINING_PROGRAM_GATE.md`](Stages/TRAINING_PROGRAM_GATE.md).
+
+---
+
+## AGI Integration Roadmap
+
+AGI-VS has established the high-throughput visual foundation. The next integrated layers extend the same signal contract into increasingly capable perception and cognition workflows.
+
+| Integration layer | Role in the AGI architecture |
+| :--- | :--- |
+| **Visual substrate** | Produces aligned multi-scale signals and compact deterministic visual tokens from every image or video frame. |
+| **Temporal visual stream** | Integrates sequential frame tokens into motion, object continuity, event, and change representations. |
+| **Semantic encoder** | Aligns visual tokens with concepts, language, and structured world representations. |
+| **Perceptual memory** | Retains and retrieves visual context across long-horizon tasks and environments. |
+| **World-model interface** | Connects perception to causal scene state, prediction, goals, and planning. |
+| **Reasoning and action interface** | Supplies grounded visual state to AGI agents, tools, and embodied or digital control loops. |
+| **Scaled evaluation and operations** | Extends validation, monitoring, reproducible releases, and governed datasets across the full system. |
+
+This roadmap preserves a central design principle: **the visual substrate remains a fast, deterministic, independently testable perception service while higher AGI layers consume and enrich its token stream.**
+
+---
+
+## Contributing
+
+Contributions are welcome through focused pull requests. Please preserve the project’s staged validation model, direct-input contracts, deterministic behavior, and evidence records.
 
 ```bash
-# Run all system tests
-python system_test.py
-
-# Test specific modes
-python main.py test.jpg out_recon.png --mode reconstruct
-python main.py test.jpg out_flow.png --mode visualize_flow
-python main.py test.jpg out_energy.png --mode energy_boost
-python main.py test.jpg out_inverse.png --mode quantum_inverse
+git checkout -b feature/your-change
+# Implement and validate the change.
+git commit -m "feat: describe your change"
+git push origin feature/your-change
 ```
 
 ---
 
-## 🤝 Contributing
+## References
 
-Contributions are welcome! Please follow these guidelines:
-
-1. **Fork** the repository
-2. **Create** a feature branch (`git checkout -b feature/amazing-feature`)
-3. **Commit** your changes (`git commit -m 'Add amazing feature'`)
-4. **Push** to the branch (`git push origin feature/amazing-feature`)
-5. **Open** a Pull Request
-
-### Development Setup
-
-```bash
-# Install development dependencies
-pip install numpy pillow pybind11 pytest black flake8
-
-# Build in debug mode
-cd build
-cmake -DCMAKE_BUILD_TYPE=Debug ..
-make -j$(nproc)
-```
-
----
-
-## 📄 License
-
-This project is licensed under the **MIT License** - see the [LICENSE](LICENSE) file for details.
-
----
-
-## 🙏 Acknowledgments
-
-- **Rec. 709** standard for luminance calculation
-- **stb libraries** by Sean Barrett for image I/O
-- **pybind11** for seamless Python/C++ integration
-- **NumPy** and **Pillow** communities
-
----
+[1]: Proofs/REAL_WORLD_OBSERVATION_RESULTS.md "AGI-VS Real-World Observation Proof"
+[2]: Proofs/signal_report.json "Per-image frozen visual signal and performance record"
+[3]: scripts/production_validate.sh "Reproducible production validation workflow"
+[4]: Stages/TRAINING_PROGRAM_GATE.md "AGI-VS training-program gate"
 
 <div align="center">
 
-**Built with ❤️ by [nexuss0781](https://github.com/nexuss0781)**
+**AGI Vision Substrate — engineered perception for AGI-ready visual intelligence**
 
-[Report Bug](https://github.com/nexuss0781/Image-text/issues) • [Request Feature](https://github.com/nexuss0781/Image-text/issues) • [View Demo](https://github.com/nexuss0781/Image-text/tree/main/examples)
+[Report an Issue](https://github.com/nexuss0781/Image-text/issues) · [Open a Feature Request](https://github.com/nexuss0781/Image-text/issues) · [Review the Proof Package](Proofs/)
 
 </div>
