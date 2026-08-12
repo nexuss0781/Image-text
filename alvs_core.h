@@ -106,6 +106,40 @@ struct SemanticGateOutput {
     float entropy{0.0f};
 };
 
+struct ProjectionConfig {
+    std::size_t patch_size{4};
+    std::size_t embedding_dimension{4096};
+    float retention_ratio{0.25f};
+    std::size_t max_tokens{0}; // Zero retains the adaptive-ratio budget.
+};
+
+struct VisualTokenProjection {
+    std::size_t embedding_dimension{0};
+    std::size_t source_patch_count{0};
+    std::size_t retained_token_count{0};
+    std::vector<std::size_t> patch_y;
+    std::vector<std::size_t> patch_x;
+    std::vector<float> importance;
+    std::vector<float> embeddings; // Token-major [retained_token_count, embedding_dimension].
+};
+
+/**
+ * Deterministic Stage 4 visual-token projector. It converts Stage 1/2 atomic
+ * layers into RMS-normalized LLM-shaped embeddings without asserting semantic
+ * alignment to a pretrained language model.
+ */
+class VisualTokenProjector {
+public:
+    [[nodiscard]] VisualTokenProjection project(const float* energy,
+                                                const float* flow_x,
+                                                const float* flow_y,
+                                                std::size_t width,
+                                                std::size_t height,
+                                                const HaarWaveletPyramid& wavelet,
+                                                const SemanticGateOutput& gate,
+                                                const ProjectionConfig& config = {}) const;
+};
+
 /**
  * A compact, trainable softmax gate. It consumes deterministic visual-statistic
  * features and distributes attention over atomic visual representations.

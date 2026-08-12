@@ -1,0 +1,8 @@
+AGI-VS Stage 4 Native Evaluation Harness
+
+[PASS] TC-4.1 — shape=[80,4096]; max RMSNorm error=0.000018
+[PASS] TC-4.2 — source patches=320; retained=80; reduction=0.750000
+[PASS] TC-4.3 — projection is byte-deterministic; source RGB tensor remains unchanged
+[PASS] TC-4.4 — max-token cap honored; invalid retention ratio explicitly rejected
+
+Stage 4 native harness: PASS

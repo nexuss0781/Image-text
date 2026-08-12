@@ -198,6 +198,78 @@ PYBIND11_MODULE(alvs_cpp, m) {
             float32 NumPy tensor, returning base layers, a Haar pyramid, and
             deterministic semantic gate metadata without copying the RGB input.
         )pbdoc")
+        .def("project_multimodal_numpy", [](const alvs::Atomizer& self,
+                                             const py::array& color_array,
+                                             std::size_t max_levels,
+                                             std::size_t patch_size,
+                                             float retention_ratio,
+                                             std::size_t max_tokens,
+                                             std::size_t embedding_dimension) {
+            const py::buffer_info color = color_array.request();
+            requireColorShape(color_array, color);
+            const py::ssize_t height = color.shape[0];
+            const py::ssize_t width = color.shape[1];
+            auto energy = py::array_t<float>({height, width});
+            auto flow_x = py::array_t<float>({height, width});
+            auto flow_y = py::array_t<float>({height, width});
+            const auto energy_info = energy.request();
+            const auto flow_x_info = flow_x.request();
+            const auto flow_y_info = flow_y.request();
+            alvs::HaarWaveletPyramid pyramid;
+            alvs::SemanticGateFeatures features;
+            alvs::SemanticGateOutput gate;
+            alvs::VisualTokenProjection projection;
+            alvs::ProjectionConfig config;
+            config.patch_size = patch_size;
+            config.retention_ratio = retention_ratio;
+            config.max_tokens = max_tokens;
+            config.embedding_dimension = embedding_dimension;
+            {
+                py::gil_scoped_release release;
+                self.atomizeMultiScaleInterleaved(static_cast<const float*>(color.ptr),
+                                                   static_cast<std::size_t>(width),
+                                                   static_cast<std::size_t>(height),
+                                                   static_cast<float*>(energy_info.ptr),
+                                                   static_cast<float*>(flow_x_info.ptr),
+                                                   static_cast<float*>(flow_y_info.ptr),
+                                                   pyramid, features, gate, max_levels);
+                alvs::VisualTokenProjector projector;
+                projection = projector.project(static_cast<const float*>(energy_info.ptr),
+                                               static_cast<const float*>(flow_x_info.ptr),
+                                               static_cast<const float*>(flow_y_info.ptr),
+                                               static_cast<std::size_t>(width),
+                                               static_cast<std::size_t>(height),
+                                               pyramid, gate, config);
+            }
+            auto embeddings = py::array_t<float>({static_cast<py::ssize_t>(projection.retained_token_count),
+                                                   static_cast<py::ssize_t>(projection.embedding_dimension)});
+            std::copy(projection.embeddings.begin(), projection.embeddings.end(),
+                      static_cast<float*>(embeddings.request().ptr));
+            auto patch_y = py::array_t<std::size_t>(std::vector<py::ssize_t>{static_cast<py::ssize_t>(projection.retained_token_count)});
+            auto patch_x = py::array_t<std::size_t>(std::vector<py::ssize_t>{static_cast<py::ssize_t>(projection.retained_token_count)});
+            auto importance = py::array_t<float>(std::vector<py::ssize_t>{static_cast<py::ssize_t>(projection.retained_token_count)});
+            std::copy(projection.patch_y.begin(), projection.patch_y.end(), static_cast<std::size_t*>(patch_y.request().ptr));
+            std::copy(projection.patch_x.begin(), projection.patch_x.end(), static_cast<std::size_t*>(patch_x.request().ptr));
+            std::copy(projection.importance.begin(), projection.importance.end(), static_cast<float*>(importance.request().ptr));
+            py::dict result;
+            result["embeddings"] = embeddings;
+            result["patch_y"] = patch_y;
+            result["patch_x"] = patch_x;
+            result["importance"] = importance;
+            result["source_patch_count"] = projection.source_patch_count;
+            result["retained_token_count"] = projection.retained_token_count;
+            result["embedding_dimension"] = projection.embedding_dimension;
+            result["input_address"] = py::int_(reinterpret_cast<std::uintptr_t>(color.ptr));
+            result["input_copied"] = py::bool_(false);
+            return result;
+        }, py::arg("color_array"), py::arg("max_levels") = 2, py::arg("patch_size") = 4,
+           py::arg("retention_ratio") = 0.25f, py::arg("max_tokens") = 0,
+           py::arg("embedding_dimension") = 4096,
+        R"pbdoc(
+            Convert a direct HxWx3 float32 vision tensor into deterministic,
+            RMS-normalized visual-token embeddings with adaptive token pruning.
+            This function does not claim alignment with a pretrained VLM.
+        )pbdoc")
         .def("zero_copy_probe", [](const alvs::Atomizer& self, const py::array& color_array) {
             const py::buffer_info color = color_array.request();
             requireColorShape(color_array, color);

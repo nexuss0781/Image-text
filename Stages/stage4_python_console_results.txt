@@ -1,0 +1,43 @@
+{
+  "harness": "AGI-VS Stage 4 Python Projection Evaluation",
+  "input_shape": [
+    64,
+    80,
+    3
+  ],
+  "tc_4_python_shape": {
+    "embedding_shape": [
+      80,
+      4096
+    ],
+    "expected_shape": [
+      80,
+      4096
+    ],
+    "pass": true
+  },
+  "tc_4_python_normalization": {
+    "max_rms_error": 5.0961971282958984e-05,
+    "pass": true
+  },
+  "tc_4_python_budget": {
+    "source_patch_count": 320,
+    "retained_token_count": 80,
+    "reduction": 0.75,
+    "importance_nonincreasing": true,
+    "pass": true
+  },
+  "tc_4_python_determinism": {
+    "pass": true
+  },
+  "tc_4_python_direct_input": {
+    "pointer_matches": true,
+    "binding_declares_no_input_copy": true,
+    "input_unchanged": true,
+    "pass": true
+  },
+  "tc_4_python_layout_contract": {
+    "pass": true
+  },
+  "overall_pass": true
+}
