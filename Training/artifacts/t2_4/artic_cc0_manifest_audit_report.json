@@ -1,0 +1,18 @@
+{
+  "audit_name": "T2.4 Art Institute CC0 manifest audit",
+  "classification_category_count": 45,
+  "hard_failures": [],
+  "manifest": "Training/artifacts/t2_4/artic_cc0_candidate_manifest.json",
+  "manifest_sha256": "ca99ae3cfe787ea5f8283750d1f5efc0c8af23d836af70effe68ce9056624083",
+  "media_requested_or_acquired": false,
+  "next_action": "media acquisition permitted only for exact manifest IDs if status is pass",
+  "selected_record_count": 200,
+  "source_records_reviewed": 1000,
+  "split_counts": {
+    "dev": 15,
+    "held_out": 44,
+    "train": 141
+  },
+  "status": "pass",
+  "warnings": []
+}
