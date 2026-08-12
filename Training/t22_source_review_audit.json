@@ -1,0 +1,32 @@
+{
+  "audit_status": "PASS_BLOCKED_FOR_RETENTION",
+  "embeddings_generated": 0,
+  "http_status_counts": {
+    "200": 39,
+    "403": 1,
+    "404": 5
+  },
+  "media_downloaded": 0,
+  "missing_required_review_fields": {},
+  "non_quarantined_records": 0,
+  "request_status_counts": {
+    "completed": 45,
+    "request_error": 5
+  },
+  "retention_blockers": [
+    "All records remain quarantined by design.",
+    "Item-level licence verification remains unresolved.",
+    "Privacy and safety review remains unresolved because no media was retained or inspected.",
+    "Removal-path confirmation remains unresolved.",
+    "Perceptual/text similarity deduplication was not performed."
+  ],
+  "retention_ready": false,
+  "sample_limit": 50,
+  "sample_size": 50,
+  "training_eligible_records": 0,
+  "unresolved_control_counts": {
+    "item_level_licence_verification": 50,
+    "privacy_safety_review": 50,
+    "removal_path_review": 50
+  }
+}

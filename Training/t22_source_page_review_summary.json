@@ -1,0 +1,26 @@
+{
+  "audit_status": "PASS_WITH_ALL_RECORDS_QUARANTINED",
+  "embeddings_generated": 0,
+  "http_status_counts": {
+    "200": 39,
+    "403": 1,
+    "404": 5
+  },
+  "media_downloaded": 0,
+  "quarantined_records": 50,
+  "request_status_counts": {
+    "completed": 45,
+    "request_error": 5
+  },
+  "retained_training_records": 0,
+  "sample_limit": 50,
+  "sample_size": 50,
+  "training_eligible_records": 0,
+  "unresolved_controls": [
+    "item-level licence verification",
+    "privacy and safety review without retained media",
+    "rights-caveat review",
+    "removal procedure confirmation",
+    "perceptual and text similarity deduplication"
+  ]
+}
