@@ -1,0 +1,127 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:agi-core:vision:image-p6-evidence:0.1.0-draft",
+  "title": "Image VISION Phase 6 Forward-Difference Run Evidence",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "evidence_version",
+    "phase",
+    "status",
+    "phase_completion",
+    "started_at",
+    "finished_at",
+    "commit",
+    "working_tree_state",
+    "working_tree_status_sha256",
+    "scope",
+    "implementation",
+    "counts",
+    "case_results",
+    "build_runs",
+    "failures"
+  ],
+  "properties": {
+    "evidence_version": {"const": "0.1.0-draft"},
+    "phase": {"const": "P6"},
+    "status": {"enum": ["finished", "failed"]},
+    "phase_completion": {"const": "p6_forward_difference_xy_v1_engineering_baseline_profile_proposal_open"},
+    "started_at": {"type": "string", "minLength": 20, "maxLength": 40},
+    "finished_at": {"type": "string", "minLength": 20, "maxLength": 40},
+    "commit": {"type": "string", "pattern": "^[a-fA-F0-9]{7,64}$"},
+    "working_tree_state": {"enum": ["clean", "dirty", "unknown"]},
+    "working_tree_status_sha256": {"type": "string", "pattern": "^[a-fA-F0-9]{64}$"},
+    "scope": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "profile_id", "profile_status", "profile_hash", "runtime_profile_enabled",
+        "engineering_candidate_allowlist", "operator_version", "exactly_two_planes",
+        "regions_enabled", "patches_enabled", "token_ids_enabled", "learning_enabled",
+        "semantic_recognition_enabled", "act_reverse_rendering_enabled", "phase7_started",
+        "cortex_modified", "production_approval"
+      ],
+      "properties": {
+        "profile_id": {"type": "string", "minLength": 1, "maxLength": 128},
+        "profile_status": {"const": "proposal"},
+        "profile_hash": {"type": "string", "pattern": "^[a-fA-F0-9]{64}$"},
+        "runtime_profile_enabled": {"const": false},
+        "engineering_candidate_allowlist": {"type": "array", "items": {"const": "candidate_forward_difference_xy_v1"}},
+        "operator_version": {"const": "forward-difference-xy-v1"},
+        "exactly_two_planes": {"const": true},
+        "regions_enabled": {"const": false},
+        "patches_enabled": {"const": false},
+        "token_ids_enabled": {"const": false},
+        "learning_enabled": {"const": false},
+        "semantic_recognition_enabled": {"const": false},
+        "act_reverse_rendering_enabled": {"const": false},
+        "phase7_started": {"const": false},
+        "cortex_modified": {"const": false},
+        "production_approval": {"const": false}
+      }
+    },
+    "implementation": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["language", "compiler_path", "compiler_version", "strict_flags", "sanitizer_flags", "source_hashes", "external_dependencies"],
+      "properties": {
+        "language": {"const": "C++20"},
+        "compiler_path": {"type": "string", "minLength": 1, "maxLength": 512},
+        "compiler_version": {"type": "string", "minLength": 1, "maxLength": 256},
+        "strict_flags": {"type": "array", "minItems": 8, "items": {"type": "string", "maxLength": 64}},
+        "sanitizer_flags": {"type": "array", "minItems": 1, "items": {"type": "string", "maxLength": 64}},
+        "source_hashes": {"type": "object", "minProperties": 1, "additionalProperties": {"type": "string", "pattern": "^[a-fA-F0-9]{64}$"}},
+        "external_dependencies": {"const": []}
+      }
+    },
+    "counts": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["tests_defined", "tests_run_normal", "tests_passed_normal", "tests_failed_normal", "sanitizer_status"],
+      "properties": {
+        "tests_defined": {"type": "integer", "minimum": 1},
+        "tests_run_normal": {"type": "integer", "minimum": 0},
+        "tests_passed_normal": {"type": "integer", "minimum": 0},
+        "tests_failed_normal": {"type": "integer", "minimum": 0},
+        "sanitizer_status": {"enum": ["pass", "fail"]}
+      }
+    },
+    "case_results": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["test_id", "catalog_case_id", "label", "status"],
+        "properties": {
+          "test_id": {"type": "string", "pattern": "^P6-TEST-[0-9]{3}$"},
+          "catalog_case_id": {"type": "string", "pattern": "^[A-Z]+(?:-[A-Z]+)*-[0-9]{3}$"},
+          "label": {"type": "string", "minLength": 1, "maxLength": 256},
+          "status": {"enum": ["pass", "fail"]}
+        }
+      }
+    },
+    "build_runs": {
+      "type": "array",
+      "minItems": 2,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["mode", "status", "compile_command", "compiler_output", "elapsed_ms", "exit_code", "case_results", "stdout", "stderr", "dynamic_link_dependencies"],
+        "properties": {
+          "mode": {"enum": ["normal", "address_undefined_sanitizers"]},
+          "status": {"enum": ["pass", "fail"]},
+          "compile_command": {"type": "array", "minItems": 1, "items": {"type": "string", "maxLength": 1024}},
+          "compiler_output": {"type": "string", "maxLength": 4096},
+          "elapsed_ms": {"type": "number", "minimum": 0},
+          "exit_code": {"type": "integer"},
+          "case_results": {"type": "array", "minItems": 1, "items": {"$ref": "#/properties/case_results/items"}},
+          "stdout": {"type": "string", "maxLength": 12000},
+          "stderr": {"type": "string", "maxLength": 8000},
+          "dynamic_link_dependencies": {"type": "array", "items": {"type": "string", "maxLength": 256}}
+        }
+      }
+    },
+    "failures": {"type": "array", "items": {"type": "string", "maxLength": 1024}}
+  }
+}

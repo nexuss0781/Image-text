@@ -1,0 +1,32 @@
+{
+  "binding_version": "0.1.0-draft",
+  "phase": "P7",
+  "catalog_path": "../case_catalog.json",
+  "catalog_lifecycle_policy": "Existing catalog entries retain definition_status and execution_status metadata; executed results live only in the Phase 7 evidence artifact.",
+  "test_case_bindings": {
+    "QUAL-001": [
+      "P7-TEST-001",
+      "P7-TEST-002",
+      "P7-TEST-003",
+      "P7-TEST-004",
+      "P7-TEST-005",
+      "P7-TEST-006",
+      "P7-TEST-018"
+    ],
+    "ERR-003": [
+      "P7-TEST-007",
+      "P7-TEST-008",
+      "P7-TEST-010"
+    ],
+    "UNC-002": ["P7-TEST-009"],
+    "UNC-005": ["P7-TEST-011"],
+    "ERR-004": ["P7-TEST-012"],
+    "ERR-002": [
+      "P7-TEST-013",
+      "P7-TEST-014",
+      "P7-TEST-015",
+      "P7-TEST-016",
+      "P7-TEST-017"
+    ]
+  }
+}

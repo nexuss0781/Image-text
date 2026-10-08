@@ -1,0 +1,96 @@
+{
+  "kind": "image_observation",
+  "schema_version": "0.3.1-draft",
+  "observation_id": "obs-fixture-2x1-v1",
+  "request_id": "req-fixture-2x1-v1",
+  "profile_id": "image-fixture-small-v1",
+  "source": {
+    "source_id": "source-fixture-2x1-v1",
+    "source_kind": "synthetic"
+  },
+  "image": {
+    "canonical_pixels_ref": {
+      "scheme": "fixture",
+      "reference_id": "pixels-gray-2x1-v1",
+      "content_kind": "canonical_raster",
+      "byte_length": 2,
+      "sha256": "06eb7d6a69ee19e5fbdf749018d3d2abfa04bcbd1365db312eb86dc7169389b8",
+      "access_mode": "read_only",
+      "access_policy_id": "fixture-only-read-v1",
+      "retention": "ephemeral",
+      "shape": [1, 2, 1],
+      "dtype": "uint8",
+      "layout": "HWC",
+      "byte_order": "not_applicable"
+    },
+    "source_width": 2,
+    "source_height": 1,
+    "canonical_width": 2,
+    "canonical_height": 1,
+    "source_frame_id": "source-grid-2x1-v1",
+    "canonical_frame_id": "canonical-grid-2x1-v1",
+    "coordinate_frame": "upper_left_origin_x_right_y_down_pixel_centers",
+    "canonical_pixel_format": "GRAY_U8",
+    "transform_id": "identity-2x1-v1",
+    "transform_chain": [
+      {
+        "transform_id": "identity-2x1-v1",
+        "operation": "identity",
+        "transform_version": "identity-v1",
+        "source_frame_id": "source-grid-2x1-v1",
+        "target_frame_id": "canonical-grid-2x1-v1",
+        "source_width": 2,
+        "source_height": 1,
+        "target_width": 2,
+        "target_height": 1,
+        "mapping_type": "identity",
+        "mapping_direction": "source_to_target",
+        "matrix_3x3": [1, 0, 0, 0, 1, 0, 0, 0, 1],
+        "invertible": true,
+        "inverse_matrix_3x3": [1, 0, 0, 0, 1, 0, 0, 0, 1]
+      }
+    ],
+    "orientation_action": "decoded_raster_only",
+    "alpha_policy": "not_applicable",
+    "color_profile_id": "fixture-gray-code-values"
+  },
+  "quality": {
+    "status": "accepted",
+    "indicators": [],
+    "flags": []
+  },
+  "uncertainty": {
+    "calibration_status": "uncalibrated_fallback",
+    "calibration_profile_id": "fixture-uncertainty-v1",
+    "method_id": "fixture_uncertainty_v1",
+    "method_version": "1.0.0",
+    "target_event": "fixture-only contract validation; not a production target event",
+    "granularity": "image",
+    "values_ref": {
+      "scheme": "fixture",
+      "reference_id": "uncertainty-image-2x1-v1",
+      "content_kind": "uncertainty_values",
+      "byte_length": 4,
+      "sha256": "d99e58435243d9fef9c88273b8d553b4fba4d0baf8009d29eae74fa99e0d9f57",
+      "access_mode": "read_only",
+      "access_policy_id": "fixture-only-read-v1",
+      "retention": "ephemeral",
+      "shape": [1],
+      "dtype": "float32",
+      "layout": "vector",
+      "byte_order": "little"
+    },
+    "shape": [1],
+    "dtype": "float32",
+    "units": "probability",
+    "convention": "0_is_highest_confidence_1_is_highest_uncertainty"
+  },
+  "provenance": {
+    "producer_component": "VISION_IMAGE",
+    "producer_version": "0.1.0",
+    "trace_id": "trace-fixture-2x1-v1",
+    "profile_id": "image-fixture-small-v1",
+    "runtime_id": "synthetic-fixture-runtime-v1",
+    "source_integrity_status": "checksum_verified"
+  }
+}

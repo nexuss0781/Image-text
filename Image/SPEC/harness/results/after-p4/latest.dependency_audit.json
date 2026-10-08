@@ -1,0 +1,63 @@
+{
+  "audit_scope": "Standalone Image/SPEC Python checker imports and all Image/SPEC local manifests; repository pyproject is recorded as context only",
+  "binary_artifacts_found": [],
+  "binary_audited": false,
+  "dynamic_import_sites": [],
+  "external_import_roots": [],
+  "findings": [],
+  "generated_at": "2026-10-07T16:05:16Z",
+  "harness_dependency_closure_audited": true,
+  "harness_external_dependencies_found": false,
+  "image_runtime_dependency_graph_audited": false,
+  "limitations": [
+    "The Python harness import closure is audited; its audit does not prove the C++ P4 source or binary dependency closure.",
+    "The root pyproject has an unrelated optional ml-cpu TensorFlow extra; it is recorded as repository context and is not part of this isolated standard-library invocation.",
+    "The P4 host test build records source includes and dynamic links separately; production target binaries, plugins, and decoder dependencies are not audited."
+  ],
+  "manifest_sha256": {},
+  "manifests_found": [],
+  "ml_libraries_frameworks_found": false,
+  "parse_errors": [],
+  "prohibited_ml_import_names_found": [],
+  "prohibited_ml_manifest_names_found": [],
+  "python_files": [
+    "Image/SPEC/harness/check_spec.py",
+    "Image/SPEC/harness/p4/run_p4.py",
+    "Image/SPEC/harness/p5/run_p5.py"
+  ],
+  "python_import_roots": [
+    "__future__",
+    "argparse",
+    "ast",
+    "base64",
+    "datetime",
+    "decimal",
+    "hashlib",
+    "json",
+    "math",
+    "os",
+    "pathlib",
+    "platform",
+    "re",
+    "resource",
+    "shlex",
+    "shutil",
+    "struct",
+    "subprocess",
+    "sys",
+    "tempfile",
+    "time",
+    "tomllib",
+    "typing"
+  ],
+  "repository_manifest_context": {
+    "base_dependencies": [],
+    "optional_ml_groups": [
+      "ml-cpu: tensorflow-cpu==2.21.0"
+    ],
+    "path": "pyproject.toml",
+    "scope_note": "Repository-level context only; not imported or installed by the standalone Image/SPEC checker.",
+    "sha256": "6a83a77a9b40464dcc31facdb765e46c9d76f922f7f28a21e911357efd7edd0b"
+  },
+  "run_id": "spec-check-20261007T160516Z"
+}

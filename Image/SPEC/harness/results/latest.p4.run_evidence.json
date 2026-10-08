@@ -1,0 +1,796 @@
+{
+  "build_runs": [
+    {
+      "compile_command": [
+        "/usr/bin/x86_64-linux-gnu-g++-13",
+        "-std=c++20",
+        "-Wall",
+        "-Wextra",
+        "-Wpedantic",
+        "-Wconversion",
+        "-Wsign-conversion",
+        "-Wshadow",
+        "-Werror",
+        "-O2",
+        "/workspace/AGI-Core/Image/SPEC/p4/raster_admission.cpp",
+        "/workspace/AGI-Core/Image/SPEC/harness/p4/test_raster_admission.cpp",
+        "-o",
+        "/tmp/image-vision-p4-ijjil7nw/p4-admission-normal"
+      ],
+      "compiler_output": "",
+      "mode": "normal",
+      "status": "pass",
+      "test_run": {
+        "case_results": [
+          {
+            "catalog_case_id": "ADM-001",
+            "label": "positive single/row/column/odd raster shapes",
+            "status": "pass",
+            "test_id": "P4-TEST-001"
+          },
+          {
+            "catalog_case_id": "ADM-001",
+            "label": "GRAY/RGB/RGBA channel classes",
+            "status": "pass",
+            "test_id": "P4-TEST-002"
+          },
+          {
+            "catalog_case_id": "ADM-002",
+            "label": "zero width/height/channels",
+            "status": "pass",
+            "test_id": "P4-TEST-003"
+          },
+          {
+            "catalog_case_id": "ADM-003",
+            "label": "width-height multiplication overflow",
+            "status": "pass",
+            "test_id": "P4-TEST-004"
+          },
+          {
+            "catalog_case_id": "ADM-003",
+            "label": "pixel-channel sample-count overflow",
+            "status": "pass",
+            "test_id": "P4-TEST-005"
+          },
+          {
+            "catalog_case_id": "ADM-004",
+            "label": "checked stride-offset addition and multiplication overflow",
+            "status": "pass",
+            "test_id": "P4-TEST-006"
+          },
+          {
+            "catalog_case_id": "ADM-003",
+            "label": "host pointer-difference representability bound",
+            "status": "pass",
+            "test_id": "P4-TEST-007"
+          },
+          {
+            "catalog_case_id": "ADM-004",
+            "label": "short row and pixel strides",
+            "status": "pass",
+            "test_id": "P4-TEST-008"
+          },
+          {
+            "catalog_case_id": "ADM-005",
+            "label": "unsupported layout/type/order and unknown enum",
+            "status": "pass",
+            "test_id": "P4-TEST-009"
+          },
+          {
+            "catalog_case_id": "ADM-005",
+            "label": "channel count and declared-range consistency",
+            "status": "pass",
+            "test_id": "P4-TEST-010"
+          },
+          {
+            "catalog_case_id": "ADM-001",
+            "label": "declared/actual buffer length and empty input",
+            "status": "pass",
+            "test_id": "P4-TEST-011"
+          },
+          {
+            "catalog_case_id": "ADM-003",
+            "label": "width/height/pixel/channel/byte/work ceilings",
+            "status": "pass",
+            "test_id": "P4-TEST-012"
+          },
+          {
+            "catalog_case_id": "ADM-001",
+            "label": "small-profile exact boundary",
+            "status": "pass",
+            "test_id": "P4-TEST-013"
+          },
+          {
+            "catalog_case_id": "ADM-001",
+            "label": "proposal-only maximum 4096x4096x4 boundary",
+            "status": "pass",
+            "test_id": "P4-TEST-014"
+          },
+          {
+            "catalog_case_id": "ADM-006",
+            "label": "descriptor admission keeps encoded decode on its explicit API",
+            "status": "pass",
+            "test_id": "P4-TEST-015"
+          },
+          {
+            "catalog_case_id": "ADM-005",
+            "label": "invalid limit record fails with profile mismatch",
+            "status": "pass",
+            "test_id": "P4-TEST-016"
+          },
+          {
+            "catalog_case_id": "ADM-007",
+            "label": "cancellation/deadline typed reject and precedence",
+            "status": "pass",
+            "test_id": "P4-TEST-017"
+          },
+          {
+            "catalog_case_id": "ADM-001",
+            "label": "read-only non-owning view aliases caller storage",
+            "status": "pass",
+            "test_id": "P4-TEST-018"
+          },
+          {
+            "catalog_case_id": "ADM-001",
+            "label": "success and failure paths perform no heap allocation",
+            "status": "pass",
+            "test_id": "P4-TEST-019"
+          },
+          {
+            "catalog_case_id": "ADM-003",
+            "label": "over-limit rejection occurs before allocation",
+            "status": "pass",
+            "test_id": "P4-TEST-020"
+          },
+          {
+            "catalog_case_id": "DEC-001",
+            "label": "binary PGM P5 gray pixels decode exactly with comments",
+            "status": "pass",
+            "test_id": "P4-TEST-021"
+          },
+          {
+            "catalog_case_id": "DEC-001",
+            "label": "binary PPM P6 RGB pixels decode exactly",
+            "status": "pass",
+            "test_id": "P4-TEST-022"
+          },
+          {
+            "catalog_case_id": "DEC-002",
+            "label": "ASCII variants and non-255 maxval reject",
+            "status": "pass",
+            "test_id": "P4-TEST-023"
+          },
+          {
+            "catalog_case_id": "DEC-003",
+            "label": "malformed header tokens and separators reject",
+            "status": "pass",
+            "test_id": "P4-TEST-024"
+          },
+          {
+            "catalog_case_id": "DEC-003",
+            "label": "truncated and extra raster bytes reject atomically",
+            "status": "pass",
+            "test_id": "P4-TEST-025"
+          },
+          {
+            "catalog_case_id": "ADM-003",
+            "label": "encoded/header/dimension/channel/byte/work caps preflight",
+            "status": "pass",
+            "test_id": "P4-TEST-026"
+          },
+          {
+            "catalog_case_id": "ADM-003",
+            "label": "huge dimensions reject before output allocation",
+            "status": "pass",
+            "test_id": "P4-TEST-027"
+          },
+          {
+            "catalog_case_id": "ADM-003",
+            "label": "header byte ceiling bounds comment scanning",
+            "status": "pass",
+            "test_id": "P4-TEST-028"
+          },
+          {
+            "catalog_case_id": "ADM-007",
+            "label": "decoder cancellation and deadline return empty typed failures",
+            "status": "pass",
+            "test_id": "P4-TEST-029"
+          },
+          {
+            "catalog_case_id": "DEC-001",
+            "label": "exact small test limits accept valid P6 at boundary",
+            "status": "pass",
+            "test_id": "P4-TEST-030"
+          },
+          {
+            "catalog_case_id": "DEC-004",
+            "label": "concatenated/multipage PNM input rejects",
+            "status": "pass",
+            "test_id": "P4-TEST-031"
+          },
+          {
+            "catalog_case_id": "ADM-006",
+            "label": "descriptor admission remains separate from PNM decoder",
+            "status": "pass",
+            "test_id": "P4-TEST-032"
+          },
+          {
+            "catalog_case_id": "DEC-001",
+            "label": "proposal-only 4096x4096 pixel ceiling PGM decodes",
+            "status": "pass",
+            "test_id": "P4-TEST-033"
+          }
+        ],
+        "command": [
+          "/tmp/image-vision-p4-ijjil7nw/p4-admission-normal"
+        ],
+        "elapsed_ms": 64.989,
+        "exit_code": 0,
+        "mode": "normal",
+        "status": "pass",
+        "stderr": "",
+        "stdout": "CASE\tP4-TEST-001\tpass\tADM-001\tpositive single/row/column/odd raster shapes\nCASE\tP4-TEST-002\tpass\tADM-001\tGRAY/RGB/RGBA channel classes\nCASE\tP4-TEST-003\tpass\tADM-002\tzero width/height/channels\nCASE\tP4-TEST-004\tpass\tADM-003\twidth-height multiplication overflow\nCASE\tP4-TEST-005\tpass\tADM-003\tpixel-channel sample-count overflow\nCASE\tP4-TEST-006\tpass\tADM-004\tchecked stride-offset addition and multiplication overflow\nCASE\tP4-TEST-007\tpass\tADM-003\thost pointer-difference representability bound\nCASE\tP4-TEST-008\tpass\tADM-004\tshort row and pixel strides\nCASE\tP4-TEST-009\tpass\tADM-005\tunsupported layout/type/order and unknown enum\nCASE\tP4-TEST-010\tpass\tADM-005\tchannel count and declared-range consistency\nCASE\tP4-TEST-011\tpass\tADM-001\tdeclared/actual buffer length and empty input\nCASE\tP4-TEST-012\tpass\tADM-003\twidth/height/pixel/channel/byte/work ceilings\nCASE\tP4-TEST-013\tpass\tADM-001\tsmall-profile exact boundary\nCASE\tP4-TEST-014\tpass\tADM-001\tproposal-only maximum 4096x4096x4 boundary\nCASE\tP4-TEST-015\tpass\tADM-006\tdescriptor admission keeps encoded decode on its explicit API\nCASE\tP4-TEST-016\tpass\tADM-005\tinvalid limit record fails with profile mismatch\nCASE\tP4-TEST-017\tpass\tADM-007\tcancellation/deadline typed reject and precedence\nCASE\tP4-TEST-018\tpass\tADM-001\tread-only non-owning view aliases caller storage\nCASE\tP4-TEST-019\tpass\tADM-001\tsuccess and failure paths perform no heap allocation\nCASE\tP4-TEST-020\tpass\tADM-003\tover-limit rejection occurs before allocation\nCASE\tP4-TEST-021\tpass\tDEC-001\tbinary PGM P5 gray pixels decode exactly with comments\nCASE\tP4-TEST-022\tpass\tDEC-001\tbinary PPM P6 RGB pixels decode exactly\nCASE\tP4-TEST-023\tpass\tDEC-002\tASCII variants and non-255 maxval reject\nCASE\tP4-TEST-024\tpass\tDEC-003\tmalformed header tokens and separators reject\nCASE\tP4-TEST-025\tpass\tDEC-003\ttruncated and extra raster bytes reject atomically\nCASE\tP4-TEST-026\tpass\tADM-003\tencoded/header/dimension/channel/byte/work caps preflight\nCASE\tP4-TEST-027\tpass\tADM-003\thuge dimensions reject before output allocation\nCASE\tP4-TEST-028\tpass\tADM-003\theader byte ceiling bounds comment scanning\nCASE\tP4-TEST-029\tpass\tADM-007\tdecoder cancellation and deadline return empty typed failures\nCASE\tP4-TEST-030\tpass\tDEC-001\texact small test limits accept valid P6 at boundary\nCASE\tP4-TEST-031\tpass\tDEC-004\tconcatenated/multipage PNM input rejects\nCASE\tP4-TEST-032\tpass\tADM-006\tdescriptor admission remains separate from PNM decoder\nCASE\tP4-TEST-033\tpass\tDEC-001\tproposal-only 4096x4096 pixel ceiling PGM decodes\nSUMMARY\t33\t33\n",
+        "test_count": 33
+      }
+    },
+    {
+      "compile_command": [
+        "/usr/bin/x86_64-linux-gnu-g++-13",
+        "-std=c++20",
+        "-Wall",
+        "-Wextra",
+        "-Wpedantic",
+        "-Wconversion",
+        "-Wsign-conversion",
+        "-Wshadow",
+        "-Werror",
+        "-O2",
+        "-fsanitize=address,undefined",
+        "-fno-omit-frame-pointer",
+        "-g",
+        "/workspace/AGI-Core/Image/SPEC/p4/raster_admission.cpp",
+        "/workspace/AGI-Core/Image/SPEC/harness/p4/test_raster_admission.cpp",
+        "-o",
+        "/tmp/image-vision-p4-ijjil7nw/p4-admission-asan-ubsan"
+      ],
+      "compiler_output": "",
+      "mode": "address_undefined_sanitizers",
+      "status": "pass",
+      "test_run": {
+        "case_results": [
+          {
+            "catalog_case_id": "ADM-001",
+            "label": "positive single/row/column/odd raster shapes",
+            "status": "pass",
+            "test_id": "P4-TEST-001"
+          },
+          {
+            "catalog_case_id": "ADM-001",
+            "label": "GRAY/RGB/RGBA channel classes",
+            "status": "pass",
+            "test_id": "P4-TEST-002"
+          },
+          {
+            "catalog_case_id": "ADM-002",
+            "label": "zero width/height/channels",
+            "status": "pass",
+            "test_id": "P4-TEST-003"
+          },
+          {
+            "catalog_case_id": "ADM-003",
+            "label": "width-height multiplication overflow",
+            "status": "pass",
+            "test_id": "P4-TEST-004"
+          },
+          {
+            "catalog_case_id": "ADM-003",
+            "label": "pixel-channel sample-count overflow",
+            "status": "pass",
+            "test_id": "P4-TEST-005"
+          },
+          {
+            "catalog_case_id": "ADM-004",
+            "label": "checked stride-offset addition and multiplication overflow",
+            "status": "pass",
+            "test_id": "P4-TEST-006"
+          },
+          {
+            "catalog_case_id": "ADM-003",
+            "label": "host pointer-difference representability bound",
+            "status": "pass",
+            "test_id": "P4-TEST-007"
+          },
+          {
+            "catalog_case_id": "ADM-004",
+            "label": "short row and pixel strides",
+            "status": "pass",
+            "test_id": "P4-TEST-008"
+          },
+          {
+            "catalog_case_id": "ADM-005",
+            "label": "unsupported layout/type/order and unknown enum",
+            "status": "pass",
+            "test_id": "P4-TEST-009"
+          },
+          {
+            "catalog_case_id": "ADM-005",
+            "label": "channel count and declared-range consistency",
+            "status": "pass",
+            "test_id": "P4-TEST-010"
+          },
+          {
+            "catalog_case_id": "ADM-001",
+            "label": "declared/actual buffer length and empty input",
+            "status": "pass",
+            "test_id": "P4-TEST-011"
+          },
+          {
+            "catalog_case_id": "ADM-003",
+            "label": "width/height/pixel/channel/byte/work ceilings",
+            "status": "pass",
+            "test_id": "P4-TEST-012"
+          },
+          {
+            "catalog_case_id": "ADM-001",
+            "label": "small-profile exact boundary",
+            "status": "pass",
+            "test_id": "P4-TEST-013"
+          },
+          {
+            "catalog_case_id": "ADM-001",
+            "label": "proposal-only maximum 4096x4096x4 boundary",
+            "status": "pass",
+            "test_id": "P4-TEST-014"
+          },
+          {
+            "catalog_case_id": "ADM-006",
+            "label": "descriptor admission keeps encoded decode on its explicit API",
+            "status": "pass",
+            "test_id": "P4-TEST-015"
+          },
+          {
+            "catalog_case_id": "ADM-005",
+            "label": "invalid limit record fails with profile mismatch",
+            "status": "pass",
+            "test_id": "P4-TEST-016"
+          },
+          {
+            "catalog_case_id": "ADM-007",
+            "label": "cancellation/deadline typed reject and precedence",
+            "status": "pass",
+            "test_id": "P4-TEST-017"
+          },
+          {
+            "catalog_case_id": "ADM-001",
+            "label": "read-only non-owning view aliases caller storage",
+            "status": "pass",
+            "test_id": "P4-TEST-018"
+          },
+          {
+            "catalog_case_id": "ADM-001",
+            "label": "success and failure paths perform no heap allocation",
+            "status": "pass",
+            "test_id": "P4-TEST-019"
+          },
+          {
+            "catalog_case_id": "ADM-003",
+            "label": "over-limit rejection occurs before allocation",
+            "status": "pass",
+            "test_id": "P4-TEST-020"
+          },
+          {
+            "catalog_case_id": "DEC-001",
+            "label": "binary PGM P5 gray pixels decode exactly with comments",
+            "status": "pass",
+            "test_id": "P4-TEST-021"
+          },
+          {
+            "catalog_case_id": "DEC-001",
+            "label": "binary PPM P6 RGB pixels decode exactly",
+            "status": "pass",
+            "test_id": "P4-TEST-022"
+          },
+          {
+            "catalog_case_id": "DEC-002",
+            "label": "ASCII variants and non-255 maxval reject",
+            "status": "pass",
+            "test_id": "P4-TEST-023"
+          },
+          {
+            "catalog_case_id": "DEC-003",
+            "label": "malformed header tokens and separators reject",
+            "status": "pass",
+            "test_id": "P4-TEST-024"
+          },
+          {
+            "catalog_case_id": "DEC-003",
+            "label": "truncated and extra raster bytes reject atomically",
+            "status": "pass",
+            "test_id": "P4-TEST-025"
+          },
+          {
+            "catalog_case_id": "ADM-003",
+            "label": "encoded/header/dimension/channel/byte/work caps preflight",
+            "status": "pass",
+            "test_id": "P4-TEST-026"
+          },
+          {
+            "catalog_case_id": "ADM-003",
+            "label": "huge dimensions reject before output allocation",
+            "status": "pass",
+            "test_id": "P4-TEST-027"
+          },
+          {
+            "catalog_case_id": "ADM-003",
+            "label": "header byte ceiling bounds comment scanning",
+            "status": "pass",
+            "test_id": "P4-TEST-028"
+          },
+          {
+            "catalog_case_id": "ADM-007",
+            "label": "decoder cancellation and deadline return empty typed failures",
+            "status": "pass",
+            "test_id": "P4-TEST-029"
+          },
+          {
+            "catalog_case_id": "DEC-001",
+            "label": "exact small test limits accept valid P6 at boundary",
+            "status": "pass",
+            "test_id": "P4-TEST-030"
+          },
+          {
+            "catalog_case_id": "DEC-004",
+            "label": "concatenated/multipage PNM input rejects",
+            "status": "pass",
+            "test_id": "P4-TEST-031"
+          },
+          {
+            "catalog_case_id": "ADM-006",
+            "label": "descriptor admission remains separate from PNM decoder",
+            "status": "pass",
+            "test_id": "P4-TEST-032"
+          },
+          {
+            "catalog_case_id": "DEC-001",
+            "label": "proposal-only 4096x4096 pixel ceiling PGM decodes",
+            "status": "pass",
+            "test_id": "P4-TEST-033"
+          }
+        ],
+        "command": [
+          "/tmp/image-vision-p4-ijjil7nw/p4-admission-asan-ubsan"
+        ],
+        "elapsed_ms": 87.326,
+        "exit_code": 0,
+        "mode": "address_undefined_sanitizers",
+        "status": "pass",
+        "stderr": "",
+        "stdout": "CASE\tP4-TEST-001\tpass\tADM-001\tpositive single/row/column/odd raster shapes\nCASE\tP4-TEST-002\tpass\tADM-001\tGRAY/RGB/RGBA channel classes\nCASE\tP4-TEST-003\tpass\tADM-002\tzero width/height/channels\nCASE\tP4-TEST-004\tpass\tADM-003\twidth-height multiplication overflow\nCASE\tP4-TEST-005\tpass\tADM-003\tpixel-channel sample-count overflow\nCASE\tP4-TEST-006\tpass\tADM-004\tchecked stride-offset addition and multiplication overflow\nCASE\tP4-TEST-007\tpass\tADM-003\thost pointer-difference representability bound\nCASE\tP4-TEST-008\tpass\tADM-004\tshort row and pixel strides\nCASE\tP4-TEST-009\tpass\tADM-005\tunsupported layout/type/order and unknown enum\nCASE\tP4-TEST-010\tpass\tADM-005\tchannel count and declared-range consistency\nCASE\tP4-TEST-011\tpass\tADM-001\tdeclared/actual buffer length and empty input\nCASE\tP4-TEST-012\tpass\tADM-003\twidth/height/pixel/channel/byte/work ceilings\nCASE\tP4-TEST-013\tpass\tADM-001\tsmall-profile exact boundary\nCASE\tP4-TEST-014\tpass\tADM-001\tproposal-only maximum 4096x4096x4 boundary\nCASE\tP4-TEST-015\tpass\tADM-006\tdescriptor admission keeps encoded decode on its explicit API\nCASE\tP4-TEST-016\tpass\tADM-005\tinvalid limit record fails with profile mismatch\nCASE\tP4-TEST-017\tpass\tADM-007\tcancellation/deadline typed reject and precedence\nCASE\tP4-TEST-018\tpass\tADM-001\tread-only non-owning view aliases caller storage\nCASE\tP4-TEST-019\tpass\tADM-001\tsuccess and failure paths perform no heap allocation\nCASE\tP4-TEST-020\tpass\tADM-003\tover-limit rejection occurs before allocation\nCASE\tP4-TEST-021\tpass\tDEC-001\tbinary PGM P5 gray pixels decode exactly with comments\nCASE\tP4-TEST-022\tpass\tDEC-001\tbinary PPM P6 RGB pixels decode exactly\nCASE\tP4-TEST-023\tpass\tDEC-002\tASCII variants and non-255 maxval reject\nCASE\tP4-TEST-024\tpass\tDEC-003\tmalformed header tokens and separators reject\nCASE\tP4-TEST-025\tpass\tDEC-003\ttruncated and extra raster bytes reject atomically\nCASE\tP4-TEST-026\tpass\tADM-003\tencoded/header/dimension/channel/byte/work caps preflight\nCASE\tP4-TEST-027\tpass\tADM-003\thuge dimensions reject before output allocation\nCASE\tP4-TEST-028\tpass\tADM-003\theader byte ceiling bounds comment scanning\nCASE\tP4-TEST-029\tpass\tADM-007\tdecoder cancellation and deadline return empty typed failures\nCASE\tP4-TEST-030\tpass\tDEC-001\texact small test limits accept valid P6 at boundary\nCASE\tP4-TEST-031\tpass\tDEC-004\tconcatenated/multipage PNM input rejects\nCASE\tP4-TEST-032\tpass\tADM-006\tdescriptor admission remains separate from PNM decoder\nCASE\tP4-TEST-033\tpass\tDEC-001\tproposal-only 4096x4096 pixel ceiling PGM decodes\nSUMMARY\t33\t33\n",
+        "test_count": 33
+      }
+    }
+  ],
+  "case_results": [
+    {
+      "catalog_case_id": "ADM-001",
+      "label": "positive single/row/column/odd raster shapes",
+      "status": "pass",
+      "test_id": "P4-TEST-001"
+    },
+    {
+      "catalog_case_id": "ADM-001",
+      "label": "GRAY/RGB/RGBA channel classes",
+      "status": "pass",
+      "test_id": "P4-TEST-002"
+    },
+    {
+      "catalog_case_id": "ADM-002",
+      "label": "zero width/height/channels",
+      "status": "pass",
+      "test_id": "P4-TEST-003"
+    },
+    {
+      "catalog_case_id": "ADM-003",
+      "label": "width-height multiplication overflow",
+      "status": "pass",
+      "test_id": "P4-TEST-004"
+    },
+    {
+      "catalog_case_id": "ADM-003",
+      "label": "pixel-channel sample-count overflow",
+      "status": "pass",
+      "test_id": "P4-TEST-005"
+    },
+    {
+      "catalog_case_id": "ADM-004",
+      "label": "checked stride-offset addition and multiplication overflow",
+      "status": "pass",
+      "test_id": "P4-TEST-006"
+    },
+    {
+      "catalog_case_id": "ADM-003",
+      "label": "host pointer-difference representability bound",
+      "status": "pass",
+      "test_id": "P4-TEST-007"
+    },
+    {
+      "catalog_case_id": "ADM-004",
+      "label": "short row and pixel strides",
+      "status": "pass",
+      "test_id": "P4-TEST-008"
+    },
+    {
+      "catalog_case_id": "ADM-005",
+      "label": "unsupported layout/type/order and unknown enum",
+      "status": "pass",
+      "test_id": "P4-TEST-009"
+    },
+    {
+      "catalog_case_id": "ADM-005",
+      "label": "channel count and declared-range consistency",
+      "status": "pass",
+      "test_id": "P4-TEST-010"
+    },
+    {
+      "catalog_case_id": "ADM-001",
+      "label": "declared/actual buffer length and empty input",
+      "status": "pass",
+      "test_id": "P4-TEST-011"
+    },
+    {
+      "catalog_case_id": "ADM-003",
+      "label": "width/height/pixel/channel/byte/work ceilings",
+      "status": "pass",
+      "test_id": "P4-TEST-012"
+    },
+    {
+      "catalog_case_id": "ADM-001",
+      "label": "small-profile exact boundary",
+      "status": "pass",
+      "test_id": "P4-TEST-013"
+    },
+    {
+      "catalog_case_id": "ADM-001",
+      "label": "proposal-only maximum 4096x4096x4 boundary",
+      "status": "pass",
+      "test_id": "P4-TEST-014"
+    },
+    {
+      "catalog_case_id": "ADM-006",
+      "label": "descriptor admission keeps encoded decode on its explicit API",
+      "status": "pass",
+      "test_id": "P4-TEST-015"
+    },
+    {
+      "catalog_case_id": "ADM-005",
+      "label": "invalid limit record fails with profile mismatch",
+      "status": "pass",
+      "test_id": "P4-TEST-016"
+    },
+    {
+      "catalog_case_id": "ADM-007",
+      "label": "cancellation/deadline typed reject and precedence",
+      "status": "pass",
+      "test_id": "P4-TEST-017"
+    },
+    {
+      "catalog_case_id": "ADM-001",
+      "label": "read-only non-owning view aliases caller storage",
+      "status": "pass",
+      "test_id": "P4-TEST-018"
+    },
+    {
+      "catalog_case_id": "ADM-001",
+      "label": "success and failure paths perform no heap allocation",
+      "status": "pass",
+      "test_id": "P4-TEST-019"
+    },
+    {
+      "catalog_case_id": "ADM-003",
+      "label": "over-limit rejection occurs before allocation",
+      "status": "pass",
+      "test_id": "P4-TEST-020"
+    },
+    {
+      "catalog_case_id": "DEC-001",
+      "label": "binary PGM P5 gray pixels decode exactly with comments",
+      "status": "pass",
+      "test_id": "P4-TEST-021"
+    },
+    {
+      "catalog_case_id": "DEC-001",
+      "label": "binary PPM P6 RGB pixels decode exactly",
+      "status": "pass",
+      "test_id": "P4-TEST-022"
+    },
+    {
+      "catalog_case_id": "DEC-002",
+      "label": "ASCII variants and non-255 maxval reject",
+      "status": "pass",
+      "test_id": "P4-TEST-023"
+    },
+    {
+      "catalog_case_id": "DEC-003",
+      "label": "malformed header tokens and separators reject",
+      "status": "pass",
+      "test_id": "P4-TEST-024"
+    },
+    {
+      "catalog_case_id": "DEC-003",
+      "label": "truncated and extra raster bytes reject atomically",
+      "status": "pass",
+      "test_id": "P4-TEST-025"
+    },
+    {
+      "catalog_case_id": "ADM-003",
+      "label": "encoded/header/dimension/channel/byte/work caps preflight",
+      "status": "pass",
+      "test_id": "P4-TEST-026"
+    },
+    {
+      "catalog_case_id": "ADM-003",
+      "label": "huge dimensions reject before output allocation",
+      "status": "pass",
+      "test_id": "P4-TEST-027"
+    },
+    {
+      "catalog_case_id": "ADM-003",
+      "label": "header byte ceiling bounds comment scanning",
+      "status": "pass",
+      "test_id": "P4-TEST-028"
+    },
+    {
+      "catalog_case_id": "ADM-007",
+      "label": "decoder cancellation and deadline return empty typed failures",
+      "status": "pass",
+      "test_id": "P4-TEST-029"
+    },
+    {
+      "catalog_case_id": "DEC-001",
+      "label": "exact small test limits accept valid P6 at boundary",
+      "status": "pass",
+      "test_id": "P4-TEST-030"
+    },
+    {
+      "catalog_case_id": "DEC-004",
+      "label": "concatenated/multipage PNM input rejects",
+      "status": "pass",
+      "test_id": "P4-TEST-031"
+    },
+    {
+      "catalog_case_id": "ADM-006",
+      "label": "descriptor admission remains separate from PNM decoder",
+      "status": "pass",
+      "test_id": "P4-TEST-032"
+    },
+    {
+      "catalog_case_id": "DEC-001",
+      "label": "proposal-only 4096x4096 pixel ceiling PGM decodes",
+      "status": "pass",
+      "test_id": "P4-TEST-033"
+    }
+  ],
+  "commit": "e66072f8ea15ba5443dc336a2e50d3765ca65260",
+  "counts": {
+    "sanitizer_status": "pass",
+    "tests_defined": 33,
+    "tests_failed_normal": 0,
+    "tests_passed_normal": 33,
+    "tests_run_normal": 33
+  },
+  "elapsed_ms": 12557.551,
+  "evidence_version": "0.2.0-draft",
+  "failures": [],
+  "finished_at": "2026-10-07T15:49:00Z",
+  "implementation": {
+    "compiler_path": "/usr/bin/x86_64-linux-gnu-g++-13",
+    "compiler_target": "x86_64-linux-gnu",
+    "compiler_version": "x86_64-linux-gnu-g++-13 (Ubuntu 13.3.0-6ubuntu2~24.04.1) 13.3.0",
+    "dynamic_link_dependencies": {
+      "address_undefined_sanitizers": [
+        "linux-vdso.so.1",
+        "libasan.so.8",
+        "libstdc++.so.6",
+        "libm.so.6",
+        "libubsan.so.1",
+        "libgcc_s.so.1",
+        "libc.so.6",
+        "/lib64/ld-linux-x86-64.so.2"
+      ],
+      "normal": [
+        "linux-vdso.so.1",
+        "libstdc++.so.6",
+        "libgcc_s.so.1",
+        "libc.so.6",
+        "libm.so.6",
+        "/lib64/ld-linux-x86-64.so.2"
+      ]
+    },
+    "external_source_dependencies": [],
+    "include_audit": {
+      "includes": [
+        "../../p4/raster_admission.hpp",
+        "array",
+        "atomic",
+        "chrono",
+        "cstddef",
+        "cstdint",
+        "cstdio",
+        "cstdlib",
+        "cstring",
+        "initializer_list",
+        "limits",
+        "new",
+        "raster_admission.hpp",
+        "span",
+        "stdexcept",
+        "stop_token",
+        "string_view",
+        "type_traits",
+        "utility",
+        "vector"
+      ],
+      "unexpected_includes": []
+    },
+    "language": "C++20",
+    "normal_build_flags": [
+      "-std=c++20",
+      "-Wall",
+      "-Wextra",
+      "-Wpedantic",
+      "-Wconversion",
+      "-Wsign-conversion",
+      "-Wshadow",
+      "-Werror",
+      "-O2"
+    ],
+    "sanitizer_flags": [
+      "-fsanitize=address,undefined",
+      "-fno-omit-frame-pointer",
+      "-g"
+    ],
+    "source_hashes": {
+      "Image/SPEC/harness/p4/test_raster_admission.cpp": "281fddcbea1c793f8516f22a370e08fc908c1327dbd09c4105f7fbe392ef9306",
+      "Image/SPEC/p4/raster_admission.cpp": "9f15b2bc852554a784990bb355607bbef5daa978e7f76c0ad0edade9fcfa0829",
+      "Image/SPEC/p4/raster_admission.hpp": "c52136d07c631aff7d396e034c600d3de832fcb7409f8f2b605415a22b46ff21",
+      "Image/SPEC/profiles/general_still_image.proposal.json": "59650032ebd787fde7eed1f3f6606a3e0cc275e8336ad20855c65ecec2c5a2d1"
+    }
+  },
+  "limitations": [
+    "Decoder support is limited to one binary Netpbm P5 or P6 image with maxval 255; all other formats and sample ranges reject.",
+    "The PNM parser uses one bounded header pass and one raster copy; exact payload length is required, so trailing and concatenated images reject.",
+    "Animation and multipage payloads are unsupported; no observation assembly, canonicalization, pixel transformation, or feature computation is implemented.",
+    "Candidate limits are proposal-only test ceilings, not production limits or approval.",
+    "The returned std::span is non-owning; caller must maintain backing storage lifetime and immutability.",
+    "No observation assembly, persistent state, canonicalization, pixel transformation, or feature computation is implemented.",
+    "Source-level standard-library include and host dynamic-link checks do not certify a production binary or target runtime."
+  ],
+  "phase": "P4",
+  "phase_completion": "p4_bounded_pnm_p5_p6_decode_complete_production_profile_open",
+  "scope": {
+    "cortex_modified": false,
+    "decoder_implemented": true,
+    "decoder_security_review": "assistant-reviewed-bounded-parser; ASan-UBSan-tested; no external decoder dependency; not production certification",
+    "encoded_formats_enabled": [
+      "PNM_P5",
+      "PNM_P6"
+    ],
+    "implemented": "C++20 decoded-raster admission and dependency-free binary Netpbm P5/P6 decode",
+    "observation_or_partial_publication_api": false,
+    "p5_started": false,
+    "profile_hash": "59650032ebd787fde7eed1f3f6606a3e0cc275e8336ad20855c65ecec2c5a2d1",
+    "profile_id": "general-still-image-candidate-v1",
+    "profile_status": "proposal",
+    "profile_usage": "proposal-only-test-ceilings; not production authorization"
+  },
+  "started_at": "2026-10-07T15:48:48Z",
+  "status": "finished",
+  "transition_authorization": {
+    "p3_coverage_oracle_acceptance": "user_accepted",
+    "p4_start_authorization": "user_authorized",
+    "record_id": "D-015",
+    "review_model": "user_project_owner_plus_assistant_only; no outside review required"
+  },
+  "working_tree_state": "dirty",
+  "working_tree_status_sha256": "a53d90512350d74cd2dc22dfc0ee29b8c17c35af416add5af92b604745b279a2"
+}

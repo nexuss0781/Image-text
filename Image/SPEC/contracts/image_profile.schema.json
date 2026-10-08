@@ -1,0 +1,561 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:agi-core:vision:image-profile:0.2.0-draft",
+  "title": "AGI-Core Image VISION Processing Profile",
+  "description": "Phase 2 draft profile contract. Exact schema versions are bound; schema validity does not approve values, owners, dependencies, or production use.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "profile_id",
+    "profile_version",
+    "status",
+    "input",
+    "canonicalization",
+    "features",
+    "limits",
+    "complexity",
+    "implementation_policy",
+    "uncertainty",
+    "provenance",
+    "contract_versions"
+  ],
+  "properties": {
+    "profile_id": {
+      "$ref": "#/$defs/Identifier"
+    },
+    "profile_version": {
+      "type": "string",
+      "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+$"
+    },
+    "status": {
+      "enum": [
+        "fixture_only",
+        "proposal",
+        "approved"
+      ]
+    },
+    "purpose": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 512
+    },
+    "input": {
+      "$ref": "#/$defs/InputPolicy"
+    },
+    "canonicalization": {
+      "$ref": "#/$defs/Canonicalization"
+    },
+    "features": {
+      "$ref": "#/$defs/Features"
+    },
+    "limits": {
+      "$ref": "#/$defs/Limits"
+    },
+    "complexity": {
+      "$ref": "#/$defs/Complexity"
+    },
+    "implementation_policy": {
+      "$ref": "#/$defs/ImplementationPolicy"
+    },
+    "uncertainty": {
+      "$ref": "#/$defs/UncertaintyPolicy"
+    },
+    "provenance": {
+      "$ref": "#/$defs/ProvenancePolicy"
+    },
+    "contract_versions": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "profile_schema",
+        "observation_schema",
+        "error_schema"
+      ],
+      "properties": {
+        "profile_schema": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 64
+        },
+        "observation_schema": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 64
+        },
+        "error_schema": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 64
+        }
+      }
+    },
+    "approval_record_id": {
+      "$ref": "#/$defs/Identifier"
+    }
+  },
+  "$defs": {
+    "Identifier": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 128,
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9._:/-]{0,127}$"
+    },
+    "NonNegativeInteger": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "PositiveInteger": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "InputPolicy": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "encoded_formats",
+        "decoded_layouts",
+        "channel_orders",
+        "sample_types",
+        "sample_range",
+        "allow_strides",
+        "allow_animation"
+      ],
+      "properties": {
+        "encoded_formats": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "$ref": "#/$defs/Identifier"
+          }
+        },
+        "decoded_layouts": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {
+            "enum": [
+              "HWC",
+              "CHW",
+              "PLANAR",
+              "profile_defined"
+            ]
+          }
+        },
+        "channel_orders": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {
+            "enum": [
+              "GRAY",
+              "RGB",
+              "BGR",
+              "RGBA",
+              "BGRA",
+              "profile_defined"
+            ]
+          }
+        },
+        "sample_types": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {
+            "enum": [
+              "uint8",
+              "uint16",
+              "int16",
+              "float32",
+              "float64"
+            ]
+          }
+        },
+        "sample_range": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "minimum",
+            "maximum"
+          ],
+          "properties": {
+            "minimum": {
+              "type": "number"
+            },
+            "maximum": {
+              "type": "number"
+            }
+          }
+        },
+        "allow_strides": {
+          "type": "boolean"
+        },
+        "allow_animation": {
+          "type": "boolean"
+        },
+        "animated_policy": {
+          "enum": [
+            "reject",
+            "explicit_frame_selection",
+            "profile_defined"
+          ]
+        }
+      }
+    },
+    "Canonicalization": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "pixel_format",
+        "orientation_policy",
+        "alpha_policy",
+        "geometry_policy",
+        "transform_version"
+      ],
+      "properties": {
+        "pixel_format": {
+          "enum": [
+            "GRAY_U8",
+            "RGB_U8",
+            "RGBA_U8",
+            "GRAY_F32",
+            "RGB_F32",
+            "RGBA_F32",
+            "profile_defined"
+          ]
+        },
+        "color_profile_id": {
+          "$ref": "#/$defs/Identifier"
+        },
+        "transfer_assumption": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "orientation_policy": {
+          "enum": [
+            "decoded_raster_only",
+            "explicit_profile_transform",
+            "reject_unknown"
+          ]
+        },
+        "alpha_policy": {
+          "enum": [
+            "reject_alpha",
+            "preserve",
+            "composite_explicit_background",
+            "not_applicable"
+          ]
+        },
+        "alpha_background": {
+          "type": "array",
+          "minItems": 1,
+          "maxItems": 4,
+          "items": {
+            "type": "number"
+          }
+        },
+        "geometry_policy": {
+          "enum": [
+            "identity_only",
+            "profile_defined"
+          ]
+        },
+        "transform_version": {
+          "$ref": "#/$defs/Identifier"
+        },
+        "resize_policy": {
+          "type": "string",
+          "maxLength": 128
+        },
+        "interpolation_policy": {
+          "type": "string",
+          "maxLength": 128
+        },
+        "padding_policy": {
+          "type": "string",
+          "maxLength": 128
+        }
+      }
+    },
+    "Features": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "enabled",
+        "max_feature_planes_per_pixel",
+        "max_regions",
+        "max_patch_count"
+      ],
+      "properties": {
+        "enabled": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "$ref": "#/$defs/Identifier"
+          }
+        },
+        "max_feature_planes_per_pixel": {
+          "$ref": "#/$defs/NonNegativeInteger"
+        },
+        "max_regions": {
+          "$ref": "#/$defs/NonNegativeInteger"
+        },
+        "max_patch_count": {
+          "$ref": "#/$defs/NonNegativeInteger"
+        },
+        "max_scale_count": {
+          "$ref": "#/$defs/PositiveInteger"
+        },
+        "patch_policy_id": {
+          "$ref": "#/$defs/Identifier"
+        }
+      }
+    },
+    "Limits": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "max_encoded_bytes",
+        "max_width",
+        "max_height",
+        "max_pixels",
+        "max_channels",
+        "max_decoded_bytes",
+        "max_intermediate_bytes",
+        "max_output_bytes",
+        "max_output_elements",
+        "max_work_units",
+        "max_in_flight_requests",
+        "max_queue_depth",
+        "deadline_ms",
+        "max_diagnostic_bytes"
+      ],
+      "properties": {
+        "max_encoded_bytes": {
+          "$ref": "#/$defs/NonNegativeInteger"
+        },
+        "max_width": {
+          "$ref": "#/$defs/PositiveInteger"
+        },
+        "max_height": {
+          "$ref": "#/$defs/PositiveInteger"
+        },
+        "max_pixels": {
+          "$ref": "#/$defs/PositiveInteger"
+        },
+        "max_channels": {
+          "$ref": "#/$defs/PositiveInteger"
+        },
+        "max_decoded_bytes": {
+          "$ref": "#/$defs/PositiveInteger"
+        },
+        "max_intermediate_bytes": {
+          "$ref": "#/$defs/PositiveInteger"
+        },
+        "max_output_bytes": {
+          "$ref": "#/$defs/PositiveInteger"
+        },
+        "max_output_elements": {
+          "$ref": "#/$defs/PositiveInteger"
+        },
+        "max_work_units": {
+          "$ref": "#/$defs/PositiveInteger"
+        },
+        "max_in_flight_requests": {
+          "$ref": "#/$defs/PositiveInteger"
+        },
+        "max_queue_depth": {
+          "$ref": "#/$defs/NonNegativeInteger"
+        },
+        "deadline_ms": {
+          "$ref": "#/$defs/PositiveInteger"
+        },
+        "max_diagnostic_bytes": {
+          "$ref": "#/$defs/PositiveInteger"
+        }
+      }
+    },
+    "ComplexityOperation": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "operation_id",
+        "time_bound",
+        "space_bound",
+        "variables",
+        "bounded_parameters",
+        "proof_id"
+      ],
+      "properties": {
+        "operation_id": {
+          "$ref": "#/$defs/Identifier"
+        },
+        "time_bound": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 256
+        },
+        "space_bound": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 256
+        },
+        "variables": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {
+            "enum": [
+              "P",
+              "C",
+              "A",
+              "L",
+              "R",
+              "F",
+              "Q",
+              "B",
+              "bytes",
+              "profile_specific"
+            ]
+          }
+        },
+        "bounded_parameters": {
+          "type": "object",
+          "additionalProperties": {
+            "$ref": "#/$defs/NonNegativeInteger"
+          }
+        },
+        "proof_id": {
+          "$ref": "#/$defs/Identifier"
+        }
+      }
+    },
+    "Complexity": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "quadratic_allowed",
+        "operations"
+      ],
+      "properties": {
+        "quadratic_allowed": {
+          "const": false
+        },
+        "operations": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "$ref": "#/$defs/ComplexityOperation"
+          }
+        },
+        "scaling_measurement_required": {
+          "type": "boolean"
+        }
+      }
+    },
+    "ImplementationPolicy": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "language_boundary",
+        "math_library_policy",
+        "ml_libraries_frameworks_allowed",
+        "quadratic_complexity_allowed"
+      ],
+      "properties": {
+        "language_boundary": {
+          "const": "cpp_assembly"
+        },
+        "math_library_policy": {
+          "enum": [
+            "audited_if_used",
+            "owner_approved_only"
+          ]
+        },
+        "ml_libraries_frameworks_allowed": {
+          "const": false
+        },
+        "quadratic_complexity_allowed": {
+          "const": false
+        },
+        "dependency_audit_required": {
+          "type": "boolean"
+        }
+      }
+    },
+    "UncertaintyPolicy": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "mode",
+        "production_fallback_approved",
+        "convention"
+      ],
+      "properties": {
+        "mode": {
+          "enum": [
+            "disabled",
+            "fixture_only_uncalibrated",
+            "uncalibrated_fallback",
+            "calibrated"
+          ]
+        },
+        "calibration_profile_id": {
+          "$ref": "#/$defs/Identifier"
+        },
+        "production_fallback_approved": {
+          "type": "boolean"
+        },
+        "convention": {
+          "const": "0_is_highest_confidence_1_is_highest_uncertainty"
+        }
+      }
+    },
+    "ProvenancePolicy": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "producer_component",
+        "runtime_profile",
+        "retention"
+      ],
+      "properties": {
+        "producer_component": {
+          "const": "VISION_IMAGE"
+        },
+        "runtime_profile": {
+          "$ref": "#/$defs/Identifier"
+        },
+        "retention": {
+          "enum": [
+            "ephemeral_test_only",
+            "externally_managed",
+            "profile_defined"
+          ]
+        }
+      }
+    }
+  },
+  "anyOf": [
+    {
+      "properties": {
+        "status": {
+          "enum": [
+            "fixture_only",
+            "proposal"
+          ]
+        }
+      }
+    },
+    {
+      "properties": {
+        "status": {
+          "const": "approved"
+        }
+      },
+      "required": [
+        "approval_record_id"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,162 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:agi-core:vision:image-p4-bounded-decode-evidence:0.2.0-draft",
+  "title": "Image VISION Phase 4 Bounded Admission and P5/P6 Decode Evidence",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "evidence_version",
+    "phase",
+    "status",
+    "phase_completion",
+    "started_at",
+    "finished_at",
+    "elapsed_ms",
+    "commit",
+    "working_tree_state",
+    "working_tree_status_sha256",
+    "transition_authorization",
+    "scope",
+    "implementation",
+    "build_runs",
+    "case_results",
+    "counts",
+    "failures",
+    "limitations"
+  ],
+  "properties": {
+    "evidence_version": {"const": "0.2.0-draft"},
+    "phase": {"const": "P4"},
+    "status": {"enum": ["finished", "partial", "failed"]},
+    "phase_completion": {"const": "p4_bounded_pnm_p5_p6_decode_complete_production_profile_open"},
+    "started_at": {"type": "string", "format": "date-time"},
+    "finished_at": {"type": "string", "format": "date-time"},
+    "elapsed_ms": {"type": "number", "minimum": 0},
+    "commit": {"type": "string", "pattern": "^[a-fA-F0-9]{7,64}$"},
+    "working_tree_state": {"enum": ["clean", "dirty", "unknown"]},
+    "working_tree_status_sha256": {"type": "string", "pattern": "^[a-fA-F0-9]{64}$"},
+    "transition_authorization": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["p3_coverage_oracle_acceptance", "p4_start_authorization", "record_id", "review_model"],
+      "properties": {
+        "p3_coverage_oracle_acceptance": {"const": "user_accepted"},
+        "p4_start_authorization": {"const": "user_authorized"},
+        "record_id": {"const": "D-015"},
+        "review_model": {"const": "user_project_owner_plus_assistant_only; no outside review required"}
+      }
+    },
+    "scope": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "implemented", "profile_id", "profile_status", "profile_hash", "profile_usage",
+        "encoded_formats_enabled", "decoder_implemented", "decoder_security_review",
+        "p5_started", "cortex_modified", "observation_or_partial_publication_api"
+      ],
+      "properties": {
+        "implemented": {"type": "string", "minLength": 1, "maxLength": 256},
+        "profile_id": {"type": "string", "minLength": 1, "maxLength": 128},
+        "profile_status": {"const": "proposal"},
+        "profile_hash": {"type": "string", "pattern": "^[a-fA-F0-9]{64}$"},
+        "profile_usage": {"const": "proposal-only-test-ceilings; not production authorization"},
+        "encoded_formats_enabled": {"const": ["PNM_P5", "PNM_P6"]},
+        "decoder_implemented": {"const": true},
+        "decoder_security_review": {"const": "assistant-reviewed-bounded-parser; ASan-UBSan-tested; no external decoder dependency; not production certification"},
+        "p5_started": {"const": false},
+        "cortex_modified": {"const": false},
+        "observation_or_partial_publication_api": {"const": false}
+      }
+    },
+    "implementation": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "source_hashes", "language", "compiler_path", "compiler_version", "compiler_target",
+        "normal_build_flags", "sanitizer_flags", "external_source_dependencies",
+        "include_audit", "dynamic_link_dependencies"
+      ],
+      "properties": {
+        "source_hashes": {"type": "object", "minProperties": 4, "additionalProperties": {"type": "string", "pattern": "^[a-fA-F0-9]{64}$"}},
+        "language": {"const": "C++20"},
+        "compiler_path": {"type": "string", "minLength": 1, "maxLength": 512},
+        "compiler_version": {"type": "string", "minLength": 1, "maxLength": 256},
+        "compiler_target": {"type": "string", "minLength": 1, "maxLength": 128},
+        "normal_build_flags": {"type": "array", "minItems": 1, "items": {"type": "string", "maxLength": 128}},
+        "sanitizer_flags": {"type": "array", "minItems": 1, "items": {"type": "string", "maxLength": 128}},
+        "external_source_dependencies": {"type": "array", "maxItems": 0},
+        "include_audit": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["includes", "unexpected_includes"],
+          "properties": {
+            "includes": {"type": "array", "items": {"type": "string", "maxLength": 128}},
+            "unexpected_includes": {"type": "array", "maxItems": 0}
+          }
+        },
+        "dynamic_link_dependencies": {"type": "object", "minProperties": 1, "additionalProperties": {"type": "array", "items": {"type": "string", "maxLength": 256}}}
+      }
+    },
+    "build_runs": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["mode", "status", "compile_command"],
+        "properties": {
+          "mode": {"enum": ["normal", "address_undefined_sanitizers"]},
+          "status": {"enum": ["pass", "fail", "unavailable"]},
+          "compile_command": {"type": "array", "minItems": 1, "items": {"type": "string", "maxLength": 1024}},
+          "compiler_output": {"type": "string", "maxLength": 4096},
+          "diagnostic": {"type": "string", "maxLength": 1024},
+          "test_run": {"$ref": "#/$defs/TestRun"}
+        }
+      }
+    },
+    "case_results": {"type": "array", "minItems": 1, "items": {"$ref": "#/$defs/CaseResult"}},
+    "counts": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["tests_defined", "tests_run_normal", "tests_passed_normal", "tests_failed_normal", "sanitizer_status"],
+      "properties": {
+        "tests_defined": {"type": "integer", "const": 33},
+        "tests_run_normal": {"type": "integer", "minimum": 0, "maximum": 33},
+        "tests_passed_normal": {"type": "integer", "minimum": 0, "maximum": 33},
+        "tests_failed_normal": {"type": "integer", "minimum": 0, "maximum": 33},
+        "sanitizer_status": {"enum": ["pass", "fail", "unavailable"]}
+      }
+    },
+    "failures": {"type": "array", "items": {"type": "string", "maxLength": 1024}},
+    "limitations": {"type": "array", "minItems": 1, "items": {"type": "string", "maxLength": 512}}
+  },
+  "$defs": {
+    "CaseResult": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["test_id", "status", "catalog_case_id", "label"],
+      "properties": {
+        "test_id": {"type": "string", "pattern": "^P4-TEST-[0-9]{3}$"},
+        "status": {"enum": ["pass", "fail"]},
+        "catalog_case_id": {"type": "string", "pattern": "^(ADM|DEC)-[0-9]{3}$"},
+        "label": {"type": "string", "minLength": 1, "maxLength": 256}
+      }
+    },
+    "TestRun": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["mode", "status", "command", "exit_code", "elapsed_ms", "test_count", "case_results", "stdout", "stderr"],
+      "properties": {
+        "mode": {"enum": ["normal", "address_undefined_sanitizers"]},
+        "status": {"enum": ["pass", "fail"]},
+        "command": {"type": "array", "minItems": 1, "items": {"type": "string", "maxLength": 1024}},
+        "exit_code": {"type": "integer"},
+        "elapsed_ms": {"type": "number", "minimum": 0},
+        "test_count": {"type": "integer", "minimum": 0},
+        "case_results": {"type": "array", "minItems": 1, "items": {"$ref": "#/$defs/CaseResult"}},
+        "stdout": {"type": "string", "maxLength": 16000},
+        "stderr": {"type": "string", "maxLength": 4000}
+      }
+    }
+  }
+}

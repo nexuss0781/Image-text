@@ -1,0 +1,14 @@
+{
+  "kind": "image_vision_error",
+  "error_version": "0.2.0-draft",
+  "request_id": "req-fixture-invalid-1",
+  "trace_id": "trace-fixture-invalid-1",
+  "component": "VISION_IMAGE",
+  "profile_id": "image-fixture-small-v1",
+  "profile_version": "1.0.0",
+  "code": "INVALID_DESCRIPTOR",
+  "message": "Fixture descriptor rejected.",
+  "retryable": false,
+  "state_changed": false,
+  "stage_id": "admission"
+}

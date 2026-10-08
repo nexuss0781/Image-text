@@ -1,0 +1,593 @@
+{
+  "fixture_set_version": "0.1.0",
+  "status": "defined",
+  "purpose": "Independent integer-valued fixtures for the forward-difference contract example; no production feature profile is selected.",
+  "coordinate_convention": "HWC row-major; first index is y, second is x; channel values are listed in channel order.",
+  "operator_example": {
+    "id": "forward_difference_xy_fixture_v1",
+    "definition": {
+      "dx[y,x,c]": "input[y,min(x+1,W-1),c] - input[y,x,c]",
+      "dy[y,x,c]": "input[min(y+1,H-1),x,c] - input[y,x,c]"
+    },
+    "border_rule": "Replicate the edge sample; therefore the final x-column of dx and final y-row of dy are zero.",
+    "output_layout": "dx and dy each preserve input HWC shape and are signed integer differences; a selected implementation dtype must represent the full declared input-range difference without overflow.",
+    "units": "input_sample_code_difference"
+  },
+  "fixtures": [
+    {
+      "id": "single_pixel_zero",
+      "shape_hwc": [
+        1,
+        1,
+        1
+      ],
+      "input": [
+        [
+          [
+            7
+          ]
+        ]
+      ],
+      "expected_dx": [
+        [
+          [
+            0
+          ]
+        ]
+      ],
+      "expected_dy": [
+        [
+          [
+            0
+          ]
+        ]
+      ],
+      "purpose": "Minimum dimensions and border definition.",
+      "oracle_review": {
+        "derived_by": "assistant_manual_review",
+        "independent_of_implementation": true,
+        "derivation": "The only sample is 7; right and down replicate that same sample, so both differences are 7−7=0.",
+        "comparison": {
+          "kind": "exact_integer",
+          "absolute_tolerance": 0,
+          "relative_tolerance": 0
+        },
+        "expected_fields": [
+          "expected_dx",
+          "expected_dy"
+        ]
+      }
+    },
+    {
+      "id": "constant_2x3",
+      "shape_hwc": [
+        2,
+        3,
+        1
+      ],
+      "input": [
+        [
+          [
+            5
+          ],
+          [
+            5
+          ],
+          [
+            5
+          ]
+        ],
+        [
+          [
+            5
+          ],
+          [
+            5
+          ],
+          [
+            5
+          ]
+        ]
+      ],
+      "expected_dx": [
+        [
+          [
+            0
+          ],
+          [
+            0
+          ],
+          [
+            0
+          ]
+        ],
+        [
+          [
+            0
+          ],
+          [
+            0
+          ],
+          [
+            0
+          ]
+        ]
+      ],
+      "expected_dy": [
+        [
+          [
+            0
+          ],
+          [
+            0
+          ],
+          [
+            0
+          ]
+        ],
+        [
+          [
+            0
+          ],
+          [
+            0
+          ],
+          [
+            0
+          ]
+        ]
+      ],
+      "purpose": "Constant-field zero response.",
+      "oracle_review": {
+        "derived_by": "assistant_manual_review",
+        "independent_of_implementation": true,
+        "derivation": "Every horizontal and vertical neighbor pair is 5→5, including replicated right/bottom edges; each subtraction is 5−5=0.",
+        "comparison": {
+          "kind": "exact_integer",
+          "absolute_tolerance": 0,
+          "relative_tolerance": 0
+        },
+        "expected_fields": [
+          "expected_dx",
+          "expected_dy"
+        ]
+      }
+    },
+    {
+      "id": "horizontal_ramp_1x4",
+      "shape_hwc": [
+        1,
+        4,
+        1
+      ],
+      "input": [
+        [
+          [
+            0
+          ],
+          [
+            1
+          ],
+          [
+            3
+          ],
+          [
+            6
+          ]
+        ]
+      ],
+      "expected_dx": [
+        [
+          [
+            1
+          ],
+          [
+            2
+          ],
+          [
+            3
+          ],
+          [
+            0
+          ]
+        ]
+      ],
+      "expected_dy": [
+        [
+          [
+            0
+          ],
+          [
+            0
+          ],
+          [
+            0
+          ],
+          [
+            0
+          ]
+        ]
+      ],
+      "purpose": "One-row shape and positive horizontal differences.",
+      "oracle_review": {
+        "derived_by": "assistant_manual_review",
+        "independent_of_implementation": true,
+        "derivation": "Across the row: 1−0=1, 3−1=2, 6−3=3, then replicated edge 6−6=0. The sole row is replicated vertically, so every dy is 0.",
+        "comparison": {
+          "kind": "exact_integer",
+          "absolute_tolerance": 0,
+          "relative_tolerance": 0
+        },
+        "expected_fields": [
+          "expected_dx",
+          "expected_dy"
+        ]
+      }
+    },
+    {
+      "id": "vertical_ramp_4x1",
+      "shape_hwc": [
+        4,
+        1,
+        1
+      ],
+      "input": [
+        [
+          [
+            0
+          ]
+        ],
+        [
+          [
+            2
+          ]
+        ],
+        [
+          [
+            5
+          ]
+        ],
+        [
+          [
+            9
+          ]
+        ]
+      ],
+      "expected_dx": [
+        [
+          [
+            0
+          ]
+        ],
+        [
+          [
+            0
+          ]
+        ],
+        [
+          [
+            0
+          ]
+        ],
+        [
+          [
+            0
+          ]
+        ]
+      ],
+      "expected_dy": [
+        [
+          [
+            2
+          ]
+        ],
+        [
+          [
+            3
+          ]
+        ],
+        [
+          [
+            4
+          ]
+        ],
+        [
+          [
+            0
+          ]
+        ]
+      ],
+      "purpose": "One-column shape and positive vertical differences.",
+      "oracle_review": {
+        "derived_by": "assistant_manual_review",
+        "independent_of_implementation": true,
+        "derivation": "The single column has no horizontal change, so dx=0 throughout. Downward differences are 2−0=2, 5−2=3, 9−5=4, then replicated edge 9−9=0.",
+        "comparison": {
+          "kind": "exact_integer",
+          "absolute_tolerance": 0,
+          "relative_tolerance": 0
+        },
+        "expected_fields": [
+          "expected_dx",
+          "expected_dy"
+        ]
+      }
+    },
+    {
+      "id": "center_impulse_3x3",
+      "shape_hwc": [
+        3,
+        3,
+        1
+      ],
+      "input": [
+        [
+          [
+            0
+          ],
+          [
+            0
+          ],
+          [
+            0
+          ]
+        ],
+        [
+          [
+            0
+          ],
+          [
+            1
+          ],
+          [
+            0
+          ]
+        ],
+        [
+          [
+            0
+          ],
+          [
+            0
+          ],
+          [
+            0
+          ]
+        ]
+      ],
+      "expected_dx": [
+        [
+          [
+            0
+          ],
+          [
+            0
+          ],
+          [
+            0
+          ]
+        ],
+        [
+          [
+            1
+          ],
+          [
+            -1
+          ],
+          [
+            0
+          ]
+        ],
+        [
+          [
+            0
+          ],
+          [
+            0
+          ],
+          [
+            0
+          ]
+        ]
+      ],
+      "expected_dy": [
+        [
+          [
+            0
+          ],
+          [
+            1
+          ],
+          [
+            0
+          ]
+        ],
+        [
+          [
+            0
+          ],
+          [
+            -1
+          ],
+          [
+            0
+          ]
+        ],
+        [
+          [
+            0
+          ],
+          [
+            0
+          ],
+          [
+            0
+          ]
+        ]
+      ],
+      "purpose": "Sign, impulse localization, and right/down difference orientation.",
+      "oracle_review": {
+        "derived_by": "assistant_manual_review",
+        "independent_of_implementation": true,
+        "derivation": "Only the center is 1. Horizontal differences on the middle row are 1−0=+1, 0−1=−1, 0−0=0; vertical differences in the middle column are 1−0=+1, 0−1=−1, 0−0=0; all other pairs are 0−0.",
+        "comparison": {
+          "kind": "exact_integer",
+          "absolute_tolerance": 0,
+          "relative_tolerance": 0
+        },
+        "expected_fields": [
+          "expected_dx",
+          "expected_dy"
+        ]
+      }
+    },
+    {
+      "id": "checkerboard_2x2",
+      "shape_hwc": [
+        2,
+        2,
+        1
+      ],
+      "input": [
+        [
+          [
+            0
+          ],
+          [
+            1
+          ]
+        ],
+        [
+          [
+            1
+          ],
+          [
+            0
+          ]
+        ]
+      ],
+      "expected_dx": [
+        [
+          [
+            1
+          ],
+          [
+            0
+          ]
+        ],
+        [
+          [
+            -1
+          ],
+          [
+            0
+          ]
+        ]
+      ],
+      "expected_dy": [
+        [
+          [
+            1
+          ],
+          [
+            -1
+          ]
+        ],
+        [
+          [
+            0
+          ],
+          [
+            0
+          ]
+        ]
+      ],
+      "purpose": "Alternating signs and bottom/right boundary responses.",
+      "oracle_review": {
+        "derived_by": "assistant_manual_review",
+        "independent_of_implementation": true,
+        "derivation": "Top-row dx is 1−0=+1 then the replicated right edge 0; bottom-row dx is 0−1=−1 then 0. Left-column dy is 1−0=+1 then the bottom edge 0; right-column dy is 0−1=−1 then 0.",
+        "comparison": {
+          "kind": "exact_integer",
+          "absolute_tolerance": 0,
+          "relative_tolerance": 0
+        },
+        "expected_fields": [
+          "expected_dx",
+          "expected_dy"
+        ]
+      }
+    },
+    {
+      "id": "two_channel_independence_1x2",
+      "shape_hwc": [
+        1,
+        2,
+        2
+      ],
+      "input": [
+        [
+          [
+            0,
+            10
+          ],
+          [
+            3,
+            6
+          ]
+        ]
+      ],
+      "expected_dx": [
+        [
+          [
+            3,
+            -4
+          ],
+          [
+            0,
+            0
+          ]
+        ]
+      ],
+      "expected_dy": [
+        [
+          [
+            0,
+            0
+          ],
+          [
+            0,
+            0
+          ]
+        ]
+      ],
+      "purpose": "Channels remain independent and ordered; no implicit luminance mix.",
+      "oracle_review": {
+        "derived_by": "assistant_manual_review",
+        "independent_of_implementation": true,
+        "derivation": "At x=0, channel differences are independently 3−0=+3 and 6−10=−4; the final x sample is replicated, giving [0,0]. The single row replicates vertically, so dy=[0,0] at both pixels.",
+        "comparison": {
+          "kind": "exact_integer",
+          "absolute_tolerance": 0,
+          "relative_tolerance": 0
+        },
+        "expected_fields": [
+          "expected_dx",
+          "expected_dy"
+        ]
+      }
+    }
+  ],
+  "review_notes": [
+    "These integer examples test only the stated difference operator, not decoder, color management, semantic perception, or production performance.",
+    "The implementation contract must separately select a signed output type and prove its range for the enabled input type.",
+    "An owner may change the feature profile only by versioning the operator/profile and replacing or extending the independent fixtures before implementation results are reviewed."
+  ],
+  "oracle_policy": {
+    "review_model": "user_project_owner_plus_assistant_only; no external reviewer is required or claimed",
+    "expected_values_fixed_before_implementation_results": true,
+    "tolerances": "Each current vector is integer arithmetic and uses exact comparison (absolute=0, relative=0); future non-integer fixtures require a predeclared tolerance and named tolerance owner before any candidate result is inspected.",
+    "checker_role": "The package checker independently recomputes the declared stencil only as a consistency check; it does not generate or replace the manually derived expected arrays."
+  },
+  "execution_status": "not_run"
+}

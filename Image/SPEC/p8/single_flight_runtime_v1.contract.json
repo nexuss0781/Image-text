@@ -1,0 +1,92 @@
+{
+  "phase": "P8",
+  "contract_version": "single-flight-still-request-v1",
+  "status": "bounded_engineering_slice_profile_proposal_open",
+  "scope": {
+    "request_shape": "One synchronous still-image request lease at a time; this runtime does not decode, transform, observe, or publish image data.",
+    "profile_id": "general-still-image-candidate-v1",
+    "profile_status": "proposal",
+    "production_approval": false,
+    "features_enabled": [],
+    "uncertainty_mode": "disabled",
+    "animation_allowed": false,
+    "frame_transport_enabled": false,
+    "observation_publication_enabled": false,
+    "cortex_modified": false
+  },
+  "limits": {
+    "source": "Caller-supplied per Runtime instance; no production defaults.",
+    "proposal_test_ceiling": {
+      "max_in_flight_requests": 1,
+      "max_queue_depth": 0,
+      "deadline_ms": 10000,
+      "max_diagnostic_bytes": 1024
+    },
+    "accepted_values": {
+      "max_in_flight_requests": 1,
+      "max_queue_depth": 0,
+      "deadline_ms": "integer in [1, 10000]",
+      "max_diagnostic_bytes": "integer in [0, 1024]"
+    },
+    "diagnostic_bytes_emitted": 0
+  },
+  "admission": {
+    "mode": "nonblocking_try_begin",
+    "active_request_behavior": "Return BACKPRESSURE immediately; do not enqueue, wait, or discard an accepted request.",
+    "queue": "No queue exists; queue depth is exactly zero.",
+    "runtime_closed_behavior": "Return a local RUNTIME_CLOSED lifecycle status; no image observation/error envelope is created by P8.",
+    "caller_ownership": "Rejected requests and all image bytes remain caller-owned."
+  },
+  "deadline": {
+    "clock": "std::chrono::steady_clock",
+    "effective_rule": "min(admission_time + configured deadline_ms, optional caller deadline)",
+    "forwarding": "Expose the effective absolute deadline and cooperative stop token using the P4 AdmissionControl type.",
+    "completion_rule": "If the lease is not cancelled and finish occurs at or after its effective deadline, report DEADLINE_EXCEEDED and release the active slot."
+  },
+  "cancellation": {
+    "mode": "Cooperative std::stop_token; cancellation is observable at existing P4-P7 safe boundaries.",
+    "handle": "A per-request cancellation handle may request stop while the lease is active; cancellation after completion is a no-op.",
+    "precedence": "A cancellation linearized before finish takes precedence over deadline status.",
+    "failure_atomicity": "P8 publishes no image result; request-local resources are released when the lease finishes or is destroyed."
+  },
+  "lifecycle": {
+    "close_modes": ["drain", "cancel_active_and_drain"],
+    "drain": "Stop new admission and wait for the active lease to finish.",
+    "cancel_active_and_drain": "Stop new admission, request cooperative cancellation of the active lease, then wait for finish.",
+    "idempotency": "Repeated close calls are safe. A closed Runtime is terminal; reopening requires a new Runtime instance.",
+    "lease_lifetime": "Lease completion/destruction releases the single active slot and wakes a draining closer."
+  },
+  "duplicate_and_retry": {
+    "request_identity_or_idempotency_key": "Not present in this P8 runtime API.",
+    "behavior": "P8 does not deduplicate or cache results. A repeated submission while a request is active receives BACKPRESSURE; a later submission is a new request.",
+    "retry_policy": "No automatic retry. Caller retains request and payload identity; P9 observation assembly must define idempotency before publication retries."
+  },
+  "frame_transport": {
+    "enabled": false,
+    "animation_or_multipage": "Reject under the unchanged proposal profile.",
+    "ordering_timestamps_reorder_window_gap_accounting": "No frame/stream transport is implemented. P8 neither invents timestamps nor changes caller-supplied frame metadata.",
+    "temporal_algorithms": "Not implemented."
+  },
+  "telemetry": {
+    "surface": "Read-only by-value RuntimeSnapshot with fixed aggregate lifecycle counters.",
+    "content": "No payload bytes, pixel values, paths, request identifiers, source labels, or caller text.",
+    "diagnostics": "No diagnostic strings are emitted; diagnostic_bytes_emitted is zero and within the caller-supplied ceiling.",
+    "sink": "No external telemetry sink or logging hook is introduced. Snapshot reads do not alter request results or runtime state."
+  },
+  "resources_and_complexity": {
+    "admission_time": "O(1)",
+    "admission_auxiliary_space": "O(1) fixed control state per runtime plus at most one active request-control object; no image payload, queue, or diagnostic buffer is retained.",
+    "accepted_requests": "At most one active request; exactly zero queued requests.",
+    "work": "No image-scaled work is performed by the request-control layer. P4-P7 retain their own checked work/byte limits and receive the same effective deadline/cancellation control.",
+    "scope_limit": "The static control-state bound is not a target-process peak-memory measurement or named-workload SLO."
+  },
+  "errors": {
+    "local_runtime_statuses": ["NONE", "INVALID_LIMITS", "RESOURCE_LIMIT", "BACKPRESSURE", "RUNTIME_CLOSED", "ALLOCATION_FAILURE"],
+    "completion_statuses": ["COMPLETED", "CANCELLED", "DEADLINE_EXCEEDED", "INVALID_LEASE"],
+    "wire_error_envelope": "Not produced by P8; local runtime lifecycle statuses do not extend the draft image_error schema."
+  },
+  "verification_boundary": {
+    "required": ["strict C++20 warnings", "normal tests", "ASan/UBSan tests", "exact test-to-existing-catalog bindings", "dependency audit", "proposal-profile binding", "no Cortex or P4-P7 source changes"],
+    "not_claimed": ["named production workload", "target runtime peak memory", "production deadline/SLO", "frame-stream semantics", "idempotent observation publication", "external telemetry-sink failure isolation", "production approval"]
+  }
+}

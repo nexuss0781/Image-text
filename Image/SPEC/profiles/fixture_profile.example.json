@@ -1,0 +1,100 @@
+{
+  "profile_id": "image-fixture-small-v1",
+  "profile_version": "1.0.0",
+  "status": "fixture_only",
+  "purpose": "Synthetic harness examples only; not a production or deployment profile.",
+  "input": {
+    "encoded_formats": [],
+    "decoded_layouts": [
+      "HWC"
+    ],
+    "channel_orders": [
+      "GRAY"
+    ],
+    "sample_types": [
+      "uint8"
+    ],
+    "sample_range": {
+      "minimum": 0,
+      "maximum": 255
+    },
+    "allow_strides": false,
+    "allow_animation": false,
+    "animated_policy": "reject"
+  },
+  "canonicalization": {
+    "pixel_format": "GRAY_U8",
+    "color_profile_id": "fixture-gray-code-values",
+    "transfer_assumption": "No color transform; integer fixture samples are retained as supplied.",
+    "orientation_policy": "decoded_raster_only",
+    "alpha_policy": "not_applicable",
+    "geometry_policy": "identity_only",
+    "transform_version": "identity-v1"
+  },
+  "features": {
+    "enabled": [
+      "forward_difference_xy_fixture_v1"
+    ],
+    "max_feature_planes_per_pixel": 2,
+    "max_regions": 256,
+    "max_patch_count": 0,
+    "max_scale_count": 1
+  },
+  "limits": {
+    "max_encoded_bytes": 0,
+    "max_width": 16,
+    "max_height": 16,
+    "max_pixels": 256,
+    "max_channels": 1,
+    "max_decoded_bytes": 256,
+    "max_intermediate_bytes": 2048,
+    "max_output_bytes": 4096,
+    "max_output_elements": 2048,
+    "max_work_units": 16384,
+    "max_in_flight_requests": 1,
+    "max_queue_depth": 0,
+    "deadline_ms": 1000,
+    "max_diagnostic_bytes": 256
+  },
+  "complexity": {
+    "quadratic_allowed": false,
+    "operations": [
+      {
+        "operation_id": "forward_difference_xy_fixture_v1",
+        "time_bound": "O(P*C)",
+        "space_bound": "O(P*C + output_bytes)",
+        "variables": [
+          "P",
+          "C"
+        ],
+        "bounded_parameters": {
+          "C": 1
+        },
+        "proof_id": "fixture-profile-proof-pending"
+      }
+    ],
+    "scaling_measurement_required": true
+  },
+  "implementation_policy": {
+    "language_boundary": "cpp_assembly",
+    "math_library_policy": "audited_if_used",
+    "ml_libraries_frameworks_allowed": false,
+    "quadratic_complexity_allowed": false,
+    "dependency_audit_required": true
+  },
+  "uncertainty": {
+    "mode": "fixture_only_uncalibrated",
+    "production_fallback_approved": false,
+    "convention": "0_is_highest_confidence_1_is_highest_uncertainty"
+  },
+  "provenance": {
+    "producer_component": "VISION_IMAGE",
+    "runtime_profile": "synthetic-fixture",
+    "retention": "ephemeral_test_only"
+  },
+  "contract_versions": {
+    "profile_schema": "0.2.0-draft",
+    "observation_schema": "0.3.1-draft",
+    "error_schema": "0.2.0-draft"
+  }
+}

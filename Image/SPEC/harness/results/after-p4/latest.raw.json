@@ -1,0 +1,173 @@
+{
+  "assistant_reviewed": true,
+  "catalog_summary": {
+    "component_cases_executed": 0,
+    "defined_total": 70,
+    "execution_statuses": {
+      "blocked": 24,
+      "not_run": 46
+    },
+    "package_checks_defined": 4
+  },
+  "checks": [
+    {
+      "case_id": "SPEC-JSON-001",
+      "duration_ms": 2.423,
+      "note": "Parsed 12 specification/profile/catalog/fixture JSON files with non-standard numeric constants rejected.",
+      "output_digest": "53e103f95e828be1bbfb1ed6ffbcdcc4013374b2518605c66394706a203bd337",
+      "status": "pass"
+    },
+    {
+      "case_id": "SPEC-JSON-ADVERSARIAL-001",
+      "duration_ms": 0.036,
+      "note": "Duplicate object members and exponent-overflow non-finite numbers reject.",
+      "output_digest": "4678e401992fcb7ee9499836738389df0674bcb63a0eead0c931385269028b54",
+      "status": "pass"
+    },
+    {
+      "case_id": "SPEC-SCHEMA-001",
+      "duration_ms": 1.911,
+      "note": "Validated 5 schema documents, supported-keyword structure, unique IDs, and local references.",
+      "output_digest": "b1afd2401d773b440790a70e6df50b7296dede3a7698df1091c53144ed209d1d",
+      "status": "pass"
+    },
+    {
+      "case_id": "SPEC-PROFILE-001",
+      "duration_ms": 1.118,
+      "note": "Fixture profile conforms; cross-field and forbidden-field negative probes reject as expected.",
+      "output_digest": "653b7bada980195ba2436b834d478bd3cf84cc021c6d984623026eb35295ad31",
+      "status": "pass"
+    },
+    {
+      "case_id": "SPEC-PROPOSAL-001",
+      "duration_ms": 0.427,
+      "note": "Proposal profile conforms; width/pixel, decoded/intermediate bytes, difference elements/output bytes, work units, and disabled-feature reserves agree.",
+      "output_digest": "3c192fe0e293079dd08bc269c248096770f033b1d894a6fe0db5c66fa51e8868",
+      "status": "pass"
+    },
+    {
+      "case_id": "SPEC-CONTRACT-001",
+      "duration_ms": 4.855,
+      "note": "Test-only observation/profile/error records validate; fixture bytes resolve by digest; version, evidence, profile/feature authorization, transform, disabled-uncertainty, atomicity, and retry probes reject.",
+      "output_digest": "d4a1bc115a69c734640cffd0c107d15193f1b0e3df35954b0450df74e96ceea2",
+      "status": "pass"
+    },
+    {
+      "case_id": "SPEC-FIXTURE-001",
+      "duration_ms": 0.096,
+      "note": "Independently hand-derived and tolerance-bound all 7 integer oracles; checker recomputed them as an O(total fixture samples) consistency check.",
+      "output_digest": "f6748d1ac1832a79d9c57d942e643b06a8f4039bcec816b091d7998ba7702fd8",
+      "status": "pass"
+    },
+    {
+      "case_id": "SPEC-CATALOG-001",
+      "duration_ms": 2.53,
+      "note": "70 component definitions; 46 not_run, 24 blocked; 25 requirements and 52 runtime invariants map exhaustively; 4 package checks remain distinct from component execution.",
+      "output_digest": "a9c2a42d52d67fcdc8f179b6eeda84b8e2d5f5d84edf544af63c169fb8f7eba9",
+      "status": "pass"
+    },
+    {
+      "case_id": "SPEC-ADMISSION-001",
+      "duration_ms": 10.723,
+      "note": "P4 evidence validates against its schema and exact catalog bindings; recorded status=finished, test cases=33, sanitizer status=pass.",
+      "output_digest": "2cbf3b6e14ed12563507e6d6570e2522eaf95e67f5a6d5d2cd0602f8ec2b95a8",
+      "status": "pass"
+    },
+    {
+      "case_id": "SPEC-CANONICAL-001",
+      "duration_ms": 8.686,
+      "note": "P5 evidence validates: 10/10 exact-value and geometry cases pass in strict normal and ASan/UBSan builds.",
+      "output_digest": "728230214168502a6217d83c48a874c9af2951cc559f5e84894205ea2f4e8e0d",
+      "status": "pass"
+    },
+    {
+      "case_id": "SPEC-SCOPE-001",
+      "duration_ms": 6.919,
+      "note": "Image scope guard passed: 30 changed paths are confined to Image/SPEC; Cortex is unchanged, native source is limited to the authorized P4 admission and P5 identity subsets, and no external codec source, binary artifact, or dependency manifest was added.",
+      "output_digest": "6097c21fa1035d7ea4ecc669d2859af2310d1c98a45de612fc17d496cce2f8b9",
+      "status": "pass"
+    },
+    {
+      "case_id": "SPEC-LINKS-001",
+      "duration_ms": 8.857,
+      "note": "Resolved 162 relative Markdown links within Image/SPEC.",
+      "output_digest": "ae9507c2581c0f57ffbe718bc2fa0064c5d02760d42e96478c8435dd2feb741c",
+      "status": "pass"
+    },
+    {
+      "case_id": "SPEC-POLICY-001",
+      "duration_ms": 0.326,
+      "note": "Fixture and candidate profiles retain C++/Assembly, audited-math, no-ML, and no-quadratic policies.",
+      "output_digest": "c27bcf415848b29d11ae5d672c3d5e1c68c536a04775e212337dc0164a50a630",
+      "status": "pass"
+    },
+    {
+      "case_id": "SPEC-DEPENDENCY-001",
+      "duration_ms": 61.741,
+      "note": "Python harness scripts use standard-library imports only; that import closure is audited. A pre-existing optional TensorFlow extra is recorded at repository scope, not used by this command; the C++ P4 host-build source/link audit is separate and does not certify a production runtime.",
+      "output_digest": "b6d1d55adf2b9d51cbcdb984d53d54ab64f461b4cb35159615fbe3f3e629a74b",
+      "status": "pass"
+    },
+    {
+      "case_id": "SPEC-EVIDENCE-001",
+      "note": "Run evidence validates against its declared schema.",
+      "output_digest": "74cb2b0b11ae56e7c0fab4e2a2c585fa4a7d308258fe9102f2a5e8442d897a1f",
+      "status": "pass"
+    }
+  ],
+  "claims": {
+    "Image_VISION_components_executed": false,
+    "harness_dependency_closure_audited": true,
+    "image_runtime_dependency_graph_audited": false,
+    "production_binaries_audited": false,
+    "semantic_or_AGI_capability_established": false
+  },
+  "commit": "e66072f8ea15ba5443dc336a2e50d3765ca65260",
+  "elapsed_ms": 132.246,
+  "finished_at": "2026-10-07T16:05:16Z",
+  "input_sha256": {
+    "Image/SPEC/DECISIONS.md": "8b026f99f625f7812cccbef67c02259eb2319f1dd3080691a077dff88e9f8ed5",
+    "Image/SPEC/P2_REVIEW_RECORD.md": "d2f8d556b8f79d2dfbbb43305f70944a3364607f5b04c61c91ab9eec3771c938",
+    "Image/SPEC/P4_CLOSEOUT_RECORD.md": "931c997e230703e166a758682b9ddc458593e65c6c0978a4b32a0552f2bada03",
+    "Image/SPEC/P5_CLOSEOUT_RECORD.md": "10540136d6e5a8f69aa977a9ada786ff1a6d998566632e504f958e604c84f39a",
+    "Image/SPEC/PHASES.md": "07f4c8fc14550f2d3ff34ff087d8d3c86141c3091bf09596e2bc35c7f47bab73",
+    "Image/SPEC/PROJECT.md": "e8be78c4dd5aeb6ade259ec0801f829a89eafc61906c48fa27da364b5dac31df",
+    "Image/SPEC/README.md": "3ce632cdc22b71ae652f57c9bba3733c994049bb346c0788edaeeb7554f21c64",
+    "Image/SPEC/ROADMAP.md": "ca1d22b3172704b5251bb4ebc4e8f186169fef79b8faf3080f0ae852c988529b",
+    "Image/SPEC/TODO.md": "7df35665ab18311b2e3e2dea40f0f0089e0996cbacdac2e722b76dd80779f8d7",
+    "Image/SPEC/TRACEABILITY.md": "fdffec42b1e97d9ea8518f204d2fe289dd668804067aa3d352e9a4c33987d3f4",
+    "Image/SPEC/contracts/COMPATIBILITY_POLICY.md": "c053344caa3071957f4e8bc9ca4cf58b3c60d546c76008cc63fd2c3d43c63d55",
+    "Image/SPEC/contracts/ERROR_CATALOG.md": "43bd245a4903edf1178e60c4e5f6804703c365d27958595729cd699d647aecb9",
+    "Image/SPEC/contracts/OBSERVATION_FIELDS.md": "699f76219c9b7cb29f61d104fd50c036cf1451be021f2ec96528e1ba1b575c3a",
+    "Image/SPEC/contracts/RUNTIME_INVARIANTS.md": "3288e8dd0b5dee16abd8cda7210c4c6c3257e2cde4f2a1348dc10334830d3e94",
+    "Image/SPEC/contracts/examples/README.md": "e6a55e2ced1af3d9d2f2e9690ecf21866855c4c772b9738bf5593e8a526d0d27",
+    "Image/SPEC/contracts/examples/image_error.fixture.json": "0c08d5d7bcde6519033b117ab927b5fe4117e4bc02541662a3b36bb688bdd949",
+    "Image/SPEC/contracts/examples/image_observation.fixture.json": "20e1ac207da936ecfe681224cffb06c283618c773abfb3b0ca58268c99a7818f",
+    "Image/SPEC/contracts/examples/payload_fixtures.json": "3944e8b9bb50f1debebfeddece732a36d72e206fc9abb697460e716857fd5893",
+    "Image/SPEC/contracts/image_error.schema.json": "a6e3b8aabab846da4b0ab7c8595d2baae04984930f9040bb92a1eaa6d89bb512",
+    "Image/SPEC/contracts/image_observation.schema.json": "b9ceb54ec31622d64d9855a1f84ca88a4b999a7bdfade6a2f16d4cbc06535c8f",
+    "Image/SPEC/contracts/image_profile.schema.json": "bafe3eb22ba59be62ff977bea9ef2209eb6a1878088e751b0f9d329122f67550",
+    "Image/SPEC/harness/HARNESS.md": "63c1f4e6035bc62ff02c0f6900e259566c1c55789e2b537d1ef13af71fa2519a",
+    "Image/SPEC/harness/case_catalog.json": "901642d4a1cab815e679b3fecddfb2a734ac98a13a14836e87a54777844949e7",
+    "Image/SPEC/harness/check_spec.py": "4de5c18b90d3e6d2b5d6c8d444642cec80a0a4c810f1ac45a2b8663d9bf7d7d9",
+    "Image/SPEC/harness/fixtures/analytic_patterns.json": "7b0d9c668d06a9114430f5f8da9fc74a8a25c09a6aa3283a39db42a8ebb6a22f",
+    "Image/SPEC/harness/p4/p4_evidence.schema.json": "8f8a924fa853a2a40ed5e9378f48e1860b45e46a683a55e880a6c0222c527ade",
+    "Image/SPEC/harness/results/latest.p4.run_evidence.json": "edd33890a96cba0fbd02ed9d96a464129bcbce880f43fe32b82c0bb0fb0c6797",
+    "Image/SPEC/harness/results/latest.p5.run_evidence.json": "96bb3c9aef498fa5a818cc44e110d975226d801f7b80e19633ac76fca70459fb",
+    "Image/SPEC/harness/run_evidence.schema.json": "fd4389665c777510aa67c033673171c6d304541455a920b5d70e1f221444cac6",
+    "Image/SPEC/p4/README.md": "69f54b66212eb32d021780b476992774c736e7129d597b2d0556cf5fc4d9c42c",
+    "Image/SPEC/p5/README.md": "d8632e22c5010429f2648c52156350f9bd0059f5ed2e06352abae7a64b3963c5",
+    "Image/SPEC/profiles/fixture_profile.example.json": "9c81bca8a13d37d3e2ffc64bd1fe4a9ec5ce4f6f3bb09d2874175895652751f2",
+    "Image/SPEC/profiles/general_still_image.proposal.json": "59650032ebd787fde7eed1f3f6606a3e0cc275e8336ad20855c65ecec2c5a2d1",
+    "Image/SPEC/profiles/general_still_image.proposal.md": "faa32064e7b8331ab4266599d73750f5d45f497a99651c734549fba29ae32132",
+    "pyproject.toml": "6a83a77a9b40464dcc31facdb765e46c9d76f922f7f28a21e911357efd7edd0b"
+  },
+  "phase_gate_decision": "p4_implementation_complete_project_owner_review_pending_no_p5_authorization",
+  "project_owner_accepted": false,
+  "review_model": "user_project_owner_plus_assistant_only; no external reviewer",
+  "run_id": "spec-check-20261007T160516Z",
+  "scope": "This Python run validated Image/SPEC artifacts and recorded P4 evidence; it executed no C++ component tests. See latest.p4.run_evidence.json for the separate P4 test run.",
+  "started_at": "2026-10-07T16:05:16Z",
+  "working_tree_state_at_run": "dirty",
+  "working_tree_status_porcelain_sha256": "dc064c1421764557a49e71b333e7a22289f64ae5f60f254b53f5fad96b6b0840"
+}

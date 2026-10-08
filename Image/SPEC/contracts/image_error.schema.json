@@ -1,0 +1,92 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:agi-core:vision:image-error:0.2.0-draft",
+  "title": "AGI-Core Image VISION Error Envelope",
+  "description": "Phase 2 draft stable error envelope. Runtime error-code semantics, retry rules, message privacy, and atomic cleanup are normative in ERROR_CATALOG.md and RUNTIME_INVARIANTS.md.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "kind",
+    "error_version",
+    "request_id",
+    "trace_id",
+    "component",
+    "profile_id",
+    "code",
+    "message",
+    "retryable",
+    "state_changed"
+  ],
+  "properties": {
+    "kind": {
+      "const": "image_vision_error"
+    },
+    "error_version": {
+      "const": "0.2.0-draft"
+    },
+    "request_id": {
+      "$ref": "#/$defs/Identifier"
+    },
+    "trace_id": {
+      "$ref": "#/$defs/Identifier"
+    },
+    "component": {
+      "const": "VISION_IMAGE"
+    },
+    "profile_id": {
+      "$ref": "#/$defs/Identifier"
+    },
+    "code": {
+      "enum": [
+        "INVALID_DESCRIPTOR",
+        "UNSUPPORTED_FORMAT",
+        "CORRUPT_PAYLOAD",
+        "RESOURCE_LIMIT",
+        "PROFILE_MISMATCH",
+        "NONFINITE_INPUT",
+        "TRANSFORM_FAILURE",
+        "FEATURE_FAILURE",
+        "TOKENIZER_FAILURE",
+        "UNCERTAINTY_UNAVAILABLE",
+        "REFERENCE_INVALID",
+        "CANCELLED",
+        "DEADLINE_EXCEEDED",
+        "BACKPRESSURE",
+        "INTERNAL_ERROR",
+        "UNSUPPORTED_VERSION",
+        "DEPENDENCY_UNAVAILABLE"
+      ]
+    },
+    "message": {
+      "type": "string",
+      "maxLength": 512,
+      "minLength": 1
+    },
+    "retryable": {
+      "type": "boolean"
+    },
+    "state_changed": {
+      "const": false
+    },
+    "stage_id": {
+      "$ref": "#/$defs/Identifier"
+    },
+    "profile_version": {
+      "type": "string",
+      "maxLength": 64,
+      "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+(?:-draft)?$"
+    },
+    "retry_after_ms": {
+      "type": "integer",
+      "minimum": 0
+    }
+  },
+  "$defs": {
+    "Identifier": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 128,
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9._:/-]{0,127}$"
+    }
+  }
+}

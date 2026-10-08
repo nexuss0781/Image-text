@@ -1,0 +1,28 @@
+{
+  "fixture_set_id": "image-contract-payloads-0.1.0",
+  "status": "test_only",
+  "payloads": [
+    {
+      "reference_id": "pixels-gray-2x1-v1",
+      "content_kind": "canonical_raster",
+      "bytes_base64": "AP8=",
+      "byte_length": 2,
+      "sha256": "06eb7d6a69ee19e5fbdf749018d3d2abfa04bcbd1365db312eb86dc7169389b8",
+      "shape": [1, 2, 1],
+      "dtype": "uint8",
+      "layout": "HWC",
+      "byte_order": "not_applicable"
+    },
+    {
+      "reference_id": "uncertainty-image-2x1-v1",
+      "content_kind": "uncertainty_values",
+      "bytes_base64": "AAAAPw==",
+      "byte_length": 4,
+      "sha256": "d99e58435243d9fef9c88273b8d553b4fba4d0baf8009d29eae74fa99e0d9f57",
+      "shape": [1],
+      "dtype": "float32",
+      "layout": "vector",
+      "byte_order": "little"
+    }
+  ]
+}

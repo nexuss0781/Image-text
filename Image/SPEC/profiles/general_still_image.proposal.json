@@ -1,0 +1,117 @@
+{
+  "profile_id": "general-still-image-candidate-v1",
+  "profile_version": "0.2.0",
+  "status": "proposal",
+  "purpose": "Task-neutral still-raster proposal; P5/P6 decoding is a bounded P4 engineering scope only, and every numeric ceiling remains advisory for production.",
+  "input": {
+    "encoded_formats": [
+      "PNM_P5",
+      "PNM_P6"
+    ],
+    "decoded_layouts": [
+      "HWC"
+    ],
+    "channel_orders": [
+      "GRAY",
+      "RGB",
+      "RGBA"
+    ],
+    "sample_types": [
+      "uint8"
+    ],
+    "sample_range": {
+      "minimum": 0,
+      "maximum": 255
+    },
+    "allow_strides": false,
+    "allow_animation": false,
+    "animated_policy": "reject"
+  },
+  "canonicalization": {
+    "pixel_format": "profile_defined",
+    "color_profile_id": "source-declared-or-unknown-v1",
+    "transfer_assumption": "Preserve declared color and transfer metadata or leave unknown; perform no conversion and assume no standard color space.",
+    "orientation_policy": "decoded_raster_only",
+    "alpha_policy": "preserve",
+    "geometry_policy": "identity_only",
+    "transform_version": "identity-v1"
+  },
+  "features": {
+    "enabled": [],
+    "max_feature_planes_per_pixel": 2,
+    "max_regions": 0,
+    "max_patch_count": 0,
+    "max_scale_count": 1
+  },
+  "limits": {
+    "max_encoded_bytes": 67108864,
+    "max_width": 4096,
+    "max_height": 4096,
+    "max_pixels": 16777216,
+    "max_channels": 4,
+    "max_decoded_bytes": 67108864,
+    "max_intermediate_bytes": 67108864,
+    "max_output_bytes": 268435456,
+    "max_output_elements": 134217728,
+    "max_work_units": 134217728,
+    "max_in_flight_requests": 1,
+    "max_queue_depth": 0,
+    "deadline_ms": 10000,
+    "max_diagnostic_bytes": 1024
+  },
+  "complexity": {
+    "quadratic_allowed": false,
+    "operations": [
+      {
+        "operation_id": "candidate_forward_difference_xy_v1",
+        "time_bound": "O(P*C); one pixel-channel visit computes both adjacent differences.",
+        "space_bound": "O(P*C) for two HWC int16 output planes; exactly 2*P*C output elements.",
+        "variables": [
+          "P",
+          "C"
+        ],
+        "bounded_parameters": {
+          "C": 4
+        },
+        "proof_id": "p1-candidate-forward-difference-analysis-v1"
+      },
+      {
+        "operation_id": "bounded_pnm_p5_p6_decode_v1",
+        "time_bound": "O(B + P*C); scan the bounded header once and copy each raster byte once.",
+        "space_bound": "O(P*C) for one owned decoded raster; O(1) parser state.",
+        "variables": [
+          "bytes",
+          "P",
+          "C"
+        ],
+        "bounded_parameters": {
+          "C": 3
+        },
+        "proof_id": "p4-bounded-pnm-decoder-v1"
+      }
+    ],
+    "scaling_measurement_required": true
+  },
+  "implementation_policy": {
+    "language_boundary": "cpp_assembly",
+    "math_library_policy": "audited_if_used",
+    "ml_libraries_frameworks_allowed": false,
+    "quadratic_complexity_allowed": false,
+    "dependency_audit_required": true
+  },
+  "uncertainty": {
+    "mode": "disabled",
+    "production_fallback_approved": false,
+    "convention": "0_is_highest_confidence_1_is_highest_uncertainty"
+  },
+  "provenance": {
+    "producer_component": "VISION_IMAGE",
+    "runtime_profile": "unselected-candidate-runtime",
+    "retention": "profile_defined"
+  },
+  "contract_versions": {
+    "profile_schema": "0.2.0-draft",
+    "observation_schema": "0.3.1-draft",
+    "error_schema": "0.2.0-draft"
+  }
+}

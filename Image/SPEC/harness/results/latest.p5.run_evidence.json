@@ -1,0 +1,332 @@
+{
+  "build_runs": [
+    {
+      "case_results": [
+        {
+          "catalog_case_id": "PIX-005",
+          "label": "1x1 GRAY exact-value identity view",
+          "status": "pass",
+          "test_id": "P5-TEST-001"
+        },
+        {
+          "catalog_case_id": "PIX-005",
+          "label": "1xN RGBA preserves all alpha samples",
+          "status": "pass",
+          "test_id": "P5-TEST-002"
+        },
+        {
+          "catalog_case_id": "PIX-005",
+          "label": "Nx1 RGB exact-value identity view",
+          "status": "pass",
+          "test_id": "P5-TEST-003"
+        },
+        {
+          "catalog_case_id": "PIX-005",
+          "label": "odd 3x5 GRAY exact-value oracle",
+          "status": "pass",
+          "test_id": "P5-TEST-004"
+        },
+        {
+          "catalog_case_id": "PIX-005",
+          "label": "odd 3x3 RGB exact-value oracle",
+          "status": "pass",
+          "test_id": "P5-TEST-005"
+        },
+        {
+          "catalog_case_id": "PIX-005",
+          "label": "odd 2x3 RGBA exact alpha oracle",
+          "status": "pass",
+          "test_id": "P5-TEST-006"
+        },
+        {
+          "catalog_case_id": "GEO-006",
+          "label": "identity dimensions matrix inverse and pixel centers",
+          "status": "pass",
+          "test_id": "P5-TEST-007"
+        },
+        {
+          "catalog_case_id": "PIX-006",
+          "label": "conversion reorder orientation resize and alpha loss reject",
+          "status": "pass",
+          "test_id": "P5-TEST-008"
+        },
+        {
+          "catalog_case_id": "PIX-006",
+          "label": "limits metadata declarations and empty input reject",
+          "status": "pass",
+          "test_id": "P5-TEST-009"
+        },
+        {
+          "catalog_case_id": "PIX-006",
+          "label": "overflow rejected before producing canonical view",
+          "status": "pass",
+          "test_id": "P5-TEST-010"
+        }
+      ],
+      "compile_command": [
+        "/usr/bin/x86_64-linux-gnu-g++-13",
+        "-std=c++20",
+        "-Wall",
+        "-Wextra",
+        "-Wpedantic",
+        "-Wconversion",
+        "-Wsign-conversion",
+        "-Wshadow",
+        "-Werror",
+        "-O2",
+        "/workspace/AGI-Core/Image/SPEC/p4/raster_admission.cpp",
+        "/workspace/AGI-Core/Image/SPEC/p5/canonical_raster.cpp",
+        "/workspace/AGI-Core/Image/SPEC/harness/p5/test_canonical_raster.cpp",
+        "-o",
+        "/tmp/image-vision-p5-z05gr_x_/p5-normal"
+      ],
+      "compiler_output": "",
+      "dynamic_link_dependencies": [
+        "linux-vdso.so.1",
+        "libstdc++.so.6",
+        "libc.so.6",
+        "libm.so.6",
+        "/lib64/ld-linux-x86-64.so.2",
+        "libgcc_s.so.1"
+      ],
+      "elapsed_ms": 2.069,
+      "exit_code": 0,
+      "mode": "normal",
+      "status": "pass",
+      "stderr": "",
+      "stdout": "CASE\tP5-TEST-001\tpass\tPIX-005\t1x1 GRAY exact-value identity view\nCASE\tP5-TEST-002\tpass\tPIX-005\t1xN RGBA preserves all alpha samples\nCASE\tP5-TEST-003\tpass\tPIX-005\tNx1 RGB exact-value identity view\nCASE\tP5-TEST-004\tpass\tPIX-005\todd 3x5 GRAY exact-value oracle\nCASE\tP5-TEST-005\tpass\tPIX-005\todd 3x3 RGB exact-value oracle\nCASE\tP5-TEST-006\tpass\tPIX-005\todd 2x3 RGBA exact alpha oracle\nCASE\tP5-TEST-007\tpass\tGEO-006\tidentity dimensions matrix inverse and pixel centers\nCASE\tP5-TEST-008\tpass\tPIX-006\tconversion reorder orientation resize and alpha loss reject\nCASE\tP5-TEST-009\tpass\tPIX-006\tlimits metadata declarations and empty input reject\nCASE\tP5-TEST-010\tpass\tPIX-006\toverflow rejected before producing canonical view\nSUMMARY\t10\t10\n"
+    },
+    {
+      "case_results": [
+        {
+          "catalog_case_id": "PIX-005",
+          "label": "1x1 GRAY exact-value identity view",
+          "status": "pass",
+          "test_id": "P5-TEST-001"
+        },
+        {
+          "catalog_case_id": "PIX-005",
+          "label": "1xN RGBA preserves all alpha samples",
+          "status": "pass",
+          "test_id": "P5-TEST-002"
+        },
+        {
+          "catalog_case_id": "PIX-005",
+          "label": "Nx1 RGB exact-value identity view",
+          "status": "pass",
+          "test_id": "P5-TEST-003"
+        },
+        {
+          "catalog_case_id": "PIX-005",
+          "label": "odd 3x5 GRAY exact-value oracle",
+          "status": "pass",
+          "test_id": "P5-TEST-004"
+        },
+        {
+          "catalog_case_id": "PIX-005",
+          "label": "odd 3x3 RGB exact-value oracle",
+          "status": "pass",
+          "test_id": "P5-TEST-005"
+        },
+        {
+          "catalog_case_id": "PIX-005",
+          "label": "odd 2x3 RGBA exact alpha oracle",
+          "status": "pass",
+          "test_id": "P5-TEST-006"
+        },
+        {
+          "catalog_case_id": "GEO-006",
+          "label": "identity dimensions matrix inverse and pixel centers",
+          "status": "pass",
+          "test_id": "P5-TEST-007"
+        },
+        {
+          "catalog_case_id": "PIX-006",
+          "label": "conversion reorder orientation resize and alpha loss reject",
+          "status": "pass",
+          "test_id": "P5-TEST-008"
+        },
+        {
+          "catalog_case_id": "PIX-006",
+          "label": "limits metadata declarations and empty input reject",
+          "status": "pass",
+          "test_id": "P5-TEST-009"
+        },
+        {
+          "catalog_case_id": "PIX-006",
+          "label": "overflow rejected before producing canonical view",
+          "status": "pass",
+          "test_id": "P5-TEST-010"
+        }
+      ],
+      "compile_command": [
+        "/usr/bin/x86_64-linux-gnu-g++-13",
+        "-std=c++20",
+        "-Wall",
+        "-Wextra",
+        "-Wpedantic",
+        "-Wconversion",
+        "-Wsign-conversion",
+        "-Wshadow",
+        "-Werror",
+        "-O2",
+        "-fsanitize=address,undefined",
+        "-fno-omit-frame-pointer",
+        "-g",
+        "/workspace/AGI-Core/Image/SPEC/p4/raster_admission.cpp",
+        "/workspace/AGI-Core/Image/SPEC/p5/canonical_raster.cpp",
+        "/workspace/AGI-Core/Image/SPEC/harness/p5/test_canonical_raster.cpp",
+        "-o",
+        "/tmp/image-vision-p5-z05gr_x_/p5-address_undefined_sanitizers"
+      ],
+      "compiler_output": "",
+      "dynamic_link_dependencies": [
+        "linux-vdso.so.1",
+        "libasan.so.8",
+        "libstdc++.so.6",
+        "libm.so.6",
+        "libubsan.so.1",
+        "libgcc_s.so.1",
+        "libc.so.6",
+        "/lib64/ld-linux-x86-64.so.2"
+      ],
+      "elapsed_ms": 12.17,
+      "exit_code": 0,
+      "mode": "address_undefined_sanitizers",
+      "status": "pass",
+      "stderr": "",
+      "stdout": "CASE\tP5-TEST-001\tpass\tPIX-005\t1x1 GRAY exact-value identity view\nCASE\tP5-TEST-002\tpass\tPIX-005\t1xN RGBA preserves all alpha samples\nCASE\tP5-TEST-003\tpass\tPIX-005\tNx1 RGB exact-value identity view\nCASE\tP5-TEST-004\tpass\tPIX-005\todd 3x5 GRAY exact-value oracle\nCASE\tP5-TEST-005\tpass\tPIX-005\todd 3x3 RGB exact-value oracle\nCASE\tP5-TEST-006\tpass\tPIX-005\todd 2x3 RGBA exact alpha oracle\nCASE\tP5-TEST-007\tpass\tGEO-006\tidentity dimensions matrix inverse and pixel centers\nCASE\tP5-TEST-008\tpass\tPIX-006\tconversion reorder orientation resize and alpha loss reject\nCASE\tP5-TEST-009\tpass\tPIX-006\tlimits metadata declarations and empty input reject\nCASE\tP5-TEST-010\tpass\tPIX-006\toverflow rejected before producing canonical view\nSUMMARY\t10\t10\n"
+    }
+  ],
+  "case_results": [
+    {
+      "catalog_case_id": "PIX-005",
+      "label": "1x1 GRAY exact-value identity view",
+      "status": "pass",
+      "test_id": "P5-TEST-001"
+    },
+    {
+      "catalog_case_id": "PIX-005",
+      "label": "1xN RGBA preserves all alpha samples",
+      "status": "pass",
+      "test_id": "P5-TEST-002"
+    },
+    {
+      "catalog_case_id": "PIX-005",
+      "label": "Nx1 RGB exact-value identity view",
+      "status": "pass",
+      "test_id": "P5-TEST-003"
+    },
+    {
+      "catalog_case_id": "PIX-005",
+      "label": "odd 3x5 GRAY exact-value oracle",
+      "status": "pass",
+      "test_id": "P5-TEST-004"
+    },
+    {
+      "catalog_case_id": "PIX-005",
+      "label": "odd 3x3 RGB exact-value oracle",
+      "status": "pass",
+      "test_id": "P5-TEST-005"
+    },
+    {
+      "catalog_case_id": "PIX-005",
+      "label": "odd 2x3 RGBA exact alpha oracle",
+      "status": "pass",
+      "test_id": "P5-TEST-006"
+    },
+    {
+      "catalog_case_id": "GEO-006",
+      "label": "identity dimensions matrix inverse and pixel centers",
+      "status": "pass",
+      "test_id": "P5-TEST-007"
+    },
+    {
+      "catalog_case_id": "PIX-006",
+      "label": "conversion reorder orientation resize and alpha loss reject",
+      "status": "pass",
+      "test_id": "P5-TEST-008"
+    },
+    {
+      "catalog_case_id": "PIX-006",
+      "label": "limits metadata declarations and empty input reject",
+      "status": "pass",
+      "test_id": "P5-TEST-009"
+    },
+    {
+      "catalog_case_id": "PIX-006",
+      "label": "overflow rejected before producing canonical view",
+      "status": "pass",
+      "test_id": "P5-TEST-010"
+    }
+  ],
+  "commit": "e66072f8ea15ba5443dc336a2e50d3765ca65260",
+  "counts": {
+    "sanitizer_status": "pass",
+    "tests_failed_normal": 0,
+    "tests_passed_normal": 10,
+    "tests_run_normal": 10
+  },
+  "evidence_version": "0.1.0-draft",
+  "failures": [],
+  "finished_at": "2026-10-07T16:04:25Z",
+  "implementation": {
+    "compiler_path": "/usr/bin/x86_64-linux-gnu-g++-13",
+    "compiler_version": "x86_64-linux-gnu-g++-13 (Ubuntu 13.3.0-6ubuntu2~24.04.1) 13.3.0",
+    "external_dependencies": [],
+    "language": "C++20",
+    "sanitizer_flags": [
+      "-fsanitize=address,undefined",
+      "-fno-omit-frame-pointer",
+      "-g"
+    ],
+    "source_hashes": {
+      "Image/SPEC/harness/p5/run_p5.py": "d389c990d479d86765fbdb3b3bbd4fff775afebdd9467dafbaa6f0102e8b1e6a",
+      "Image/SPEC/harness/p5/test_canonical_raster.cpp": "bd677ec63547189e3a7dce3cf60c1316d672ac5d69fae7e888c801a4da5d96ac",
+      "Image/SPEC/p4/raster_admission.cpp": "9f15b2bc852554a784990bb355607bbef5daa978e7f76c0ad0edade9fcfa0829",
+      "Image/SPEC/p4/raster_admission.hpp": "c52136d07c631aff7d396e034c600d3de832fcb7409f8f2b605415a22b46ff21",
+      "Image/SPEC/p5/canonical_raster.cpp": "87b338c280c1eaa0f611a9705743232a79e73ef14d85ce66fc810c72151a379a",
+      "Image/SPEC/p5/canonical_raster.hpp": "7a73ca4c2c2f688a145ca8ccf92c8ef0379204d2171a269ceda05f8b2758b834",
+      "Image/SPEC/profiles/general_still_image.proposal.json": "59650032ebd787fde7eed1f3f6606a3e0cc275e8336ad20855c65ecec2c5a2d1"
+    },
+    "strict_flags": [
+      "-std=c++20",
+      "-Wall",
+      "-Wextra",
+      "-Wpedantic",
+      "-Wconversion",
+      "-Wsign-conversion",
+      "-Wshadow",
+      "-Werror",
+      "-O2"
+    ]
+  },
+  "phase": "P5",
+  "phase_completion": "p5_identity_canonical_view_and_geometry_complete_proposal_profile_open",
+  "scope": {
+    "alpha_compositing_or_dropping_enabled": false,
+    "color_inference_enabled": false,
+    "conversions_enabled": false,
+    "cortex_modified": false,
+    "enabled_channels": [
+      "GRAY",
+      "RGB",
+      "RGBA"
+    ],
+    "geometry": "identity-v1; explicit source-to-target pixel-center map and inverse",
+    "operation": "identity-only zero-copy canonical raster view; exact HWC uint8 samples retained",
+    "orientation_application_enabled": false,
+    "p5_started": true,
+    "p6_started": false,
+    "production_approval": false,
+    "profile_hash": "59650032ebd787fde7eed1f3f6606a3e0cc275e8336ad20855c65ecec2c5a2d1",
+    "profile_id": "general-still-image-candidate-v1",
+    "profile_status": "proposal",
+    "profile_usage": "proposal-only-test-ceilings; not production authorization",
+    "resize_crop_pad_enabled": false
+  },
+  "started_at": "2026-10-07T16:04:12Z",
+  "status": "finished",
+  "working_tree_state": "dirty",
+  "working_tree_status_sha256": "dc064c1421764557a49e71b333e7a22289f64ae5f60f254b53f5fad96b6b0840"
+}
