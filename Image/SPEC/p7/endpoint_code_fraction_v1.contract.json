@@ -1,0 +1,78 @@
+{
+  "contract_version": "endpoint-code-fraction-v1",
+  "phase": "P7",
+  "status": "engineering_only_profile_proposal_open",
+  "input": {
+    "source": "P5 identity-canonical tightly packed HWC uint8 raster",
+    "layouts": ["GRAY", "RGB", "RGBA"],
+    "sample_range": [0, 255],
+    "requires_identity_transform": true,
+    "requires_source_preservation_policy": true
+  },
+  "indicator": {
+    "name": "endpoint_code_fraction",
+    "method_id": "uint8-endpoint-code-fraction",
+    "method_version": "1",
+    "scope": "image",
+    "units": "fraction",
+    "acceptance_effect": "descriptive_only",
+    "meaning": "Count of included uint8 channel samples equal to 0 or 255 divided by the exact included-sample count.",
+    "numerator": "N = count of included samples whose value is exactly 0 or exactly 255",
+    "denominator": "D = P * K, where P = width * height and K is 1 for GRAY, 3 for RGB, and 3 for RGBA",
+    "included_channels": {
+      "GRAY": ["GRAY"],
+      "RGB": ["R", "G", "B"],
+      "RGBA": ["R", "G", "B"]
+    },
+    "excluded_channels": {
+      "GRAY": [],
+      "RGB": [],
+      "RGBA": ["A"]
+    },
+    "exact_result": "Retain integer N and D; expose value = binary64(N) / binary64(D). D is positive; N is in [0,D]; value is finite in [0,1].",
+    "algorithm": "One row-major pass; test each included sample for exact equality with 0 or 255; no threshold, histogram, rescaling, or image modification.",
+    "complexity": "O(P*K) time and O(1) auxiliary scratch; K is bounded by 3. No input-scaled allocation or pairwise operation.",
+    "output_payload_bytes": 24,
+    "output_payload_accounting": "Two uint64 counts plus one IEEE-754 binary64 ratio; static method metadata and C++ object padding are excluded."
+  },
+  "limits": {
+    "caller_supplied_only": true,
+    "fields": ["max_pixels", "max_channels", "max_work_units", "max_output_bytes"],
+    "work_units": "Exactly D included samples visited.",
+    "output_bytes": "Exactly 24 logical scalar payload bytes; reject when caller max_output_bytes is less than 24.",
+    "checked_arithmetic": ["width*height", "pixels*channels", "pixels*included_color_channels"]
+  },
+  "control": {
+    "cancellation": "Check before validation, before scanning, at each row, periodically during long rows, and immediately before result construction.",
+    "deadline": "Use the caller's steady-clock deadline at the same boundaries as cancellation.",
+    "atomicity": "Construct counts only in request-local scalars; expose QualityIndicator once after final checks. Every failure has empty quality and uncertainty optionals, retryable=false, and state_changed=false.",
+    "persistent_state_api": false,
+    "persistent_state_claim": "No persistence, publication, logging, or shared mutable state API exists in P4, P5, P6, or this P7 slice."
+  },
+  "uncertainty": {
+    "profile_mode": "disabled",
+    "default_behavior": "Omit uncertainty entirely; return no uncertainty values.",
+    "when_explicitly_required": "Return UNCERTAINTY_UNAVAILABLE with no quality or uncertainty result.",
+    "estimator": "none",
+    "calibration": "none",
+    "target_event": "none",
+    "thresholds_or_dataset": "none"
+  },
+  "errors": [
+    {"code": "INVALID_DESCRIPTOR", "retryable": false, "message": "Input does not satisfy the canonical raster contract."},
+    {"code": "UNSUPPORTED_FORMAT", "retryable": false, "message": "Raster layout is not supported by the quality method."},
+    {"code": "PROFILE_MISMATCH", "retryable": false, "message": "Raster policy does not match the selected profile."},
+    {"code": "RESOURCE_LIMIT", "retryable": false, "message": "Caller-supplied quality limits are exceeded."},
+    {"code": "NONFINITE_INPUT", "retryable": false, "message": "Input metadata contains a non-finite numeric value."},
+    {"code": "UNCERTAINTY_UNAVAILABLE", "retryable": false, "message": "Required uncertainty is unavailable under this profile."},
+    {"code": "CANCELLED", "retryable": false, "message": "Request was cancelled before quality completion."},
+    {"code": "DEADLINE_EXCEEDED", "retryable": false, "message": "Request deadline elapsed before quality completion."},
+    {"code": "INTERNAL_ERROR", "retryable": false, "message": "Quality analysis could not be completed."}
+  ],
+  "non_claims": [
+    "Not a probability, confidence, calibration, semantic quality, clipping diagnosis, suitability, or task-acceptance score.",
+    "No uncertainty estimator, dataset, target event, threshold, fallback, calibration, drift/OOD rule, or approval is introduced.",
+    "The machine profile remains status proposal and features.enabled remains empty; the metric is not enabled for production or runtime observation publication.",
+    "No P8 runtime/stream, P9 observation assembly, reverse image rendering, or Cortex change is included."
+  ]
+}

@@ -1,0 +1,13 @@
+# Phase 4 implementation-completion record
+
+**Date:** 2026-10-08
+**Scope record:** D-015 (building on P3 acceptance and P4 start in D-014)
+**Review state:** assistant implementation and verification complete; project-owner review pending before Phase 5
+
+The Phase 4 implementation now covers checked admission of tightly packed decoded HWC `uint8` GRAY/RGB/RGBA buffers and a dependency-free C++20 decoder for exactly one binary Netpbm P5 grayscale or P6 RGB image with `maxval == 255`. The decoder returns owned samples with format/decoder identity, validates caller-supplied encoded/header/dimension/pixel/channel/decoded-byte/work ceilings before allocation, requires an exact payload length, rejects malformed/truncated/trailing/concatenated content, and returns typed failures without partial output. Cancellation and deadline checks are included. No external codec library or ML framework is used.
+
+The fresh P4 runner reports **33/33 tests passing in the normal C++20 build and 33/33 passing with AddressSanitizer and UndefinedBehaviorSanitizer**. This includes exact P5/P6 pixel fixtures, malformed and unsupported inputs, caller-supplied limit enforcement before allocation, cancellation/deadline paths, and a 4096×4096 P5 decode at the proposal-only pixel boundary. Exact case outcomes, commands, compiler/target data, source hashes, and dependency observations are recorded in [`harness/results/latest.p4.run_evidence.json`](harness/results/latest.p4.run_evidence.json). The package checker validates schemas and exact catalog bindings separately; it does not rebuild or run C++.
+
+D-015 records the bounded implementation scope only. The profile remains `status: proposal`; the P5/P6 allowlist and candidate byte/work ceilings do not approve production use. The `DecodeLimits` test inputs are explicit caller values, not runtime defaults. This work does not implement other formats/codecs, high-bit-depth samples, animation/multipage, color or orientation transforms, observation assembly, feature computation, deployment integration, or a production security/release review. The bounded parser has been reviewed against its declared tests, and host ASan/UBSan plus dynamic-link checks passed; those checks do not certify a production target or binary.
+
+**Phase 5 has not started.** The user requested that Phase 4 be completed, the result presented, and work paused for approval before Phase 5. This record therefore reports technical completion and awaits the user's review/approval; it does not claim that the user has already accepted the implementation or authorized the Phase 5 transition. Cortex and the Image Observation → ENCODER → approved Cortex tensor boundary are unchanged.

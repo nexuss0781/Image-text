@@ -1,0 +1,95 @@
+{
+  "contract_version": "1.0.0-engineering-proposal",
+  "contract_id": "forward-difference-xy-v1",
+  "operator_id": "candidate_forward_difference_xy_v1",
+  "status": "engineering_proposal_not_production_approval",
+  "implementation_scope": "Phase 6 baseline implementation and tests only",
+  "candidate_allowlist": [
+    "candidate_forward_difference_xy_v1"
+  ],
+  "runtime_profile_enabled": false,
+  "input": {
+    "layout": "HWC_tightly_packed",
+    "sample_type": "uint8",
+    "sample_range_inclusive": [
+      0,
+      255
+    ],
+    "channel_orders": [
+      "GRAY",
+      "RGB",
+      "RGBA"
+    ],
+    "channel_count_by_order": {
+      "GRAY": 1,
+      "RGB": 3,
+      "RGBA": 4
+    }
+  },
+  "mathematics": {
+    "dx": "Dx[y,x,c] = X[y,min(x+1,W-1),c] - X[y,x,c]",
+    "dy": "Dy[y,x,c] = X[min(y+1,H-1),x,c] - X[y,x,c]",
+    "index_domain": "0 <= y < H; 0 <= x < W; 0 <= c < C",
+    "subtraction_order": "neighbor_minus_current",
+    "arithmetic": "exact_signed_integer",
+    "value_range_inclusive": [
+      -255,
+      255
+    ]
+  },
+  "boundary": {
+    "rule": "edge_replication",
+    "terminal_column_dx": "zero",
+    "terminal_row_dy": "zero",
+    "one_row": "all_dy_zero; dx uses the next or replicated terminal column",
+    "one_column": "all_dx_zero; dy uses the next or replicated terminal row",
+    "one_by_one": "both planes contain only zero"
+  },
+  "outputs": {
+    "plane_count": 2,
+    "plane_names_and_order": [
+      "Dx",
+      "Dy"
+    ],
+    "dtype": "int16",
+    "layout": "HWC",
+    "shape_each": [
+      "H",
+      "W",
+      "C"
+    ],
+    "channel_order": "preserve_input_order",
+    "units": "input_sample_code_value_difference",
+    "coordinate_mapping": "output[y,x,c] maps to the same canonical-input pixel index (y,x,c); the P5 identity transform is retained"
+  },
+  "resources": {
+    "checked_arithmetic_before_allocation": true,
+    "caller_limits_required": [
+      "max_pixels",
+      "max_channels",
+      "max_output_elements",
+      "max_output_bytes",
+      "max_work_units"
+    ],
+    "output_elements_exact": "2*P*C",
+    "output_bytes_exact": "2*P*C*sizeof(int16)",
+    "work_unit_definition": "one directional difference result; both axes are counted, including replicated-edge zeros",
+    "work_units_exact": "2*P*C",
+    "declared_work_upper_bound": "2*P*C",
+    "time_complexity": "O(P*C)",
+    "memory_complexity": "O(P*C) for exactly two output planes; O(1) auxiliary scratch",
+    "partial_output_on_failure": false,
+    "cancellation_and_deadline": "use the surrounding P4 AdmissionControl when provided; reject atomically"
+  },
+  "explicit_exclusions": [
+    "pyramids",
+    "regions",
+    "patches",
+    "partial-region masks",
+    "token IDs",
+    "learning",
+    "semantic recognition",
+    "ACT reverse rendering",
+    "Phase 7 quality, uncertainty, and publication behavior"
+  ]
+}

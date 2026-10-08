@@ -1,0 +1,790 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:agi-core:vision:image-observation:0.3.1-draft",
+  "title": "AGI-Core Image VISION Observation",
+  "description": "Phase 2 draft still-image/frame-local envelope. Exact-version, unknown fields rejected; payload metadata and runtime invariants are defined separately. No production profile or semantic image model is implied.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "kind",
+    "schema_version",
+    "observation_id",
+    "request_id",
+    "profile_id",
+    "source",
+    "image",
+    "quality",
+    "provenance"
+  ],
+  "properties": {
+    "kind": {
+      "const": "image_observation"
+    },
+    "schema_version": {
+      "const": "0.3.1-draft"
+    },
+    "observation_id": {
+      "$ref": "#/$defs/Identifier"
+    },
+    "request_id": {
+      "$ref": "#/$defs/Identifier"
+    },
+    "profile_id": {
+      "$ref": "#/$defs/Identifier"
+    },
+    "source": {
+      "$ref": "#/$defs/Source"
+    },
+    "image": {
+      "$ref": "#/$defs/Image"
+    },
+    "features": {
+      "$ref": "#/$defs/FeatureSet"
+    },
+    "visual_tokens": {
+      "$ref": "#/$defs/VisualTokens"
+    },
+    "quality": {
+      "$ref": "#/$defs/Quality"
+    },
+    "uncertainty": {
+      "$ref": "#/$defs/Uncertainty"
+    },
+    "provenance": {
+      "$ref": "#/$defs/Provenance"
+    }
+  },
+  "$defs": {
+    "Identifier": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 128,
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9._:/-]{0,127}$"
+    },
+    "PayloadReference": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "scheme",
+        "reference_id",
+        "content_kind",
+        "byte_length",
+        "sha256",
+        "access_mode",
+        "access_policy_id",
+        "retention"
+      ],
+      "properties": {
+        "scheme": {
+          "enum": [
+            "fixture",
+            "blob",
+            "artifact"
+          ]
+        },
+        "reference_id": {
+          "$ref": "#/$defs/Identifier"
+        },
+        "byte_length": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "sha256": {
+          "type": "string",
+          "pattern": "^[a-fA-F0-9]{64}$"
+        },
+        "retention": {
+          "enum": [
+            "ephemeral",
+            "profile_defined",
+            "externally_managed"
+          ]
+        },
+        "content_kind": {
+          "enum": [
+            "encoded_image",
+            "decoded_raster",
+            "canonical_raster",
+            "feature_values",
+            "visual_token_ids",
+            "validity_mask",
+            "transform_map",
+            "uncertainty_values",
+            "provenance_evidence",
+            "other_profile_defined"
+          ]
+        },
+        "access_mode": {
+          "const": "read_only"
+        },
+        "access_policy_id": {
+          "$ref": "#/$defs/Identifier"
+        },
+        "shape": {
+          "$ref": "#/$defs/PositiveShape"
+        },
+        "dtype": {
+          "enum": [
+            "uint8",
+            "int16",
+            "int32",
+            "float32",
+            "float64"
+          ]
+        },
+        "layout": {
+          "enum": [
+            "HWC",
+            "CHW",
+            "scalar",
+            "vector",
+            "row_major",
+            "profile_defined"
+          ]
+        },
+        "byte_order": {
+          "enum": [
+            "little",
+            "not_applicable"
+          ]
+        }
+      }
+    },
+    "PositiveShape": {
+      "type": "array",
+      "minItems": 1,
+      "maxItems": 6,
+      "items": {
+        "type": "integer",
+        "minimum": 1
+      }
+    },
+    "Source": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "source_id",
+        "source_kind"
+      ],
+      "properties": {
+        "source_id": {
+          "$ref": "#/$defs/Identifier"
+        },
+        "source_kind": {
+          "enum": [
+            "file",
+            "camera",
+            "memory",
+            "network",
+            "synthetic",
+            "unknown",
+            "other"
+          ]
+        },
+        "stream_id": {
+          "$ref": "#/$defs/Identifier"
+        },
+        "frame_index": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "capture_time": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "value",
+            "unit",
+            "timebase_id"
+          ],
+          "properties": {
+            "value": {
+              "type": "number"
+            },
+            "unit": {
+              "const": "ms"
+            },
+            "timebase_id": {
+              "$ref": "#/$defs/Identifier"
+            }
+          }
+        },
+        "source_payload_ref": {
+          "$ref": "#/$defs/PayloadReference"
+        }
+      }
+    },
+    "Transform": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "transform_id",
+        "operation",
+        "transform_version",
+        "source_frame_id",
+        "target_frame_id",
+        "source_width",
+        "source_height",
+        "target_width",
+        "target_height",
+        "mapping_type",
+        "mapping_direction",
+        "invertible"
+      ],
+      "properties": {
+        "transform_id": {
+          "$ref": "#/$defs/Identifier"
+        },
+        "operation": {
+          "enum": [
+            "identity",
+            "orientation",
+            "crop",
+            "pad",
+            "resize",
+            "pyramid",
+            "feature_grid",
+            "patch_grid",
+            "other_profile_defined"
+          ]
+        },
+        "source_width": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "source_height": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "target_width": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "target_height": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "mapping_type": {
+          "enum": [
+            "identity",
+            "affine",
+            "nonlinear"
+          ]
+        },
+        "matrix_3x3": {
+          "type": "array",
+          "minItems": 9,
+          "maxItems": 9,
+          "items": {
+            "type": "number"
+          }
+        },
+        "mapping_payload_ref": {
+          "$ref": "#/$defs/PayloadReference"
+        },
+        "invertible": {
+          "type": "boolean"
+        },
+        "valid_domain_ref": {
+          "$ref": "#/$defs/PayloadReference"
+        },
+        "transform_version": {
+          "$ref": "#/$defs/Identifier"
+        },
+        "source_frame_id": {
+          "$ref": "#/$defs/Identifier"
+        },
+        "target_frame_id": {
+          "$ref": "#/$defs/Identifier"
+        },
+        "mapping_direction": {
+          "const": "source_to_target"
+        },
+        "inverse_matrix_3x3": {
+          "type": "array",
+          "minItems": 9,
+          "maxItems": 9,
+          "items": {
+            "type": "number"
+          }
+        },
+        "inverse_mapping_payload_ref": {
+          "$ref": "#/$defs/PayloadReference"
+        }
+      }
+    },
+    "Image": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "source_width",
+        "source_height",
+        "canonical_width",
+        "canonical_height",
+        "source_frame_id",
+        "canonical_frame_id",
+        "coordinate_frame",
+        "canonical_pixel_format",
+        "transform_id",
+        "transform_chain",
+        "orientation_action",
+        "alpha_policy",
+        "color_profile_id"
+      ],
+      "properties": {
+        "encoded_payload_ref": {
+          "$ref": "#/$defs/PayloadReference"
+        },
+        "source_raster_ref": {
+          "$ref": "#/$defs/PayloadReference"
+        },
+        "canonical_pixels_ref": {
+          "$ref": "#/$defs/PayloadReference"
+        },
+        "source_width": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "source_height": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "canonical_width": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "canonical_height": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "codec_id": {
+          "$ref": "#/$defs/Identifier"
+        },
+        "source_channel_order": {
+          "enum": [
+            "GRAY",
+            "RGB",
+            "BGR",
+            "RGBA",
+            "BGRA",
+            "PLANAR",
+            "profile_defined"
+          ]
+        },
+        "canonical_pixel_format": {
+          "enum": [
+            "GRAY_U8",
+            "RGB_U8",
+            "RGBA_U8",
+            "GRAY_F32",
+            "RGB_F32",
+            "RGBA_F32",
+            "profile_defined"
+          ]
+        },
+        "color_profile_id": {
+          "$ref": "#/$defs/Identifier"
+        },
+        "coordinate_frame": {
+          "const": "upper_left_origin_x_right_y_down_pixel_centers"
+        },
+        "transform_id": {
+          "$ref": "#/$defs/Identifier"
+        },
+        "transform_chain": {
+          "type": "array",
+          "maxItems": 32,
+          "items": {
+            "$ref": "#/$defs/Transform"
+          },
+          "minItems": 1
+        },
+        "orientation_action": {
+          "enum": [
+            "decoded_raster_only",
+            "explicitly_applied",
+            "unknown_preserved"
+          ]
+        },
+        "alpha_policy": {
+          "enum": [
+            "not_present",
+            "preserved",
+            "composited_explicit_background",
+            "not_applicable"
+          ]
+        },
+        "source_frame_id": {
+          "$ref": "#/$defs/Identifier"
+        },
+        "canonical_frame_id": {
+          "$ref": "#/$defs/Identifier"
+        }
+      }
+    },
+    "FeatureDescriptor": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "feature_id",
+        "algorithm_version",
+        "payload_ref",
+        "shape",
+        "dtype",
+        "units",
+        "coordinate_transform_id"
+      ],
+      "properties": {
+        "feature_id": {
+          "$ref": "#/$defs/Identifier"
+        },
+        "algorithm_version": {
+          "$ref": "#/$defs/Identifier"
+        },
+        "payload_ref": {
+          "$ref": "#/$defs/PayloadReference"
+        },
+        "shape": {
+          "$ref": "#/$defs/PositiveShape"
+        },
+        "dtype": {
+          "enum": [
+            "uint8",
+            "int16",
+            "int32",
+            "float32",
+            "float64"
+          ]
+        },
+        "units": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 64
+        },
+        "coordinate_transform_id": {
+          "$ref": "#/$defs/Identifier"
+        },
+        "channel_names": {
+          "type": "array",
+          "maxItems": 256,
+          "items": {
+            "type": "string",
+            "maxLength": 64
+          }
+        },
+        "valid_mask_ref": {
+          "$ref": "#/$defs/PayloadReference"
+        }
+      }
+    },
+    "FeatureSet": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "profile_id",
+        "items"
+      ],
+      "properties": {
+        "profile_id": {
+          "$ref": "#/$defs/Identifier"
+        },
+        "items": {
+          "type": "array",
+          "maxItems": 64,
+          "items": {
+            "$ref": "#/$defs/FeatureDescriptor"
+          }
+        }
+      }
+    },
+    "VisualTokens": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "tokenizer_id",
+        "tokenizer_version",
+        "vocabulary_id",
+        "payload_ref",
+        "dtype",
+        "patch_grid",
+        "traversal_order",
+        "coordinate_transform_id"
+      ],
+      "properties": {
+        "tokenizer_id": {
+          "$ref": "#/$defs/Identifier"
+        },
+        "tokenizer_version": {
+          "$ref": "#/$defs/Identifier"
+        },
+        "vocabulary_id": {
+          "$ref": "#/$defs/Identifier"
+        },
+        "payload_ref": {
+          "$ref": "#/$defs/PayloadReference"
+        },
+        "dtype": {
+          "const": "int32"
+        },
+        "patch_grid": {
+          "type": "array",
+          "minItems": 2,
+          "maxItems": 2,
+          "items": {
+            "type": "integer",
+            "minimum": 1
+          }
+        },
+        "traversal_order": {
+          "enum": [
+            "row_major",
+            "profile_defined"
+          ]
+        },
+        "coordinate_transform_id": {
+          "$ref": "#/$defs/Identifier"
+        },
+        "valid_mask_ref": {
+          "$ref": "#/$defs/PayloadReference"
+        }
+      }
+    },
+    "Quality": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "status",
+        "indicators"
+      ],
+      "properties": {
+        "status": {
+          "enum": [
+            "accepted",
+            "accepted_degraded"
+          ]
+        },
+        "indicators": {
+          "type": "array",
+          "maxItems": 128,
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "name",
+              "value",
+              "method_id",
+              "units",
+              "method_version",
+              "scope",
+              "acceptance_effect"
+            ],
+            "properties": {
+              "name": {
+                "$ref": "#/$defs/Identifier"
+              },
+              "value": {
+                "type": "number"
+              },
+              "method_id": {
+                "$ref": "#/$defs/Identifier"
+              },
+              "units": {
+                "type": "string",
+                "maxLength": 64,
+                "minLength": 1
+              },
+              "affected_region_ref": {
+                "$ref": "#/$defs/PayloadReference"
+              },
+              "method_version": {
+                "$ref": "#/$defs/Identifier"
+              },
+              "scope": {
+                "enum": [
+                  "image",
+                  "feature_region",
+                  "patch"
+                ]
+              },
+              "acceptance_effect": {
+                "enum": [
+                  "descriptive_only",
+                  "profile_gate"
+                ]
+              }
+            }
+          }
+        },
+        "flags": {
+          "type": "array",
+          "maxItems": 128,
+          "items": {
+            "$ref": "#/$defs/Identifier"
+          }
+        }
+      }
+    },
+    "Uncertainty": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "calibration_status",
+        "calibration_profile_id",
+        "method_id",
+        "method_version",
+        "target_event",
+        "granularity",
+        "values_ref",
+        "shape",
+        "dtype",
+        "units",
+        "convention"
+      ],
+      "properties": {
+        "calibration_status": {
+          "enum": [
+            "calibrated",
+            "uncalibrated_fallback"
+          ]
+        },
+        "calibration_profile_id": {
+          "$ref": "#/$defs/Identifier"
+        },
+        "target_event": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 256
+        },
+        "granularity": {
+          "enum": [
+            "image",
+            "feature_region",
+            "patch"
+          ]
+        },
+        "values_ref": {
+          "$ref": "#/$defs/PayloadReference"
+        },
+        "shape": {
+          "$ref": "#/$defs/PositiveShape"
+        },
+        "dtype": {
+          "const": "float32"
+        },
+        "units": {
+          "const": "probability"
+        },
+        "convention": {
+          "const": "0_is_highest_confidence_1_is_highest_uncertainty"
+        },
+        "method_id": {
+          "$ref": "#/$defs/Identifier"
+        },
+        "method_version": {
+          "$ref": "#/$defs/Identifier"
+        },
+        "calibration_evidence_ref": {
+          "$ref": "#/$defs/PayloadReference"
+        },
+        "alignment_id": {
+          "$ref": "#/$defs/Identifier"
+        },
+        "coordinate_transform_id": {
+          "$ref": "#/$defs/Identifier"
+        },
+        "valid_mask_ref": {
+          "$ref": "#/$defs/PayloadReference"
+        }
+      }
+    },
+    "Provenance": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "producer_component",
+        "producer_version",
+        "trace_id",
+        "profile_id",
+        "runtime_id"
+      ],
+      "properties": {
+        "producer_component": {
+          "const": "VISION_IMAGE"
+        },
+        "producer_version": {
+          "type": "string",
+          "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+$"
+        },
+        "trace_id": {
+          "$ref": "#/$defs/Identifier"
+        },
+        "profile_id": {
+          "$ref": "#/$defs/Identifier"
+        },
+        "runtime_id": {
+          "$ref": "#/$defs/Identifier"
+        },
+        "decoder_id": {
+          "$ref": "#/$defs/Identifier"
+        },
+        "source_integrity_status": {
+          "enum": [
+            "not_attested",
+            "checksum_verified",
+            "externally_attested"
+          ]
+        },
+        "attestation_ref": {
+          "$ref": "#/$defs/PayloadReference"
+        }
+      }
+    }
+  },
+  "anyOf": [
+    {
+      "properties": {
+        "image": {
+          "required": [
+            "encoded_payload_ref"
+          ]
+        }
+      }
+    },
+    {
+      "properties": {
+        "image": {
+          "required": [
+            "source_raster_ref"
+          ]
+        }
+      }
+    },
+    {
+      "properties": {
+        "image": {
+          "required": [
+            "canonical_pixels_ref"
+          ]
+        }
+      }
+    },
+    {
+      "required": [
+        "features"
+      ],
+      "properties": {
+        "features": {
+          "properties": {
+            "items": {
+              "minItems": 1
+            }
+          }
+        }
+      }
+    },
+    {
+      "required": [
+        "visual_tokens"
+      ]
+    }
+  ]
+}

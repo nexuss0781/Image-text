@@ -1,0 +1,372 @@
+{
+  "build_runs": [
+    {
+      "case_results": [
+        {
+          "catalog_case_id": "RES-001",
+          "label": "proposal_limit_ceiling_rejection",
+          "status": "pass",
+          "test_id": "P8-TEST-001"
+        },
+        {
+          "catalog_case_id": "RES-001",
+          "label": "effective_deadline_forwarded",
+          "status": "pass",
+          "test_id": "P8-TEST-002"
+        },
+        {
+          "catalog_case_id": "RES-003",
+          "label": "zero_depth_backpressure_and_retry_after_release",
+          "status": "pass",
+          "test_id": "P8-TEST-003"
+        },
+        {
+          "catalog_case_id": "RES-003",
+          "label": "concurrent_burst_admits_one_without_queue",
+          "status": "pass",
+          "test_id": "P8-TEST-004"
+        },
+        {
+          "catalog_case_id": "ADM-007",
+          "label": "cancellation_propagates_to_p4",
+          "status": "pass",
+          "test_id": "P8-TEST-005"
+        },
+        {
+          "catalog_case_id": "ADM-007",
+          "label": "caller_deadline_propagates_to_p4",
+          "status": "pass",
+          "test_id": "P8-TEST-006"
+        },
+        {
+          "catalog_case_id": "STR-002",
+          "label": "drain_close_waits_and_refuses_new_work",
+          "status": "pass",
+          "test_id": "P8-TEST-007"
+        },
+        {
+          "catalog_case_id": "STR-002",
+          "label": "cancel_close_stops_then_drains",
+          "status": "pass",
+          "test_id": "P8-TEST-008"
+        },
+        {
+          "catalog_case_id": "STR-002",
+          "label": "close_idempotence_terminal_state_and_new_instance",
+          "status": "pass",
+          "test_id": "P8-TEST-009"
+        },
+        {
+          "catalog_case_id": "TEL-001",
+          "label": "aggregate_snapshot_privacy_and_read_only_copy",
+          "status": "pass",
+          "test_id": "P8-TEST-010"
+        },
+        {
+          "catalog_case_id": "STR-002",
+          "label": "late_cancellation_is_ignored_and_slot_reusable",
+          "status": "pass",
+          "test_id": "P8-TEST-011"
+        },
+        {
+          "catalog_case_id": "STR-002",
+          "label": "destructor_requests_stop_without_use_after_free",
+          "status": "pass",
+          "test_id": "P8-TEST-012"
+        }
+      ],
+      "compile_command": [
+        "/usr/bin/x86_64-linux-gnu-g++-13",
+        "-std=c++20",
+        "-Wall",
+        "-Wextra",
+        "-Wpedantic",
+        "-Wconversion",
+        "-Wsign-conversion",
+        "-Wshadow",
+        "-Werror",
+        "-O2",
+        "-pthread",
+        "/workspace/AGI-Core/Image/SPEC/p4/raster_admission.cpp",
+        "/workspace/AGI-Core/Image/SPEC/p8/request_runtime.cpp",
+        "/workspace/AGI-Core/Image/SPEC/harness/p8/test_request_runtime.cpp",
+        "-o",
+        "/tmp/image-vision-p8-9iziihgm/p8-normal"
+      ],
+      "compiler_output": "",
+      "dynamic_link_dependencies": [
+        "linux-vdso.so.1",
+        "libstdc++.so.6",
+        "libgcc_s.so.1",
+        "libc.so.6",
+        "libm.so.6",
+        "/lib64/ld-linux-x86-64.so.2"
+      ],
+      "elapsed_ms": 56.256,
+      "exit_code": 0,
+      "mode": "normal",
+      "status": "pass",
+      "stderr": "",
+      "stdout": "CASE\tP8-TEST-001\tpass\tRES-001\tproposal_limit_ceiling_rejection\nCASE\tP8-TEST-002\tpass\tRES-001\teffective_deadline_forwarded\nCASE\tP8-TEST-003\tpass\tRES-003\tzero_depth_backpressure_and_retry_after_release\nCASE\tP8-TEST-004\tpass\tRES-003\tconcurrent_burst_admits_one_without_queue\nCASE\tP8-TEST-005\tpass\tADM-007\tcancellation_propagates_to_p4\nCASE\tP8-TEST-006\tpass\tADM-007\tcaller_deadline_propagates_to_p4\nCASE\tP8-TEST-007\tpass\tSTR-002\tdrain_close_waits_and_refuses_new_work\nCASE\tP8-TEST-008\tpass\tSTR-002\tcancel_close_stops_then_drains\nCASE\tP8-TEST-009\tpass\tSTR-002\tclose_idempotence_terminal_state_and_new_instance\nCASE\tP8-TEST-010\tpass\tTEL-001\taggregate_snapshot_privacy_and_read_only_copy\nCASE\tP8-TEST-011\tpass\tSTR-002\tlate_cancellation_is_ignored_and_slot_reusable\nCASE\tP8-TEST-012\tpass\tSTR-002\tdestructor_requests_stop_without_use_after_free\nSUMMARY\t12\t12\n"
+    },
+    {
+      "case_results": [
+        {
+          "catalog_case_id": "RES-001",
+          "label": "proposal_limit_ceiling_rejection",
+          "status": "pass",
+          "test_id": "P8-TEST-001"
+        },
+        {
+          "catalog_case_id": "RES-001",
+          "label": "effective_deadline_forwarded",
+          "status": "pass",
+          "test_id": "P8-TEST-002"
+        },
+        {
+          "catalog_case_id": "RES-003",
+          "label": "zero_depth_backpressure_and_retry_after_release",
+          "status": "pass",
+          "test_id": "P8-TEST-003"
+        },
+        {
+          "catalog_case_id": "RES-003",
+          "label": "concurrent_burst_admits_one_without_queue",
+          "status": "pass",
+          "test_id": "P8-TEST-004"
+        },
+        {
+          "catalog_case_id": "ADM-007",
+          "label": "cancellation_propagates_to_p4",
+          "status": "pass",
+          "test_id": "P8-TEST-005"
+        },
+        {
+          "catalog_case_id": "ADM-007",
+          "label": "caller_deadline_propagates_to_p4",
+          "status": "pass",
+          "test_id": "P8-TEST-006"
+        },
+        {
+          "catalog_case_id": "STR-002",
+          "label": "drain_close_waits_and_refuses_new_work",
+          "status": "pass",
+          "test_id": "P8-TEST-007"
+        },
+        {
+          "catalog_case_id": "STR-002",
+          "label": "cancel_close_stops_then_drains",
+          "status": "pass",
+          "test_id": "P8-TEST-008"
+        },
+        {
+          "catalog_case_id": "STR-002",
+          "label": "close_idempotence_terminal_state_and_new_instance",
+          "status": "pass",
+          "test_id": "P8-TEST-009"
+        },
+        {
+          "catalog_case_id": "TEL-001",
+          "label": "aggregate_snapshot_privacy_and_read_only_copy",
+          "status": "pass",
+          "test_id": "P8-TEST-010"
+        },
+        {
+          "catalog_case_id": "STR-002",
+          "label": "late_cancellation_is_ignored_and_slot_reusable",
+          "status": "pass",
+          "test_id": "P8-TEST-011"
+        },
+        {
+          "catalog_case_id": "STR-002",
+          "label": "destructor_requests_stop_without_use_after_free",
+          "status": "pass",
+          "test_id": "P8-TEST-012"
+        }
+      ],
+      "compile_command": [
+        "/usr/bin/x86_64-linux-gnu-g++-13",
+        "-std=c++20",
+        "-Wall",
+        "-Wextra",
+        "-Wpedantic",
+        "-Wconversion",
+        "-Wsign-conversion",
+        "-Wshadow",
+        "-Werror",
+        "-O2",
+        "-pthread",
+        "-fsanitize=address,undefined",
+        "-fno-omit-frame-pointer",
+        "-g",
+        "/workspace/AGI-Core/Image/SPEC/p4/raster_admission.cpp",
+        "/workspace/AGI-Core/Image/SPEC/p8/request_runtime.cpp",
+        "/workspace/AGI-Core/Image/SPEC/harness/p8/test_request_runtime.cpp",
+        "-o",
+        "/tmp/image-vision-p8-9iziihgm/p8-address_undefined_sanitizers"
+      ],
+      "compiler_output": "",
+      "dynamic_link_dependencies": [
+        "linux-vdso.so.1",
+        "libasan.so.8",
+        "libstdc++.so.6",
+        "libm.so.6",
+        "libubsan.so.1",
+        "libgcc_s.so.1",
+        "libc.so.6",
+        "/lib64/ld-linux-x86-64.so.2"
+      ],
+      "elapsed_ms": 70.838,
+      "exit_code": 0,
+      "mode": "address_undefined_sanitizers",
+      "status": "pass",
+      "stderr": "",
+      "stdout": "CASE\tP8-TEST-001\tpass\tRES-001\tproposal_limit_ceiling_rejection\nCASE\tP8-TEST-002\tpass\tRES-001\teffective_deadline_forwarded\nCASE\tP8-TEST-003\tpass\tRES-003\tzero_depth_backpressure_and_retry_after_release\nCASE\tP8-TEST-004\tpass\tRES-003\tconcurrent_burst_admits_one_without_queue\nCASE\tP8-TEST-005\tpass\tADM-007\tcancellation_propagates_to_p4\nCASE\tP8-TEST-006\tpass\tADM-007\tcaller_deadline_propagates_to_p4\nCASE\tP8-TEST-007\tpass\tSTR-002\tdrain_close_waits_and_refuses_new_work\nCASE\tP8-TEST-008\tpass\tSTR-002\tcancel_close_stops_then_drains\nCASE\tP8-TEST-009\tpass\tSTR-002\tclose_idempotence_terminal_state_and_new_instance\nCASE\tP8-TEST-010\tpass\tTEL-001\taggregate_snapshot_privacy_and_read_only_copy\nCASE\tP8-TEST-011\tpass\tSTR-002\tlate_cancellation_is_ignored_and_slot_reusable\nCASE\tP8-TEST-012\tpass\tSTR-002\tdestructor_requests_stop_without_use_after_free\nSUMMARY\t12\t12\n"
+    }
+  ],
+  "case_results": [
+    {
+      "catalog_case_id": "RES-001",
+      "label": "proposal_limit_ceiling_rejection",
+      "status": "pass",
+      "test_id": "P8-TEST-001"
+    },
+    {
+      "catalog_case_id": "RES-001",
+      "label": "effective_deadline_forwarded",
+      "status": "pass",
+      "test_id": "P8-TEST-002"
+    },
+    {
+      "catalog_case_id": "RES-003",
+      "label": "zero_depth_backpressure_and_retry_after_release",
+      "status": "pass",
+      "test_id": "P8-TEST-003"
+    },
+    {
+      "catalog_case_id": "RES-003",
+      "label": "concurrent_burst_admits_one_without_queue",
+      "status": "pass",
+      "test_id": "P8-TEST-004"
+    },
+    {
+      "catalog_case_id": "ADM-007",
+      "label": "cancellation_propagates_to_p4",
+      "status": "pass",
+      "test_id": "P8-TEST-005"
+    },
+    {
+      "catalog_case_id": "ADM-007",
+      "label": "caller_deadline_propagates_to_p4",
+      "status": "pass",
+      "test_id": "P8-TEST-006"
+    },
+    {
+      "catalog_case_id": "STR-002",
+      "label": "drain_close_waits_and_refuses_new_work",
+      "status": "pass",
+      "test_id": "P8-TEST-007"
+    },
+    {
+      "catalog_case_id": "STR-002",
+      "label": "cancel_close_stops_then_drains",
+      "status": "pass",
+      "test_id": "P8-TEST-008"
+    },
+    {
+      "catalog_case_id": "STR-002",
+      "label": "close_idempotence_terminal_state_and_new_instance",
+      "status": "pass",
+      "test_id": "P8-TEST-009"
+    },
+    {
+      "catalog_case_id": "TEL-001",
+      "label": "aggregate_snapshot_privacy_and_read_only_copy",
+      "status": "pass",
+      "test_id": "P8-TEST-010"
+    },
+    {
+      "catalog_case_id": "STR-002",
+      "label": "late_cancellation_is_ignored_and_slot_reusable",
+      "status": "pass",
+      "test_id": "P8-TEST-011"
+    },
+    {
+      "catalog_case_id": "STR-002",
+      "label": "destructor_requests_stop_without_use_after_free",
+      "status": "pass",
+      "test_id": "P8-TEST-012"
+    }
+  ],
+  "commit": "b179141e628060bea43cd4a0bae3d7a4c2f8fd42",
+  "counts": {
+    "sanitizer_status": "pass",
+    "tests_defined": 12,
+    "tests_failed_normal": 0,
+    "tests_passed_normal": 12,
+    "tests_run_normal": 12
+  },
+  "evidence_version": "0.1.0-draft",
+  "failures": [],
+  "finished_at": "2026-10-07T17:25:04Z",
+  "implementation": {
+    "compiler_path": "/usr/bin/x86_64-linux-gnu-g++-13",
+    "compiler_version": "x86_64-linux-gnu-g++-13 (Ubuntu 13.3.0-6ubuntu2~24.04.1) 13.3.0",
+    "external_dependencies": [],
+    "language": "C++20",
+    "sanitizer_flags": [
+      "-fsanitize=address,undefined",
+      "-fno-omit-frame-pointer",
+      "-g"
+    ],
+    "source_hashes": {
+      "Image/SPEC/harness/case_catalog.json": "aae39dcbaa21063a44d1926cda71c550d84a4793eb05ff683909d43cbbea5f46",
+      "Image/SPEC/harness/p8/case_bindings.json": "43d303fcfec59cc40ea1cdcd81a2e5c2b122e5cf60c31e614a4c6c231c5194a9",
+      "Image/SPEC/harness/p8/p8_evidence.schema.json": "0c3cb5c8f40c2f285de8200d3ec29f136cea7f8c6c546129ce8b4bb06b3b1e6a",
+      "Image/SPEC/harness/p8/run_p8.py": "015f0de63984eb2cb63aee51e13da2a8496418c90aab8c049ff5463085b408b5",
+      "Image/SPEC/harness/p8/test_request_runtime.cpp": "21de9acde8eb7c61c6c64159848d607119bda6216bfce6bfebdf2a2f6734c896",
+      "Image/SPEC/p4/raster_admission.cpp": "9f15b2bc852554a784990bb355607bbef5daa978e7f76c0ad0edade9fcfa0829",
+      "Image/SPEC/p4/raster_admission.hpp": "c52136d07c631aff7d396e034c600d3de832fcb7409f8f2b605415a22b46ff21",
+      "Image/SPEC/p8/request_runtime.cpp": "f8c6f4a8b4636157bc55282eaab27ca27dd29cf08b6ebcf3f08f9d815fc3e8e4",
+      "Image/SPEC/p8/request_runtime.hpp": "3b8ebb407d9c9b7dd22098b5b252f7d2fdeb2f2f9398be2b9dc8a55c184e351e",
+      "Image/SPEC/p8/single_flight_runtime_v1.contract.json": "c871a525608a5ea1ff15263cf4afb95b46fa5b1d36406ddfafef30beb38aab90",
+      "Image/SPEC/profiles/general_still_image.proposal.json": "59650032ebd787fde7eed1f3f6606a3e0cc275e8336ad20855c65ecec2c5a2d1"
+    },
+    "strict_flags": [
+      "-std=c++20",
+      "-Wall",
+      "-Wextra",
+      "-Wpedantic",
+      "-Wconversion",
+      "-Wsign-conversion",
+      "-Wshadow",
+      "-Werror",
+      "-O2",
+      "-pthread"
+    ]
+  },
+  "phase": "P8",
+  "phase_completion": "p8_single_flight_still_request_v1_engineering_slice_profile_proposal_open",
+  "scope": {
+    "animation_allowed": false,
+    "cortex_modified": false,
+    "deadline_ms": 10000,
+    "features_enabled": [],
+    "frame_transport_enabled": false,
+    "max_diagnostic_bytes": 1024,
+    "max_in_flight_requests": 1,
+    "max_queue_depth": 0,
+    "named_workload_evidence": false,
+    "observation_publication_enabled": false,
+    "production_approval": false,
+    "profile_hash": "59650032ebd787fde7eed1f3f6606a3e0cc275e8336ad20855c65ecec2c5a2d1",
+    "profile_id": "general-still-image-candidate-v1",
+    "profile_status": "proposal",
+    "telemetry_sink_enabled": false,
+    "uncertainty_mode": "disabled"
+  },
+  "started_at": "2026-10-07T17:24:49Z",
+  "status": "finished",
+  "working_tree_state": "dirty",
+  "working_tree_status_sha256": "e6ec4cd10a2697dcfec7567557265c50aa349624959a69f1fedfb541839b6df8"
+}

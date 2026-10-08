@@ -1,0 +1,174 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:agi-core:vision:image-harness-run:0.2.0-draft",
+  "title": "Image VISION Harness Run Evidence",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "run_id",
+    "status",
+    "commit",
+    "working_tree",
+    "profile_id",
+    "profile_status",
+    "profile_usage",
+    "profile_hash",
+    "schema_versions",
+    "input_hashes",
+    "build",
+    "target",
+    "seed",
+    "reproducibility",
+    "command",
+    "started_at",
+    "finished_at",
+    "case_results",
+    "counts",
+    "case_catalog_summary",
+    "resource_counters",
+    "dependency_audit",
+    "raw_artifact_ref",
+    "reviewer",
+    "gate_decision"
+  ],
+  "properties": {
+    "run_id": {"$ref": "#/$defs/Identifier"},
+    "status": {"enum": ["finished", "partial", "failed"]},
+    "commit": {"type": "string", "pattern": "^[a-fA-F0-9]{7,64}$"},
+    "working_tree": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["state", "status_porcelain_sha256"],
+      "properties": {
+        "state": {"enum": ["clean", "dirty", "unknown"]},
+        "status_porcelain_sha256": {"type": "string", "pattern": "^[a-fA-F0-9]{64}$"}
+      }
+    },
+    "profile_id": {"$ref": "#/$defs/Identifier"},
+    "profile_status": {"enum": ["fixture_only", "proposal", "approved", "not_applicable"]},
+    "profile_usage": {"enum": ["reference_only_no_component_execution", "test_profile_executed", "approved_runtime_profile"]},
+    "profile_hash": {"type": "string", "pattern": "^[a-fA-F0-9]{64}$"},
+    "schema_versions": {
+      "type": "object",
+      "minProperties": 1,
+      "additionalProperties": {"type": "string", "minLength": 1, "maxLength": 128}
+    },
+    "input_hashes": {
+      "type": "object",
+      "minProperties": 1,
+      "additionalProperties": {"type": "string", "pattern": "^[a-fA-F0-9]{64}$"}
+    },
+    "build": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["subject", "language_boundary", "compiler_id", "build_configuration", "dependency_inventory_hash"],
+      "properties": {
+        "subject": {"enum": ["specification_harness", "image_component"]},
+        "language_boundary": {"enum": ["python_stdlib_only", "cpp_assembly"]},
+        "compiler_id": {"type": "string", "minLength": 1, "maxLength": 128},
+        "build_configuration": {"type": "string", "minLength": 1, "maxLength": 256},
+        "dependency_inventory_hash": {"type": "string", "pattern": "^[a-fA-F0-9]{64}$"},
+        "math_library_id": {"type": "string", "maxLength": 128}
+      }
+    },
+    "target": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["host_id", "architecture_id", "runtime_id"],
+      "properties": {
+        "host_id": {"type": "string", "minLength": 1, "maxLength": 128},
+        "architecture_id": {"type": "string", "minLength": 1, "maxLength": 128},
+        "runtime_id": {"type": "string", "minLength": 1, "maxLength": 128}
+      }
+    },
+    "seed": {"type": ["integer", "null"]},
+    "reproducibility": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["mode", "network_access_required", "external_services_used", "nondeterministic_inputs"],
+      "properties": {
+        "mode": {"enum": ["deterministic", "seeded", "non_deterministic"]},
+        "network_access_required": {"type": "boolean"},
+        "external_services_used": {"type": "boolean"},
+        "nondeterministic_inputs": {"type": "array", "items": {"type": "string", "maxLength": 128}}
+      }
+    },
+    "command": {"type": "string", "minLength": 1, "maxLength": 1024},
+    "started_at": {"type": "string", "format": "date-time"},
+    "finished_at": {"type": "string", "format": "date-time"},
+    "case_results": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["case_id", "status"],
+        "properties": {
+          "case_id": {"$ref": "#/$defs/Identifier"},
+          "status": {"enum": ["pass", "fail", "blocked", "not_applicable"]},
+          "duration_ms": {"type": "number", "minimum": 0},
+          "work_units": {"type": "integer", "minimum": 0},
+          "peak_bytes": {"type": "integer", "minimum": 0},
+          "output_digest": {"type": "string", "pattern": "^[a-fA-F0-9]{64}$"},
+          "failure_code": {"type": "string", "maxLength": 64},
+          "note": {"type": "string", "maxLength": 512}
+        }
+      }
+    },
+    "counts": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["defined", "executed", "passed", "failed", "blocked", "not_applicable"],
+      "properties": {
+        "defined": {"type": "integer", "minimum": 0},
+        "executed": {"type": "integer", "minimum": 0},
+        "passed": {"type": "integer", "minimum": 0},
+        "failed": {"type": "integer", "minimum": 0},
+        "blocked": {"type": "integer", "minimum": 0},
+        "not_applicable": {"type": "integer", "minimum": 0}
+      }
+    },
+    "case_catalog_summary": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["component_cases_defined", "component_cases_not_run", "component_cases_blocked", "component_cases_executed", "package_checks_defined"],
+      "properties": {
+        "component_cases_defined": {"type": "integer", "minimum": 0},
+        "component_cases_not_run": {"type": "integer", "minimum": 0},
+        "component_cases_blocked": {"type": "integer", "minimum": 0},
+        "component_cases_executed": {"type": "integer", "const": 0},
+        "package_checks_defined": {"type": "integer", "minimum": 0}
+      }
+    },
+    "resource_counters": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["scope", "elapsed_ms", "peak_rss_bytes"],
+      "properties": {
+        "scope": {"const": "package_checker_process_only"},
+        "elapsed_ms": {"type": "number", "minimum": 0},
+        "peak_rss_bytes": {"type": ["integer", "null"], "minimum": 0}
+      }
+    },
+    "dependency_audit": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["harness_dependency_closure_audited", "harness_external_dependencies_found", "ml_libraries_frameworks_found", "image_runtime_dependency_graph_audited", "binary_audited", "audit_artifact_ref"],
+      "properties": {
+        "harness_dependency_closure_audited": {"type": "boolean"},
+        "harness_external_dependencies_found": {"type": "boolean"},
+        "ml_libraries_frameworks_found": {"type": "boolean"},
+        "image_runtime_dependency_graph_audited": {"type": "boolean"},
+        "binary_audited": {"type": "boolean"},
+        "audit_artifact_ref": {"type": "string", "minLength": 1, "maxLength": 512}
+      }
+    },
+    "raw_artifact_ref": {"type": "string", "minLength": 1, "maxLength": 512},
+    "reviewer": {"type": "string", "minLength": 1, "maxLength": 128},
+    "reviewed_at": {"type": "string", "format": "date-time"},
+    "gate_decision": {"enum": ["accepted", "rejected", "blocked", "informational"]}
+  },
+  "$defs": {
+    "Identifier": {"type": "string", "minLength": 1, "maxLength": 128, "pattern": "^[A-Za-z0-9][A-Za-z0-9._:/-]{0,127}$"}
+  }
+}

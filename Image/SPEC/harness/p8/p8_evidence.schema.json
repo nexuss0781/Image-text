@@ -1,0 +1,105 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:agi-core:vision:image-p8-evidence:0.1.0-draft",
+  "title": "Image VISION Phase 8 Single-Flight Runtime Evidence",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["evidence_version", "phase", "status", "phase_completion", "started_at", "finished_at", "commit", "working_tree_state", "working_tree_status_sha256", "scope", "implementation", "counts", "case_results", "build_runs", "failures"],
+  "properties": {
+    "evidence_version": {"const": "0.1.0-draft"},
+    "phase": {"const": "P8"},
+    "status": {"enum": ["finished", "failed"]},
+    "phase_completion": {"const": "p8_single_flight_still_request_v1_engineering_slice_profile_proposal_open"},
+    "started_at": {"type": "string", "minLength": 20, "maxLength": 40},
+    "finished_at": {"type": "string", "minLength": 20, "maxLength": 40},
+    "commit": {"type": "string", "pattern": "^[a-fA-F0-9]{7,64}$"},
+    "working_tree_state": {"enum": ["clean", "dirty", "unknown"]},
+    "working_tree_status_sha256": {"type": "string", "pattern": "^[a-fA-F0-9]{64}$"},
+    "scope": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["profile_id", "profile_status", "profile_hash", "max_in_flight_requests", "max_queue_depth", "deadline_ms", "max_diagnostic_bytes", "features_enabled", "uncertainty_mode", "animation_allowed", "frame_transport_enabled", "telemetry_sink_enabled", "observation_publication_enabled", "named_workload_evidence", "production_approval", "cortex_modified"],
+      "properties": {
+        "profile_id": {"type": "string", "minLength": 1, "maxLength": 128},
+        "profile_status": {"const": "proposal"},
+        "profile_hash": {"type": "string", "pattern": "^[a-fA-F0-9]{64}$"},
+        "max_in_flight_requests": {"const": 1},
+        "max_queue_depth": {"const": 0},
+        "deadline_ms": {"const": 10000},
+        "max_diagnostic_bytes": {"const": 1024},
+        "features_enabled": {"const": []},
+        "uncertainty_mode": {"const": "disabled"},
+        "animation_allowed": {"const": false},
+        "frame_transport_enabled": {"const": false},
+        "telemetry_sink_enabled": {"const": false},
+        "observation_publication_enabled": {"const": false},
+        "named_workload_evidence": {"const": false},
+        "production_approval": {"const": false},
+        "cortex_modified": {"const": false}
+      }
+    },
+    "implementation": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["language", "compiler_path", "compiler_version", "strict_flags", "sanitizer_flags", "source_hashes", "external_dependencies"],
+      "properties": {
+        "language": {"const": "C++20"},
+        "compiler_path": {"type": "string", "minLength": 1, "maxLength": 512},
+        "compiler_version": {"type": "string", "minLength": 1, "maxLength": 256},
+        "strict_flags": {"type": "array", "minItems": 9, "items": {"type": "string", "maxLength": 64}},
+        "sanitizer_flags": {"type": "array", "minItems": 1, "items": {"type": "string", "maxLength": 64}},
+        "source_hashes": {"type": "object", "minProperties": 1, "additionalProperties": {"type": "string", "pattern": "^[a-fA-F0-9]{64}$"}},
+        "external_dependencies": {"const": []}
+      }
+    },
+    "counts": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["tests_defined", "tests_run_normal", "tests_passed_normal", "tests_failed_normal", "sanitizer_status"],
+      "properties": {
+        "tests_defined": {"const": 12},
+        "tests_run_normal": {"type": "integer", "minimum": 0},
+        "tests_passed_normal": {"type": "integer", "minimum": 0},
+        "tests_failed_normal": {"type": "integer", "minimum": 0},
+        "sanitizer_status": {"enum": ["pass", "fail"]}
+      }
+    },
+    "case_results": {
+      "type": "array",
+      "minItems": 12,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["test_id", "catalog_case_id", "label", "status"],
+        "properties": {
+          "test_id": {"type": "string", "pattern": "^P8-TEST-[0-9]{3}$"},
+          "catalog_case_id": {"type": "string", "pattern": "^[A-Z]+(?:-[A-Z]+)*-[0-9]{3}$"},
+          "label": {"type": "string", "minLength": 1, "maxLength": 256},
+          "status": {"enum": ["pass", "fail"]}
+        }
+      }
+    },
+    "build_runs": {
+      "type": "array",
+      "minItems": 2,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["mode", "status", "compile_command", "compiler_output", "elapsed_ms", "exit_code", "case_results", "stdout", "stderr", "dynamic_link_dependencies"],
+        "properties": {
+          "mode": {"enum": ["normal", "address_undefined_sanitizers"]},
+          "status": {"enum": ["pass", "fail"]},
+          "compile_command": {"type": "array", "minItems": 1, "items": {"type": "string", "maxLength": 1024}},
+          "compiler_output": {"type": "string", "maxLength": 4096},
+          "elapsed_ms": {"type": "number", "minimum": 0},
+          "exit_code": {"type": "integer"},
+          "case_results": {"type": "array", "minItems": 12, "items": {"$ref": "#/properties/case_results/items"}},
+          "stdout": {"type": "string", "maxLength": 12000},
+          "stderr": {"type": "string", "maxLength": 8000},
+          "dynamic_link_dependencies": {"type": "array", "items": {"type": "string", "maxLength": 256}}
+        }
+      }
+    },
+    "failures": {"type": "array", "items": {"type": "string", "maxLength": 1024}}
+  }
+}

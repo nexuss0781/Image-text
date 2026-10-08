@@ -1,0 +1,11 @@
+{
+  "phase": "P8",
+  "binding_policy": "Separate phase bindings preserve the shared catalog and historical P4-P7 inputs. A passed test covers the named bounded P8 slice only, not deferred stream or publication behavior.",
+  "test_case_bindings": {
+    "ADM-007": ["P8-TEST-005", "P8-TEST-006"],
+    "RES-001": ["P8-TEST-001", "P8-TEST-002"],
+    "RES-003": ["P8-TEST-003", "P8-TEST-004"],
+    "STR-002": ["P8-TEST-007", "P8-TEST-008", "P8-TEST-009", "P8-TEST-011", "P8-TEST-012"],
+    "TEL-001": ["P8-TEST-010"]
+  }
+}

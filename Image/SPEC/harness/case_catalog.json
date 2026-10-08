@@ -1,0 +1,2169 @@
+{
+  "catalog_version": "0.6.0",
+  "status_values": [
+    "defined",
+    "not_run",
+    "pass",
+    "fail",
+    "blocked",
+    "not_applicable"
+  ],
+  "traceability": "../TRACEABILITY.md",
+  "cases": [
+    {
+      "id": "ADM-001",
+      "suite": "admission",
+      "requirement_ids": [
+        "IV-001"
+      ],
+      "purpose": "Accept a profile-conforming decoded raster descriptor.",
+      "setup": "Fixture-only profile; valid HWC descriptor.",
+      "expected": "Typed admission success; no decode assumption.",
+      "complexity_sensitive": false,
+      "definition_status": "defined",
+      "execution_status": "not_run",
+      "case_kind": "image_component",
+      "invariant_ids": []
+    },
+    {
+      "id": "ADM-002",
+      "suite": "admission",
+      "requirement_ids": [
+        "IV-001",
+        "IV-006"
+      ],
+      "purpose": "Reject zero width, height, channel count, or payload length.",
+      "setup": "Mutate one required positive dimension at a time.",
+      "expected": "INVALID_DESCRIPTOR; no allocation or publication.",
+      "complexity_sensitive": false,
+      "definition_status": "defined",
+      "execution_status": "not_run",
+      "case_kind": "image_component",
+      "invariant_ids": [
+        "RI-01.08"
+      ]
+    },
+    {
+      "id": "ADM-003",
+      "suite": "admission",
+      "requirement_ids": [
+        "IV-001",
+        "IV-006"
+      ],
+      "purpose": "Reject multiplication overflow in width×height×channels×bytes-per-sample.",
+      "setup": "Use dimensions near the selected integer limit with small declared payload.",
+      "expected": "RESOURCE_LIMIT or INVALID_DESCRIPTOR before allocation/pointer arithmetic.",
+      "complexity_sensitive": false,
+      "definition_status": "defined",
+      "execution_status": "not_run",
+      "case_kind": "image_component",
+      "invariant_ids": [
+        "RI-01.07",
+        "RI-01.08",
+        "RI-07.01"
+      ]
+    },
+    {
+      "id": "ADM-004",
+      "suite": "admission",
+      "requirement_ids": [
+        "IV-001",
+        "IV-006"
+      ],
+      "purpose": "Reject a row stride shorter than the declared row payload and invalid plane offsets.",
+      "setup": "Provide malformed strided descriptors.",
+      "expected": "INVALID_DESCRIPTOR; no unchecked access.",
+      "complexity_sensitive": false,
+      "definition_status": "defined",
+      "execution_status": "not_run",
+      "case_kind": "image_component",
+      "invariant_ids": [
+        "RI-01.06",
+        "RI-01.07",
+        "RI-01.08"
+      ]
+    },
+    {
+      "id": "ADM-005",
+      "suite": "admission",
+      "requirement_ids": [
+        "IV-001"
+      ],
+      "purpose": "Reject unknown channel order, sample range, or dtype rather than infer it.",
+      "setup": "Omit or mutate each declaration.",
+      "expected": "Typed rejection; no implicit RGB assumption.",
+      "complexity_sensitive": false,
+      "definition_status": "defined",
+      "execution_status": "not_run",
+      "case_kind": "image_component",
+      "invariant_ids": [
+        "RI-01.06"
+      ]
+    },
+    {
+      "id": "ADM-006",
+      "suite": "admission",
+      "requirement_ids": [
+        "IV-001",
+        "IV-011"
+      ],
+      "purpose": "Keep encoded-image handling separate from decoded-raster descriptor admission.",
+      "setup": "Submit encoded input to admit() rather than decode_binary_pnm().",
+      "expected": "UNSUPPORTED_FORMAT from descriptor admission; the explicit P5/P6 decoder API handles only its allowlisted formats.",
+      "complexity_sensitive": false,
+      "definition_status": "defined",
+      "execution_status": "not_run",
+      "case_kind": "image_component",
+      "invariant_ids": []
+    },
+    {
+      "id": "ADM-007",
+      "suite": "admission",
+      "requirement_ids": [
+        "IV-006",
+        "IV-011"
+      ],
+      "purpose": "Reject a cancelled or deadline-expired request without publishing a partial raster view.",
+      "setup": "Supply a pre-cancelled stop token or an already-expired request-local steady-clock deadline.",
+      "expected": "CANCELLED or DEADLINE_EXCEEDED; state_changed=false; no raster view or allocation.",
+      "complexity_sensitive": false,
+      "definition_status": "defined",
+      "execution_status": "not_run",
+      "case_kind": "image_component",
+      "invariant_ids": [
+        "RI-06.05",
+        "RI-07.05"
+      ]
+    },
+    {
+      "id": "DEC-001",
+      "suite": "decode",
+      "requirement_ids": [
+        "IV-001"
+      ],
+      "purpose": "Decode the enabled binary Netpbm P5 grayscale and P6 RGB fixtures within explicit limits.",
+      "setup": "Run exact golden P5/P6 payloads, small exact-limit fixtures, and the proposal-only maximum-pixel P5 fixture.",
+      "expected": "Decoded format identity, dimensions, channels, order, and every sample match the encoded raster.",
+      "complexity_sensitive": false,
+      "definition_status": "defined",
+      "execution_status": "not_run",
+      "case_kind": "image_component",
+      "invariant_ids": [
+        "RI-01.06"
+      ]
+    },
+    {
+      "id": "DEC-002",
+      "suite": "decode",
+      "requirement_ids": [
+        "IV-001",
+        "IV-006"
+      ],
+      "purpose": "Reject unsupported PNM variants and non-255 sample ranges.",
+      "setup": "Use ASCII P2/P3 magic values and binary P5/P6 files with maxval other than 255.",
+      "expected": "UNSUPPORTED_FORMAT or CORRUPT_PAYLOAD; no substitution.",
+      "complexity_sensitive": false,
+      "definition_status": "defined",
+      "execution_status": "not_run",
+      "case_kind": "image_component",
+      "invariant_ids": [
+        "RI-01.06"
+      ]
+    },
+    {
+      "id": "DEC-003",
+      "suite": "decode",
+      "requirement_ids": [
+        "IV-001",
+        "IV-006"
+      ],
+      "purpose": "Reject malformed PNM headers, truncated rasters, extra bytes, and concatenated frames atomically.",
+      "setup": "Mutate numeric header tokens/separators and truncate, extend, or concatenate valid P5 payloads.",
+      "expected": "Typed MALFORMED_HEADER or CORRUPT_PAYLOAD with no partial raster returned.",
+      "complexity_sensitive": false,
+      "definition_status": "defined",
+      "execution_status": "not_run",
+      "case_kind": "image_component",
+      "invariant_ids": []
+    },
+    {
+      "id": "DEC-004",
+      "suite": "decode",
+      "requirement_ids": [
+        "IV-001",
+        "IV-016"
+      ],
+      "purpose": "Reject concatenated or multipage content under the selected single-image PNM subset.",
+      "setup": "Append a second P5 image after a complete P5 raster.",
+      "expected": "CORRUPT_PAYLOAD; no silent first-image truncation or frame selection.",
+      "complexity_sensitive": false,
+      "definition_status": "defined",
+      "execution_status": "not_run",
+      "case_kind": "image_component",
+      "invariant_ids": [
+        "RI-01.11"
+      ]
+    },
+    {
+      "id": "PIX-001",
+      "suite": "canonical_pixels",
+      "requirement_ids": [
+        "IV-003"
+      ],
+      "purpose": "Verify grayscale/channel conversion against profile golden values.",
+      "setup": "Controlled integer samples with profile color policy.",
+      "expected": "Exact output for integer mapping or predeclared tolerance for floating conversion.",
+      "complexity_sensitive": false,
+      "definition_status": "defined",
+      "execution_status": "blocked",
+      "case_kind": "image_component",
+      "invariant_ids": [
+        "RI-03.06"
+      ],
+      "execution_blocker": "The P4 authorization is limited to decoded-raster descriptor admission; this case remains blocked pending its phase-specific implementation and any named owner-approved profile, policy, target, or integration inputs."
+    },
+    {
+      "id": "PIX-002",
+      "suite": "canonical_pixels",
+      "requirement_ids": [
+        "IV-003",
+        "IV-006"
+      ],
+      "purpose": "Verify alpha preservation/compositing uses only the declared policy and background.",
+      "setup": "RGBA fixture with transparent, opaque and partial-alpha samples.",
+      "expected": "Profile-exact output or explicit rejection; no invented background.",
+      "complexity_sensitive": false,
+      "definition_status": "defined",
+      "execution_status": "blocked",
+      "case_kind": "image_component",
+      "invariant_ids": [
+        "RI-01.11",
+        "RI-03.06"
+      ],
+      "execution_blocker": "The P4 authorization is limited to decoded-raster descriptor admission; this case remains blocked pending its phase-specific implementation and any named owner-approved profile, policy, target, or integration inputs."
+    },
+    {
+      "id": "PIX-003",
+      "suite": "canonical_pixels",
+      "requirement_ids": [
+        "IV-003"
+      ],
+      "purpose": "Detect channel-order mismatch and prevent silent RGB/BGR swap.",
+      "setup": "Distinct primary values per channel and contradictory descriptor.",
+      "expected": "Explicit conversion or typed rejection per profile.",
+      "complexity_sensitive": false,
+      "definition_status": "defined",
+      "execution_status": "not_run",
+      "case_kind": "image_component",
+      "invariant_ids": [
+        "RI-03.06"
+      ]
+    },
+    {
+      "id": "PIX-004",
+      "suite": "canonical_pixels",
+      "requirement_ids": [
+        "IV-003",
+        "IV-006"
+      ],
+      "purpose": "Reject NaN, infinity and out-of-range decoded samples.",
+      "setup": "Inject each invalid numeric value/range.",
+      "expected": "NONFINITE_INPUT or INVALID_DESCRIPTOR; no clamping.",
+      "complexity_sensitive": false,
+      "definition_status": "defined",
+      "execution_status": "not_run",
+      "case_kind": "image_component",
+      "invariant_ids": [
+        "RI-01.05",
+        "RI-02.04"
+      ]
+    },
+    {
+      "id": "GEO-001",
+      "suite": "geometry",
+      "requirement_ids": [
+        "IV-004"
+      ],
+      "purpose": "Verify identity transform preserves pixel-center coordinates.",
+      "setup": "Fixture corners, center and half-integer pixel centers.",
+      "expected": "Identity mapping and dimensions match exactly.",
+      "complexity_sensitive": false,
+      "definition_status": "defined",
+      "execution_status": "not_run",
+      "case_kind": "image_component",
+      "invariant_ids": [
+        "RI-03.03",
+        "RI-03.04"
+      ]
+    },
+    {
+      "id": "GEO-002",
+      "suite": "geometry",
+      "requirement_ids": [
+        "IV-004"
+      ],
+      "purpose": "Verify crop/pad/resize mappings and non-invertible valid domain.",
+      "setup": "Odd and even source dimensions with explicit profile transform.",
+      "expected": "Each output coordinate maps per declared rule; valid-domain mask aligns.",
+      "complexity_sensitive": false,
+      "definition_status": "defined",
+      "execution_status": "blocked",
+      "case_kind": "image_component",
+      "invariant_ids": [
+        "RI-03.05",
+        "RI-03.06"
+      ],
+      "execution_blocker": "The P4 authorization is limited to decoded-raster descriptor admission; this case remains blocked pending its phase-specific implementation and any named owner-approved profile, policy, target, or integration inputs."
+    },
+    {
+      "id": "GEO-003",
+      "suite": "geometry",
+      "requirement_ids": [
+        "IV-004",
+        "IV-006"
+      ],
+      "purpose": "Reject transform chains with inconsistent source/target dimensions.",
+      "setup": "Mutate one link in the transform chain.",
+      "expected": "PROFILE_MISMATCH or INVALID_DESCRIPTOR before publication.",
+      "complexity_sensitive": false,
+      "definition_status": "defined",
+      "execution_status": "not_run",
+      "case_kind": "image_component",
+      "invariant_ids": [
+        "RI-03.01",
+        "RI-03.02",
+        "RI-03.06",
+        "RI-09.01"
+      ]
+    },
+    {
+      "id": "GEO-004",
+      "suite": "geometry",
+      "requirement_ids": [
+        "IV-004"
+      ],
+      "purpose": "Preserve one-row, one-column, and one-pixel coordinate frames.",
+      "setup": "Use analytic_patterns.json degenerate fixtures.",
+      "expected": "Valid transform metadata without invented neighboring coordinates.",
+      "complexity_sensitive": false,
+      "definition_status": "defined",
+      "execution_status": "not_run",
+      "case_kind": "image_component",
+      "invariant_ids": [
+        "RI-03.01",
+        "RI-03.03",
+        "RI-03.06"
+      ]
+    },
+    {
+      "id": "FEAT-001",
+      "suite": "features",
+      "requirement_ids": [
+        "IV-005",
+        "IV-008"
+      ],
+      "purpose": "Check constant, ramp, impulse, checkerboard and channel-independence oracle vectors.",
+      "setup": "Use all analytic pattern fixtures.",
+      "expected": "Exact integer outputs, signs, shape and channel order match fixture.",
+      "complexity_sensitive": true,
+      "definition_status": "defined",
+      "execution_status": "not_run",
+      "case_kind": "image_component",
+      "invariant_ids": [
+        "RI-04.01"
+      ]
+    },
+    {
+      "id": "FEAT-002",
+      "suite": "features",
+      "requirement_ids": [
+        "IV-004",
+        "IV-005"
+      ],
+      "purpose": "Verify feature descriptor shape and coordinate transform identity.",
+      "setup": "Feature output at each enabled scale/region.",
+      "expected": "Runtime shape and coordinate mapping equal descriptor/profile.",
+      "complexity_sensitive": false,
+      "definition_status": "defined",
+      "execution_status": "blocked",
+      "case_kind": "image_component",
+      "invariant_ids": [
+        "RI-02.03",
+        "RI-02.06",
+        "RI-04.01"
+      ],
+      "execution_blocker": "The P4 authorization is limited to decoded-raster descriptor admission; this case remains blocked pending its phase-specific implementation and any named owner-approved profile, policy, target, or integration inputs."
+    },
+    {
+      "id": "FEAT-003",
+      "suite": "features",
+      "requirement_ids": [
+        "IV-005",
+        "IV-006"
+      ],
+      "purpose": "Reject unsupported feature profile, output overflow, or invalid mask alignment.",
+      "setup": "Enable unknown operator and exceed output count.",
+      "expected": "PROFILE_MISMATCH or RESOURCE_LIMIT; no partial feature set.",
+      "complexity_sensitive": false,
+      "definition_status": "defined",
+      "execution_status": "not_run",
+      "case_kind": "image_component",
+      "invariant_ids": [
+        "RI-01.07",
+        "RI-04.01",
+        "RI-05.04"
+      ]
+    },
+    {
+      "id": "FEAT-004",
+      "suite": "features",
+      "requirement_ids": [
+        "IV-005",
+        "IV-008"
+      ],
+      "purpose": "Verify region/patch ordering, bounded count, and partial-region masks.",
+      "setup": "Odd image dimensions and boundary patches.",
+      "expected": "Stable declared traversal and exact validity mask.",
+      "complexity_sensitive": true,
+      "definition_status": "defined",
+      "execution_status": "blocked",
+      "case_kind": "image_component",
+      "invariant_ids": [
+        "RI-03.05",
+        "RI-04.01"
+      ],
+      "execution_blocker": "The P4 authorization is limited to decoded-raster descriptor admission; this case remains blocked pending its phase-specific implementation and any named owner-approved profile, policy, target, or integration inputs."
+    },
+    {
+      "id": "UNC-001",
+      "suite": "uncertainty",
+      "requirement_ids": [
+        "IV-007"
+      ],
+      "purpose": "Verify finite probability values and fixed uncertainty convention.",
+      "setup": "Test boundary values 0 and 1 plus an interior value.",
+      "expected": "Values preserved; convention states zero highest confidence and one highest uncertainty.",
+      "complexity_sensitive": false,
+      "definition_status": "defined",
+      "execution_status": "not_run",
+      "case_kind": "image_component",
+      "invariant_ids": [
+        "RI-04.05",
+        "RI-09.01"
+      ]
+    },
+    {
+      "id": "UNC-002",
+      "suite": "uncertainty",
+      "requirement_ids": [
+        "IV-007",
+        "IV-006"
+      ],
+      "purpose": "Reject NaN, infinity and values outside [0,1].",
+      "setup": "Mutate uncertainty payload one value at a time.",
+      "expected": "NONFINITE_INPUT or PROFILE_MISMATCH; no observation published.",
+      "complexity_sensitive": false,
+      "definition_status": "defined",
+      "execution_status": "not_run",
+      "case_kind": "image_component",
+      "invariant_ids": [
+        "RI-02.04",
+        "RI-04.05",
+        "RI-09.01"
+      ]
+    },
+    {
+      "id": "UNC-003",
+      "suite": "uncertainty",
+      "requirement_ids": [
+        "IV-007"
+      ],
+      "purpose": "Ensure uncalibrated indicator cannot be labeled calibrated confidence.",
+      "setup": "Set calibration state inconsistent with calibration profile/evidence.",
+      "expected": "Reject mismatch or mark the approved uncalibrated fallback.",
+      "complexity_sensitive": false,
+      "definition_status": "defined",
+      "execution_status": "blocked",
+      "case_kind": "image_component",
+      "invariant_ids": [
+        "RI-04.04",
+        "RI-04.06",
+        "RI-04.07",
+        "RI-09.01"
+      ],
+      "execution_blocker": "The P4 authorization is limited to decoded-raster descriptor admission; this case remains blocked pending its phase-specific implementation and any named owner-approved profile, policy, target, or integration inputs."
+    },
+    {
+      "id": "UNC-004",
+      "suite": "uncertainty",
+      "requirement_ids": [
+        "IV-007",
+        "IV-013"
+      ],
+      "purpose": "Verify patch uncertainty order, mask and coordinate transform match associated patches.",
+      "setup": "Use a small patch grid with one invalid partial region.",
+      "expected": "One-to-one count/order/mask alignment or typed rejection.",
+      "complexity_sensitive": false,
+      "definition_status": "defined",
+      "execution_status": "blocked",
+      "case_kind": "image_component",
+      "invariant_ids": [
+        "RI-02.06",
+        "RI-03.05",
+        "RI-04.08",
+        "RI-08.03",
+        "RI-09.01"
+      ],
+      "execution_blocker": "The P4 authorization is limited to decoded-raster descriptor admission; this case remains blocked pending its phase-specific implementation and any named owner-approved profile, policy, target, or integration inputs."
+    },
+    {
+      "id": "ERR-001",
+      "suite": "errors_atomicity",
+      "requirement_ids": [
+        "IV-006"
+      ],
+      "purpose": "Verify stable error fields and state_changed=false for every rejection class.",
+      "setup": "Exercise each defined error code.",
+      "expected": "Request/trace/profile/code/retryability present; no state mutation.",
+      "complexity_sensitive": false,
+      "definition_status": "defined",
+      "execution_status": "not_run",
+      "case_kind": "image_component",
+      "invariant_ids": [
+        "RI-06.01",
+        "RI-06.02",
+        "RI-09.01"
+      ]
+    },
+    {
+      "id": "ERR-002",
+      "suite": "errors_atomicity",
+      "requirement_ids": [
+        "IV-006",
+        "IV-017"
+      ],
+      "purpose": "Inject failures after decode, feature generation and reference validation.",
+      "setup": "Fault injection at each publication boundary.",
+      "expected": "No partial observation; all request scratch resources released.",
+      "complexity_sensitive": false,
+      "definition_status": "defined",
+      "execution_status": "not_run",
+      "case_kind": "image_component",
+      "invariant_ids": [
+        "RI-05.04",
+        "RI-06.03",
+        "RI-06.05",
+        "RI-07.05",
+        "RI-09.01"
+      ]
+    },
+    {
+      "id": "ERR-003",
+      "suite": "errors_atomicity",
+      "requirement_ids": [
+        "IV-006",
+        "IV-011"
+      ],
+      "purpose": "Verify cancellation/deadline/resource exhaustion are typed and idempotent as declared.",
+      "setup": "Cancel at safe boundaries; expire deadline; exhaust profile cap.",
+      "expected": "No output/state change and no resource leak.",
+      "complexity_sensitive": false,
+      "definition_status": "defined",
+      "execution_status": "not_run",
+      "case_kind": "image_component",
+      "invariant_ids": [
+        "RI-06.03",
+        "RI-06.04",
+        "RI-06.05",
+        "RI-07.05",
+        "RI-09.01"
+      ]
+    },
+    {
+      "id": "RES-001",
+      "suite": "resources",
+      "requirement_ids": [
+        "IV-008",
+        "IV-011"
+      ],
+      "purpose": "Reject each configured dimension/bytes/output/work ceiling at and above boundary.",
+      "setup": "For each cap, test maximum permitted and first disallowed value.",
+      "expected": "At-boundary accepted when contract allows; over-bound rejected before exceedance.",
+      "complexity_sensitive": true,
+      "definition_status": "defined",
+      "execution_status": "blocked",
+      "case_kind": "image_component",
+      "invariant_ids": [
+        "RI-01.07",
+        "RI-01.08",
+        "RI-01.10",
+        "RI-07.01",
+        "RI-09.01"
+      ],
+      "execution_blocker": "The P4 authorization is limited to decoded-raster descriptor admission; this case remains blocked pending its phase-specific implementation and any named owner-approved profile, policy, target, or integration inputs."
+    },
+    {
+      "id": "RES-002",
+      "suite": "resources",
+      "requirement_ids": [
+        "IV-008",
+        "IV-011"
+      ],
+      "purpose": "Verify peak-memory accounting includes all simultaneously live buffers and concurrency.",
+      "setup": "Run maximum profile request with configured concurrent requests.",
+      "expected": "Measured/accounted peak within declared cap or explicit preflight rejection.",
+      "complexity_sensitive": true,
+      "definition_status": "defined",
+      "execution_status": "blocked",
+      "case_kind": "image_component",
+      "invariant_ids": [
+        "RI-01.10",
+        "RI-07.01",
+        "RI-07.05",
+        "RI-09.01"
+      ],
+      "execution_blocker": "The P4 authorization is limited to decoded-raster descriptor admission; this case remains blocked pending its phase-specific implementation and any named owner-approved profile, policy, target, or integration inputs."
+    },
+    {
+      "id": "RES-003",
+      "suite": "resources",
+      "requirement_ids": [
+        "IV-011"
+      ],
+      "purpose": "Verify queue saturation returns explicit backpressure and bounded queue size.",
+      "setup": "Submit more work than in-flight plus queue caps.",
+      "expected": "BACKPRESSURE; no unbounded queue or silent image drop.",
+      "complexity_sensitive": false,
+      "definition_status": "defined",
+      "execution_status": "blocked",
+      "case_kind": "image_component",
+      "invariant_ids": [
+        "RI-07.03",
+        "RI-09.01"
+      ],
+      "execution_blocker": "The P4 authorization is limited to decoded-raster descriptor admission; this case remains blocked pending its phase-specific implementation and any named owner-approved profile, policy, target, or integration inputs."
+    },
+    {
+      "id": "COMP-001",
+      "suite": "complexity",
+      "requirement_ids": [
+        "IV-008"
+      ],
+      "purpose": "Review each operation’s explicit multivariable upper-bound proof.",
+      "setup": "Audit profile operation models and implementation loops.",
+      "expected": "No quadratic-or-worse term in any input-scaled count; bounded parameters named.",
+      "complexity_sensitive": true,
+      "definition_status": "defined",
+      "execution_status": "blocked",
+      "case_kind": "image_component",
+      "invariant_ids": [
+        "RI-01.09",
+        "RI-07.02"
+      ],
+      "execution_blocker": "The P4 authorization is limited to decoded-raster descriptor admission; this case remains blocked pending its phase-specific implementation and any named owner-approved profile, policy, target, or integration inputs."
+    },
+    {
+      "id": "COMP-002",
+      "suite": "complexity",
+      "requirement_ids": [
+        "IV-008",
+        "IV-011"
+      ],
+      "purpose": "Compare work counters across a size ladder for the declared operation model.",
+      "setup": "Use several permitted image sizes and fixed profile constants.",
+      "expected": "Counts fit the predeclared bound and hard budget; timing alone is not the oracle.",
+      "complexity_sensitive": true,
+      "definition_status": "defined",
+      "execution_status": "blocked",
+      "case_kind": "image_component",
+      "invariant_ids": [
+        "RI-07.02"
+      ],
+      "execution_blocker": "The P4 authorization is limited to decoded-raster descriptor admission; this case remains blocked pending its phase-specific implementation and any named owner-approved profile, policy, target, or integration inputs."
+    },
+    {
+      "id": "COMP-003",
+      "suite": "complexity",
+      "requirement_ids": [
+        "IV-008"
+      ],
+      "purpose": "Search for pixel×region, region×region, patch×patch, token×token or candidate-all-pairs structures.",
+      "setup": "Static/source review plus instrumented representative worst profile.",
+      "expected": "Any input-scaled pairwise term is rejected, even if optimized in Assembly.",
+      "complexity_sensitive": true,
+      "definition_status": "defined",
+      "execution_status": "blocked",
+      "case_kind": "image_component",
+      "invariant_ids": [
+        "RI-01.09",
+        "RI-07.02"
+      ],
+      "execution_blocker": "The P4 authorization is limited to decoded-raster descriptor admission; this case remains blocked pending its phase-specific implementation and any named owner-approved profile, policy, target, or integration inputs."
+    },
+    {
+      "id": "DEP-001",
+      "suite": "dependencies",
+      "requirement_ids": [
+        "IV-009",
+        "IV-010"
+      ],
+      "purpose": "Audit direct and transitive dependencies for ML libraries/frameworks.",
+      "setup": "Inspect source, build manifests, lock/dependency graph and packaged modules.",
+      "expected": "No prohibited ML package or framework appears in the image path.",
+      "complexity_sensitive": false,
+      "definition_status": "defined",
+      "execution_status": "blocked",
+      "case_kind": "image_component",
+      "invariant_ids": [
+        "RI-01.09"
+      ],
+      "execution_blocker": "The P4 authorization is limited to decoded-raster descriptor admission; this case remains blocked pending its phase-specific implementation and any named owner-approved profile, policy, target, or integration inputs."
+    },
+    {
+      "id": "DEP-002",
+      "suite": "dependencies",
+      "requirement_ids": [
+        "IV-009"
+      ],
+      "purpose": "Inspect linked binaries and runtime artifacts for prohibited ML runtimes.",
+      "setup": "Audit final release artifacts using owner-approved process.",
+      "expected": "No prohibited ML runtime is linked, embedded, loaded, or required.",
+      "complexity_sensitive": false,
+      "definition_status": "defined",
+      "execution_status": "blocked",
+      "case_kind": "image_component",
+      "invariant_ids": [],
+      "execution_blocker": "The P4 authorization is limited to decoded-raster descriptor admission; this case remains blocked pending its phase-specific implementation and any named owner-approved profile, policy, target, or integration inputs."
+    },
+    {
+      "id": "NATIVE-001",
+      "suite": "native_assembly",
+      "requirement_ids": [
+        "IV-008",
+        "IV-010"
+      ],
+      "purpose": "Compare any Assembly operation with the approved C++ contract/reference.",
+      "setup": "Run analytic, boundary, random, invalid and overflow fixtures on each target.",
+      "expected": "Outputs/errors match contract within predeclared exact/tolerance rule.",
+      "complexity_sensitive": true,
+      "definition_status": "defined",
+      "execution_status": "blocked",
+      "case_kind": "image_component",
+      "invariant_ids": [
+        "RI-01.09",
+        "RI-07.02"
+      ],
+      "execution_blocker": "The P4 authorization is limited to decoded-raster descriptor admission; this case remains blocked pending its phase-specific implementation and any named owner-approved profile, policy, target, or integration inputs."
+    },
+    {
+      "id": "NATIVE-002",
+      "suite": "native_assembly",
+      "requirement_ids": [
+        "IV-008",
+        "IV-010",
+        "IV-011"
+      ],
+      "purpose": "Verify Assembly bounds, alignment, concurrency, fallback and feature selection.",
+      "setup": "Exercise misalignment, concurrent calls, unsupported target and cancellation.",
+      "expected": "No undefined behavior, overread, semantic substitution, or budget violation.",
+      "complexity_sensitive": true,
+      "definition_status": "defined",
+      "execution_status": "blocked",
+      "case_kind": "image_component",
+      "invariant_ids": [],
+      "execution_blocker": "The P4 authorization is limited to decoded-raster descriptor admission; this case remains blocked pending its phase-specific implementation and any named owner-approved profile, policy, target, or integration inputs."
+    },
+    {
+      "id": "NATIVE-003",
+      "suite": "native_assembly",
+      "requirement_ids": [
+        "IV-010"
+      ],
+      "purpose": "Require end-to-end benchmark before enabling architecture-specific optimization.",
+      "setup": "Named workload and owner-set threshold with baseline and candidate raw data.",
+      "expected": "Enable only on material end-to-end benefit; otherwise mark not justified.",
+      "complexity_sensitive": false,
+      "definition_status": "defined",
+      "execution_status": "blocked",
+      "case_kind": "image_component",
+      "invariant_ids": [],
+      "execution_blocker": "The P4 authorization is limited to decoded-raster descriptor admission; this case remains blocked pending its phase-specific implementation and any named owner-approved profile, policy, target, or integration inputs."
+    },
+    {
+      "id": "STR-001",
+      "suite": "streaming",
+      "requirement_ids": [
+        "IV-011",
+        "IV-016"
+      ],
+      "purpose": "Verify caller frame order/time preservation and reject invalid order per stream policy.",
+      "setup": "Monotonic, duplicate, missing and out-of-order frame indices.",
+      "expected": "Preserve supplied metadata or return declared typed result; do not invent time.",
+      "complexity_sensitive": false,
+      "definition_status": "defined",
+      "execution_status": "blocked",
+      "case_kind": "image_component",
+      "invariant_ids": [
+        "RI-05.02",
+        "RI-09.01"
+      ],
+      "execution_blocker": "The P4 authorization is limited to decoded-raster descriptor admission; this case remains blocked pending its phase-specific implementation and any named owner-approved profile, policy, target, or integration inputs."
+    },
+    {
+      "id": "STR-002",
+      "suite": "streaming",
+      "requirement_ids": [
+        "IV-011"
+      ],
+      "purpose": "Exercise open/submit/cancel/close/drain/reopen and duplicate retry lifecycle.",
+      "setup": "Burst and sustained test with cancellation and retries.",
+      "expected": "Bounded state, idempotent close/retry and explicit completion/failure.",
+      "complexity_sensitive": false,
+      "definition_status": "defined",
+      "execution_status": "blocked",
+      "case_kind": "image_component",
+      "invariant_ids": [
+        "RI-06.04",
+        "RI-07.03",
+        "RI-09.01"
+      ],
+      "execution_blocker": "The P4 authorization is limited to decoded-raster descriptor admission; this case remains blocked pending its phase-specific implementation and any named owner-approved profile, policy, target, or integration inputs."
+    },
+    {
+      "id": "TEL-001",
+      "suite": "telemetry_privacy",
+      "requirement_ids": [
+        "IV-012"
+      ],
+      "purpose": "Verify telemetry contains only approved bounded counters/metadata.",
+      "setup": "Submit distinctive private payload/path strings and inspect telemetry/logs.",
+      "expected": "No pixels, payload bytes, private content, local paths or unbounded labels.",
+      "complexity_sensitive": false,
+      "definition_status": "defined",
+      "execution_status": "not_run",
+      "case_kind": "image_component",
+      "invariant_ids": [
+        "RI-06.02",
+        "RI-07.03",
+        "RI-07.04",
+        "RI-09.01"
+      ]
+    },
+    {
+      "id": "TEL-002",
+      "suite": "telemetry_privacy",
+      "requirement_ids": [
+        "IV-012"
+      ],
+      "purpose": "Verify telemetry sink failure cannot alter or block a published observation.",
+      "setup": "Fail, delay and saturate telemetry sink.",
+      "expected": "Best-effort bounded behavior; observation contract unchanged.",
+      "complexity_sensitive": false,
+      "definition_status": "defined",
+      "execution_status": "not_run",
+      "case_kind": "image_component",
+      "invariant_ids": [
+        "RI-06.05",
+        "RI-09.01"
+      ]
+    },
+    {
+      "id": "REF-001",
+      "suite": "payload_references",
+      "requirement_ids": [
+        "IV-017",
+        "IV-006"
+      ],
+      "purpose": "Reject missing, mutable, checksum-mismatched or byte-length-mismatched payload references.",
+      "setup": "Mutate one reference integrity field per case.",
+      "expected": "Typed rejection; no publication.",
+      "complexity_sensitive": false,
+      "definition_status": "defined",
+      "execution_status": "not_run",
+      "case_kind": "image_component",
+      "invariant_ids": [
+        "RI-02.01",
+        "RI-02.02",
+        "RI-05.03",
+        "RI-05.04",
+        "RI-09.01"
+      ]
+    },
+    {
+      "id": "PROV-001",
+      "suite": "provenance",
+      "requirement_ids": [
+        "IV-002",
+        "IV-017"
+      ],
+      "purpose": "Preserve request, observation, trace, source, profile, runtime and decoder provenance.",
+      "setup": "Submit source with known identifiers and absent optional capture time.",
+      "expected": "Supplied identities preserved; absent time stays absent.",
+      "complexity_sensitive": false,
+      "definition_status": "defined",
+      "execution_status": "not_run",
+      "case_kind": "image_component",
+      "invariant_ids": [
+        "RI-01.05",
+        "RI-02.02",
+        "RI-05.01",
+        "RI-05.02",
+        "RI-05.03",
+        "RI-09.01"
+      ]
+    },
+    {
+      "id": "ENC-001",
+      "suite": "encoder_boundary",
+      "requirement_ids": [
+        "IV-013",
+        "IV-014"
+      ],
+      "purpose": "Verify image observation is the only Image VISION output entering ENCODER.",
+      "setup": "Use observation references and fixture Encoder adapter.",
+      "expected": "Encoder alone embeds/aligns and constructs its approved tensor.",
+      "complexity_sensitive": false,
+      "definition_status": "defined",
+      "execution_status": "blocked",
+      "case_kind": "image_component",
+      "invariant_ids": [
+        "RI-08.01",
+        "RI-08.02",
+        "RI-09.01"
+      ],
+      "execution_blocker": "The P4 authorization is limited to decoded-raster descriptor admission; this case remains blocked pending its phase-specific implementation and any named owner-approved profile, policy, target, or integration inputs."
+    },
+    {
+      "id": "ENC-002",
+      "suite": "encoder_boundary",
+      "requirement_ids": [
+        "IV-013",
+        "IV-014"
+      ],
+      "purpose": "Verify uncertainty/spatial/source/time metadata remain aligned in Encoder sidecar.",
+      "setup": "Use multiple observations and valid/padded positions.",
+      "expected": "Sidecar remains unchanged/aligned; consumers respect valid mask.",
+      "complexity_sensitive": false,
+      "definition_status": "defined",
+      "execution_status": "blocked",
+      "case_kind": "image_component",
+      "invariant_ids": [
+        "RI-08.02",
+        "RI-08.03",
+        "RI-09.01"
+      ],
+      "execution_blocker": "The P4 authorization is limited to decoded-raster descriptor admission; this case remains blocked pending its phase-specific implementation and any named owner-approved profile, policy, target, or integration inputs."
+    },
+    {
+      "id": "ENC-003",
+      "suite": "encoder_boundary",
+      "requirement_ids": [
+        "IV-014"
+      ],
+      "purpose": "Assert no direct image/pixel/token/feature payload path to Cortex M2.",
+      "setup": "Trace adapter calls and inspect payload types at boundary.",
+      "expected": "Cortex receives only approved finite X[B,S,F_in] plus sidecar owned by Encoder.",
+      "complexity_sensitive": false,
+      "definition_status": "defined",
+      "execution_status": "blocked",
+      "case_kind": "image_component",
+      "invariant_ids": [
+        "RI-08.01",
+        "RI-08.02",
+        "RI-08.04",
+        "RI-09.01"
+      ],
+      "execution_blocker": "The P4 authorization is limited to decoded-raster descriptor admission; this case remains blocked pending its phase-specific implementation and any named owner-approved profile, policy, target, or integration inputs."
+    },
+    {
+      "id": "CLAIM-001",
+      "suite": "claim_review",
+      "requirement_ids": [
+        "IV-015"
+      ],
+      "purpose": "Reject semantic/AGI claims supported only by schema, fixtures, local features or synthetic benchmarks.",
+      "setup": "Review candidate release statements against available evidence.",
+      "expected": "Claim limited to named profile conformance unless independent task evaluation supports more.",
+      "complexity_sensitive": false,
+      "definition_status": "defined",
+      "execution_status": "not_run",
+      "case_kind": "image_component",
+      "invariant_ids": [
+        "RI-04.02"
+      ]
+    },
+    {
+      "id": "CLAIM-002",
+      "suite": "claim_review",
+      "requirement_ids": [
+        "IV-015"
+      ],
+      "purpose": "Require held-out, baseline-controlled task evidence for any perception capability claim.",
+      "setup": "Review task, dataset split, population, metrics, uncertainty and failure report.",
+      "expected": "No capability claim without owner-approved independent evaluation.",
+      "complexity_sensitive": false,
+      "definition_status": "defined",
+      "execution_status": "blocked",
+      "case_kind": "image_component",
+      "invariant_ids": [
+        "RI-04.06"
+      ],
+      "execution_blocker": "The P4 authorization is limited to decoded-raster descriptor admission; this case remains blocked pending its phase-specific implementation and any named owner-approved profile, policy, target, or integration inputs."
+    },
+    {
+      "id": "PROF-001",
+      "suite": "profile_invariants",
+      "requirement_ids": [
+        "IV-001",
+        "IV-006"
+      ],
+      "purpose": "Reject a profile whose sample-range minimum exceeds its maximum.",
+      "setup": "Set sample_range.minimum greater than sample_range.maximum.",
+      "expected": "PROFILE_MISMATCH before profile registration.",
+      "complexity_sensitive": false,
+      "definition_status": "defined",
+      "execution_status": "not_run",
+      "case_kind": "image_component",
+      "invariant_ids": [
+        "RI-01.05"
+      ]
+    },
+    {
+      "id": "PROF-002",
+      "suite": "profile_invariants",
+      "requirement_ids": [
+        "IV-001",
+        "IV-011"
+      ],
+      "purpose": "Verify per-request pixel product and resource caps are jointly enforced when max_width×max_height exceeds max_pixels.",
+      "setup": "Use dimensions individually under caps but with W×H above max_pixels.",
+      "expected": "RESOURCE_LIMIT before allocation.",
+      "complexity_sensitive": true,
+      "definition_status": "defined",
+      "execution_status": "not_run",
+      "case_kind": "image_component",
+      "invariant_ids": [
+        "RI-01.08",
+        "RI-01.10"
+      ]
+    },
+    {
+      "id": "PROF-003",
+      "suite": "profile_invariants",
+      "requirement_ids": [
+        "IV-001",
+        "IV-006"
+      ],
+      "purpose": "Reject contradictory animation-enabled profiles without a frame-selection policy.",
+      "setup": "Set allow_animation=true and omit or invalidate the animated policy.",
+      "expected": "Profile rejected; no implicit first-frame selection.",
+      "complexity_sensitive": false,
+      "definition_status": "defined",
+      "execution_status": "not_run",
+      "case_kind": "image_component",
+      "invariant_ids": [
+        "RI-01.11"
+      ]
+    },
+    {
+      "id": "PROF-004",
+      "suite": "profile_invariants",
+      "requirement_ids": [
+        "IV-003",
+        "IV-006"
+      ],
+      "purpose": "Reject alpha compositing without an explicit in-range background and compatible output format.",
+      "setup": "Select composite policy while omitting background or selecting a format without alpha/compatible channels.",
+      "expected": "Profile rejected or input typed-rejected before transform.",
+      "complexity_sensitive": false,
+      "definition_status": "defined",
+      "execution_status": "not_run",
+      "case_kind": "image_component",
+      "invariant_ids": [
+        "RI-01.11"
+      ]
+    },
+    {
+      "id": "PROF-005",
+      "suite": "profile_invariants",
+      "requirement_ids": [
+        "IV-008",
+        "IV-009"
+      ],
+      "purpose": "Reject an enabled feature whose operation model or dependency-policy declaration is missing/inconsistent.",
+      "setup": "Remove its operation proof or set a prohibited policy flag to true.",
+      "expected": "Profile cannot be registered or activated.",
+      "complexity_sensitive": true,
+      "definition_status": "defined",
+      "execution_status": "not_run",
+      "case_kind": "image_component",
+      "invariant_ids": [
+        "RI-01.02",
+        "RI-01.09"
+      ]
+    },
+    {
+      "id": "REF-002",
+      "suite": "payload_references",
+      "requirement_ids": [
+        "IV-017",
+        "IV-006"
+      ],
+      "purpose": "Reject a numeric payload when checked shape×dtype byte count disagrees with resolved payload length.",
+      "setup": "Mutate shape, dtype or declared/resolved byte length independently.",
+      "expected": "REFERENCE_INVALID; no publication.",
+      "complexity_sensitive": false,
+      "definition_status": "defined",
+      "execution_status": "not_run",
+      "case_kind": "image_component",
+      "invariant_ids": [
+        "RI-01.07",
+        "RI-02.03",
+        "RI-02.06",
+        "RI-09.01"
+      ]
+    },
+    {
+      "id": "CONTRACT-001",
+      "suite": "contract_compatibility",
+      "requirement_ids": [
+        "IV-021"
+      ],
+      "purpose": "Reject unsupported exact schema/profile versions and unknown fields or enum values.",
+      "setup": "Mutate each record version, add an unrecognized field, and add an unknown enum value.",
+      "expected": "UNSUPPORTED_VERSION or typed schema rejection; no silent downgrade/default.",
+      "complexity_sensitive": false,
+      "definition_status": "defined",
+      "execution_status": "not_run",
+      "case_kind": "image_component",
+      "invariant_ids": [
+        "RI-01.01",
+        "RI-01.02",
+        "RI-05.04",
+        "RI-09.01"
+      ]
+    },
+    {
+      "id": "CONTRACT-002",
+      "suite": "contract_compatibility",
+      "requirement_ids": [
+        "IV-021",
+        "IV-020"
+      ],
+      "purpose": "Verify profile contract-version bindings and production approval evidence.",
+      "setup": "Mismatch one bound schema version; activate proposal/fixture profiles; remove or mismatch approved-profile approval evidence.",
+      "expected": "Reject mismatched binding; proposal/fixture never activate; approved profile requires a resolvable authorization binding exact profile hash.",
+      "complexity_sensitive": false,
+      "definition_status": "defined",
+      "execution_status": "not_run",
+      "case_kind": "image_component",
+      "invariant_ids": [
+        "RI-01.01",
+        "RI-01.03",
+        "RI-01.04",
+        "RI-05.01",
+        "RI-09.01"
+      ]
+    },
+    {
+      "id": "REF-003",
+      "suite": "payload_references",
+      "requirement_ids": [
+        "IV-022",
+        "IV-017"
+      ],
+      "purpose": "Resolve immutable content-kind references with enforced read-only access and retention metadata.",
+      "setup": "Use mutable alias, wrong resolver identity, unauthorized access policy, expired object, or wrong content_kind.",
+      "expected": "REFERENCE_INVALID or authorization rejection before bytes are published; no mutable alias accepted.",
+      "complexity_sensitive": false,
+      "definition_status": "defined",
+      "execution_status": "not_run",
+      "case_kind": "image_component",
+      "invariant_ids": [
+        "RI-01.02",
+        "RI-02.01",
+        "RI-02.05",
+        "RI-02.07",
+        "RI-09.01"
+      ]
+    },
+    {
+      "id": "REF-004",
+      "suite": "payload_references",
+      "requirement_ids": [
+        "IV-022",
+        "IV-006"
+      ],
+      "purpose": "Check numeric payload shape, dtype, layout, byte order, checksum, and exact byte length.",
+      "setup": "Mutate one numeric reference metadata item and compare against resolved bytes.",
+      "expected": "Exact checked element-count×dtype-size agreement or REFERENCE_INVALID; no padding or dtype inference.",
+      "complexity_sensitive": false,
+      "definition_status": "defined",
+      "execution_status": "not_run",
+      "case_kind": "image_component",
+      "invariant_ids": [
+        "RI-01.02",
+        "RI-02.01",
+        "RI-02.03",
+        "RI-02.04",
+        "RI-02.05",
+        "RI-02.06",
+        "RI-09.01"
+      ]
+    },
+    {
+      "id": "GEO-005",
+      "suite": "geometry",
+      "requirement_ids": [
+        "IV-023",
+        "IV-004"
+      ],
+      "purpose": "Verify source-to-target transform chain continuity, dimensions, identity map, inverse, and valid-domain rules.",
+      "setup": "Break one frame/dimension link; mutate matrix direction; omit affine inverse or non-invertible valid domain.",
+      "expected": "Reject before publication; terminal transform equals declared canonical frame and dimensions.",
+      "complexity_sensitive": false,
+      "definition_status": "defined",
+      "execution_status": "not_run",
+      "case_kind": "image_component",
+      "invariant_ids": [
+        "RI-03.01",
+        "RI-03.02",
+        "RI-03.03",
+        "RI-03.04",
+        "RI-03.05",
+        "RI-09.01"
+      ]
+    },
+    {
+      "id": "QUAL-001",
+      "suite": "quality",
+      "requirement_ids": [
+        "IV-024",
+        "IV-007"
+      ],
+      "purpose": "Keep quality indicators method/version/unit/scope tagged and distinct from uncertainty.",
+      "setup": "Try nonfinite values, missing method versions, unaligned spatial scope, and unapproved profile-gate thresholds.",
+      "expected": "Reject malformed/unowned gates; descriptive quality is not presented as probability or confidence.",
+      "complexity_sensitive": false,
+      "definition_status": "defined",
+      "execution_status": "not_run",
+      "case_kind": "image_component",
+      "invariant_ids": [
+        "RI-04.02",
+        "RI-04.03",
+        "RI-09.01"
+      ]
+    },
+    {
+      "id": "UNC-005",
+      "suite": "uncertainty",
+      "requirement_ids": [
+        "IV-024",
+        "IV-007"
+      ],
+      "purpose": "Require uncertainty exactly when enabled and preserve calibration, target-event, shape, mask, and ENCODER semantics.",
+      "setup": "Exercise disabled, fixture-only fallback, approved fallback and calibrated profile modes with value/count/evidence/alignment mutations.",
+      "expected": "Omit only when disabled; otherwise emit finite float32 [0,1] values aligned to exact target granularity or return UNCERTAINTY_UNAVAILABLE.",
+      "complexity_sensitive": false,
+      "definition_status": "defined",
+      "execution_status": "not_run",
+      "case_kind": "image_component",
+      "invariant_ids": [
+        "RI-02.03",
+        "RI-02.06",
+        "RI-04.04",
+        "RI-04.05",
+        "RI-04.06",
+        "RI-04.07",
+        "RI-04.08",
+        "RI-04.09",
+        "RI-08.03",
+        "RI-09.01"
+      ]
+    },
+    {
+      "id": "ERR-004",
+      "suite": "errors_atomicity",
+      "requirement_ids": [
+        "IV-025",
+        "IV-006"
+      ],
+      "purpose": "Verify exact error-code catalog, retryability, bounded message bytes, and retry-after rules.",
+      "setup": "Exercise every code and inject retryable=true, retry_after_ms, unsafe message, or state mutation inconsistencies.",
+      "expected": "Only transient BACKPRESSURE/DEPENDENCY_UNAVAILABLE may be retryable; every error has state_changed=false and publishes no partial observation.",
+      "complexity_sensitive": false,
+      "definition_status": "defined",
+      "execution_status": "not_run",
+      "case_kind": "image_component",
+      "invariant_ids": [
+        "RI-06.01",
+        "RI-06.04",
+        "RI-09.01"
+      ]
+    },
+    {
+      "id": "CONTRACT-003",
+      "suite": "contract_compatibility",
+      "requirement_ids": [
+        "IV-021",
+        "IV-025"
+      ],
+      "purpose": "Verify breaking changes require version/migration review and no implicit downgrade or data repair occurs.",
+      "setup": "Compare declared producer/consumer versions and attempt migration/default insertion under a strict reader.",
+      "expected": "Unsupported combinations reject unless a separately versioned and reviewed adapter is selected.",
+      "complexity_sensitive": false,
+      "definition_status": "defined",
+      "execution_status": "not_run",
+      "case_kind": "image_component",
+      "invariant_ids": []
+    },
+    {
+      "id": "PIX-005",
+      "suite": "canonical_pixels",
+      "requirement_ids": [
+        "IV-003",
+        "IV-006"
+      ],
+      "purpose": "Preserve exact source uint8 samples and declared GRAY/RGB/RGBA channel interpretation in the identity canonical-raster view.",
+      "setup": "Use independent exact-byte oracles for 1x1, 1xN, Nx1 and odd rasters, including RGBA alpha values.",
+      "expected": "Canonical view aliases the admitted samples byte-for-byte, with unchanged channel order/count and alpha; no conversion or copy occurs.",
+      "complexity_sensitive": false,
+      "definition_status": "defined",
+      "execution_status": "not_run",
+      "case_kind": "image_component",
+      "invariant_ids": [
+        "RI-01.06",
+        "RI-03.06"
+      ]
+    },
+    {
+      "id": "GEO-006",
+      "suite": "geometry",
+      "requirement_ids": [
+        "IV-004",
+        "IV-006"
+      ],
+      "purpose": "Record an explicit invertible identity transform over source and output dimensions using upper-left-origin pixel-center coordinates.",
+      "setup": "Check exact 3x3 forward/inverse matrices, source/target dimensions, corners, centers and degenerate 1x1/1xN/Nx1 coordinate extents.",
+      "expected": "The source-to-target identity map and its inverse preserve coordinates and dimensions; coordinates outside the closed pixel-center extent reject.",
+      "complexity_sensitive": false,
+      "definition_status": "defined",
+      "execution_status": "not_run",
+      "case_kind": "image_component",
+      "invariant_ids": [
+        "RI-03.01",
+        "RI-03.03",
+        "RI-03.04",
+        "RI-03.06"
+      ]
+    },
+    {
+      "id": "PIX-006",
+      "suite": "canonical_pixels",
+      "requirement_ids": [
+        "IV-003",
+        "IV-006"
+      ],
+      "purpose": "Fail closed for non-identity geometry, channel/color conversion or inference, orientation application, alpha compositing/dropping, invalid transform/profile/frame metadata, unsupported layouts, and resource/overflow conditions.",
+      "setup": "Request disabled operations; use malformed profile/frame/transform identifiers, planar/BGR source descriptors, invalid or empty raster views and below-minimum explicit limits; exercise overflowing input admission.",
+      "expected": "Typed rejection with an empty canonical view, no partial output, and state_changed=false; overflowing dimensions reject before a canonical view is produced.",
+      "complexity_sensitive": false,
+      "definition_status": "defined",
+      "execution_status": "not_run",
+      "case_kind": "image_component",
+      "invariant_ids": [
+        "RI-01.06",
+        "RI-01.07",
+        "RI-03.06"
+      ]
+    },
+    {
+      "id": "DIF-001",
+      "suite": "features",
+      "requirement_ids": [
+        "IV-005",
+        "IV-008"
+      ],
+      "purpose": "Verify the versioned forward-difference equations, signs, exact values and replicated borders on constant, impulse, ramp and checkerboard inputs.",
+      "setup": "Use literal exact HWC oracles for analytic GRAY vectors, including terminal edges.",
+      "expected": "Exactly two HWC int16 planes match every expected value in [-255,255]; terminal Dx column and Dy row are zero.",
+      "complexity_sensitive": true,
+      "definition_status": "defined",
+      "execution_status": "not_run",
+      "case_kind": "image_component",
+      "invariant_ids": [
+        "RI-04.01"
+      ]
+    },
+    {
+      "id": "DIF-002",
+      "suite": "features",
+      "requirement_ids": [
+        "IV-004",
+        "IV-005"
+      ],
+      "purpose": "Verify one-row, one-column, 1x1, RGB and RGBA shape/channel-coordinate preservation.",
+      "setup": "Run degenerate and multi-channel literals with distinct per-channel values and a P5 identity transform.",
+      "expected": "Each plane is [H,W,C], source channel ordering is preserved, and output indices retain the identity source coordinate.",
+      "complexity_sensitive": false,
+      "definition_status": "defined",
+      "execution_status": "not_run",
+      "case_kind": "image_component",
+      "invariant_ids": [
+        "RI-03.03",
+        "RI-04.01"
+      ]
+    },
+    {
+      "id": "DIF-003",
+      "suite": "features",
+      "requirement_ids": [
+        "IV-005",
+        "IV-008"
+      ],
+      "purpose": "Verify exact seeded-byte RGB outputs and deterministic replay.",
+      "setup": "Use the fixed xorshift32 seed and independently recorded Dx/Dy literals; repeat the same request.",
+      "expected": "Both executions exactly match the literals and report identical bounded work/output counts.",
+      "complexity_sensitive": true,
+      "definition_status": "defined",
+      "execution_status": "not_run",
+      "case_kind": "image_component",
+      "invariant_ids": [
+        "RI-04.01"
+      ]
+    },
+    {
+      "id": "DIF-004",
+      "suite": "features",
+      "requirement_ids": [
+        "IV-006",
+        "IV-008"
+      ],
+      "purpose": "Reject invalid limits, unsupported channels/metadata and arithmetic/resource overflow before producing output.",
+      "setup": "Vary caller caps for pixels, channels, output elements, output bytes and work; supply malformed or overflowing views.",
+      "expected": "Return a typed fail-closed result with both planes empty; accepted work is exactly 2*P*C and no greater than the caller limit.",
+      "complexity_sensitive": true,
+      "definition_status": "defined",
+      "execution_status": "not_run",
+      "case_kind": "image_component",
+      "invariant_ids": [
+        "RI-01.07",
+        "RI-07.01",
+        "RI-04.01"
+      ]
+    },
+    {
+      "id": "DIF-005",
+      "suite": "features",
+      "requirement_ids": [
+        "IV-006",
+        "IV-011"
+      ],
+      "purpose": "Verify supported cancellation and deadline rejection is atomic.",
+      "setup": "Use a pre-cancelled P4 AdmissionControl and an expired steady-clock deadline.",
+      "expected": "Return CANCELLED or DEADLINE_EXCEEDED with state_changed=false and no partial plane.",
+      "complexity_sensitive": false,
+      "definition_status": "defined",
+      "execution_status": "not_run",
+      "case_kind": "image_component",
+      "invariant_ids": [
+        "RI-06.05",
+        "RI-07.05"
+      ]
+    }
+  ],
+  "status_model": {
+    "definition_status": "defined means the case specification exists; it is not an execution result.",
+    "component_execution_status": [
+      "not_run",
+      "blocked"
+    ],
+    "run_result_status": [
+      "pass",
+      "fail",
+      "blocked",
+      "not_applicable"
+    ],
+    "rule": "Component cases cannot be marked pass/fail in the catalog; only run evidence may report an executed outcome."
+  },
+  "runtime_invariants": "../contracts/RUNTIME_INVARIANTS.md",
+  "invariant_id_convention": "RI-SS.NN maps section SS and numbered clause NN in RUNTIME_INVARIANTS.md; section 9 required-probes paragraph is RI-09.01.",
+  "requirement_coverage": {
+    "IV-001": [
+      "ADM-001",
+      "ADM-002",
+      "ADM-003",
+      "ADM-004",
+      "ADM-005",
+      "ADM-006",
+      "DEC-001",
+      "DEC-002",
+      "DEC-003",
+      "DEC-004",
+      "PROF-001",
+      "PROF-002",
+      "PROF-003"
+    ],
+    "IV-002": [
+      "PROV-001"
+    ],
+    "IV-003": [
+      "PIX-001",
+      "PIX-002",
+      "PIX-003",
+      "PIX-004",
+      "PIX-005",
+      "PIX-006",
+      "PROF-004"
+    ],
+    "IV-004": [
+      "DIF-002",
+      "FEAT-002",
+      "GEO-001",
+      "GEO-002",
+      "GEO-003",
+      "GEO-004",
+      "GEO-005",
+      "GEO-006",
+      "SPEC-PHASE-CONTRACT-001"
+    ],
+    "IV-005": [
+      "DIF-001",
+      "DIF-002",
+      "DIF-003",
+      "FEAT-001",
+      "FEAT-002",
+      "FEAT-003",
+      "FEAT-004",
+      "SPEC-PHASE-CONTRACT-001"
+    ],
+    "IV-006": [
+      "ADM-002",
+      "ADM-003",
+      "ADM-004",
+      "ADM-007",
+      "DEC-002",
+      "DEC-003",
+      "DIF-004",
+      "DIF-005",
+      "ERR-001",
+      "ERR-002",
+      "ERR-003",
+      "ERR-004",
+      "FEAT-003",
+      "GEO-003",
+      "GEO-006",
+      "PIX-002",
+      "PIX-004",
+      "PIX-005",
+      "PIX-006",
+      "PROF-001",
+      "PROF-003",
+      "PROF-004",
+      "REF-001",
+      "REF-002",
+      "REF-004",
+      "SPEC-PHASE-CONTRACT-001",
+      "UNC-002"
+    ],
+    "IV-007": [
+      "QUAL-001",
+      "UNC-001",
+      "UNC-002",
+      "UNC-003",
+      "UNC-004",
+      "UNC-005"
+    ],
+    "IV-008": [
+      "COMP-001",
+      "COMP-002",
+      "COMP-003",
+      "DIF-001",
+      "DIF-003",
+      "DIF-004",
+      "FEAT-001",
+      "FEAT-004",
+      "NATIVE-001",
+      "NATIVE-002",
+      "PROF-005",
+      "RES-001",
+      "RES-002",
+      "SPEC-PHASE-CONTRACT-001"
+    ],
+    "IV-009": [
+      "DEP-001",
+      "DEP-002",
+      "PROF-005"
+    ],
+    "IV-010": [
+      "DEP-001",
+      "NATIVE-001",
+      "NATIVE-002",
+      "NATIVE-003"
+    ],
+    "IV-011": [
+      "ADM-006",
+      "ADM-007",
+      "COMP-002",
+      "DIF-005",
+      "ERR-003",
+      "NATIVE-002",
+      "PROF-002",
+      "RES-001",
+      "RES-002",
+      "RES-003",
+      "STR-001",
+      "STR-002"
+    ],
+    "IV-012": [
+      "TEL-001",
+      "TEL-002"
+    ],
+    "IV-013": [
+      "ENC-001",
+      "ENC-002",
+      "UNC-004"
+    ],
+    "IV-014": [
+      "ENC-001",
+      "ENC-002",
+      "ENC-003"
+    ],
+    "IV-015": [
+      "CLAIM-001",
+      "CLAIM-002"
+    ],
+    "IV-016": [
+      "DEC-004",
+      "STR-001"
+    ],
+    "IV-017": [
+      "ERR-002",
+      "PROV-001",
+      "REF-001",
+      "REF-002",
+      "REF-003"
+    ],
+    "IV-018": [
+      "SPEC-ADMISSION-001",
+      "SPEC-CANONICAL-001",
+      "SPEC-CATALOG-001",
+      "SPEC-SPATIAL-001"
+    ],
+    "IV-019": [
+      "SPEC-SCOPE-001"
+    ],
+    "IV-020": [
+      "CONTRACT-002"
+    ],
+    "IV-021": [
+      "CONTRACT-001",
+      "CONTRACT-002",
+      "CONTRACT-003"
+    ],
+    "IV-022": [
+      "REF-003",
+      "REF-004"
+    ],
+    "IV-023": [
+      "GEO-005"
+    ],
+    "IV-024": [
+      "QUAL-001",
+      "UNC-005"
+    ],
+    "IV-025": [
+      "CONTRACT-003",
+      "ERR-004"
+    ]
+  },
+  "invariant_coverage": {
+    "RI-01.01": [
+      "CONTRACT-001",
+      "CONTRACT-002"
+    ],
+    "RI-01.02": [
+      "CONTRACT-001",
+      "PROF-005",
+      "REF-003",
+      "REF-004"
+    ],
+    "RI-01.03": [
+      "CONTRACT-002"
+    ],
+    "RI-01.04": [
+      "CONTRACT-002"
+    ],
+    "RI-01.05": [
+      "PIX-004",
+      "PROF-001",
+      "PROV-001"
+    ],
+    "RI-01.06": [
+      "ADM-004",
+      "ADM-005",
+      "DEC-001",
+      "DEC-002",
+      "PIX-005",
+      "PIX-006"
+    ],
+    "RI-01.07": [
+      "ADM-003",
+      "ADM-004",
+      "DIF-004",
+      "FEAT-003",
+      "PIX-006",
+      "REF-002",
+      "RES-001"
+    ],
+    "RI-01.08": [
+      "ADM-002",
+      "ADM-003",
+      "ADM-004",
+      "PROF-002",
+      "RES-001"
+    ],
+    "RI-01.09": [
+      "COMP-001",
+      "COMP-003",
+      "DEP-001",
+      "NATIVE-001",
+      "PROF-005"
+    ],
+    "RI-01.10": [
+      "PROF-002",
+      "RES-001",
+      "RES-002"
+    ],
+    "RI-01.11": [
+      "DEC-004",
+      "PIX-002",
+      "PROF-003",
+      "PROF-004"
+    ],
+    "RI-02.01": [
+      "REF-001",
+      "REF-003",
+      "REF-004"
+    ],
+    "RI-02.02": [
+      "PROV-001",
+      "REF-001"
+    ],
+    "RI-02.03": [
+      "FEAT-002",
+      "REF-002",
+      "REF-004",
+      "UNC-005"
+    ],
+    "RI-02.04": [
+      "PIX-004",
+      "REF-004",
+      "UNC-002"
+    ],
+    "RI-02.05": [
+      "REF-003",
+      "REF-004"
+    ],
+    "RI-02.06": [
+      "FEAT-002",
+      "REF-002",
+      "REF-004",
+      "UNC-004",
+      "UNC-005"
+    ],
+    "RI-02.07": [
+      "REF-003"
+    ],
+    "RI-03.01": [
+      "GEO-003",
+      "GEO-004",
+      "GEO-005",
+      "GEO-006"
+    ],
+    "RI-03.02": [
+      "GEO-003",
+      "GEO-005"
+    ],
+    "RI-03.03": [
+      "DIF-002",
+      "GEO-001",
+      "GEO-004",
+      "GEO-005",
+      "GEO-006"
+    ],
+    "RI-03.04": [
+      "GEO-001",
+      "GEO-005",
+      "GEO-006"
+    ],
+    "RI-03.05": [
+      "FEAT-004",
+      "GEO-002",
+      "GEO-005",
+      "UNC-004"
+    ],
+    "RI-03.06": [
+      "GEO-002",
+      "GEO-003",
+      "GEO-004",
+      "GEO-006",
+      "PIX-001",
+      "PIX-002",
+      "PIX-003",
+      "PIX-005",
+      "PIX-006"
+    ],
+    "RI-04.01": [
+      "DIF-001",
+      "DIF-002",
+      "DIF-003",
+      "DIF-004",
+      "FEAT-001",
+      "FEAT-002",
+      "FEAT-003",
+      "FEAT-004"
+    ],
+    "RI-04.02": [
+      "CLAIM-001",
+      "QUAL-001"
+    ],
+    "RI-04.03": [
+      "QUAL-001"
+    ],
+    "RI-04.04": [
+      "UNC-003",
+      "UNC-005"
+    ],
+    "RI-04.05": [
+      "UNC-001",
+      "UNC-002",
+      "UNC-005"
+    ],
+    "RI-04.06": [
+      "CLAIM-002",
+      "UNC-003",
+      "UNC-005"
+    ],
+    "RI-04.07": [
+      "UNC-003",
+      "UNC-005"
+    ],
+    "RI-04.08": [
+      "UNC-004",
+      "UNC-005"
+    ],
+    "RI-04.09": [
+      "UNC-005"
+    ],
+    "RI-05.01": [
+      "CONTRACT-002",
+      "PROV-001"
+    ],
+    "RI-05.02": [
+      "PROV-001",
+      "STR-001"
+    ],
+    "RI-05.03": [
+      "PROV-001",
+      "REF-001"
+    ],
+    "RI-05.04": [
+      "CONTRACT-001",
+      "ERR-002",
+      "FEAT-003",
+      "REF-001"
+    ],
+    "RI-06.01": [
+      "ERR-001",
+      "ERR-004"
+    ],
+    "RI-06.02": [
+      "ERR-001",
+      "TEL-001"
+    ],
+    "RI-06.03": [
+      "ERR-002",
+      "ERR-003"
+    ],
+    "RI-06.04": [
+      "ERR-003",
+      "ERR-004",
+      "STR-002"
+    ],
+    "RI-06.05": [
+      "ADM-007",
+      "DIF-005",
+      "ERR-002",
+      "ERR-003",
+      "TEL-002"
+    ],
+    "RI-07.01": [
+      "ADM-003",
+      "DIF-004",
+      "RES-001",
+      "RES-002"
+    ],
+    "RI-07.02": [
+      "COMP-001",
+      "COMP-002",
+      "COMP-003",
+      "NATIVE-001"
+    ],
+    "RI-07.03": [
+      "RES-003",
+      "STR-002",
+      "TEL-001"
+    ],
+    "RI-07.04": [
+      "TEL-001"
+    ],
+    "RI-07.05": [
+      "ADM-007",
+      "DIF-005",
+      "ERR-002",
+      "ERR-003",
+      "RES-002"
+    ],
+    "RI-08.01": [
+      "ENC-001",
+      "ENC-003"
+    ],
+    "RI-08.02": [
+      "ENC-001",
+      "ENC-002",
+      "ENC-003"
+    ],
+    "RI-08.03": [
+      "ENC-002",
+      "UNC-004",
+      "UNC-005"
+    ],
+    "RI-08.04": [
+      "ENC-003"
+    ],
+    "RI-09.01": [
+      "CONTRACT-001",
+      "CONTRACT-002",
+      "ENC-001",
+      "ENC-002",
+      "ENC-003",
+      "ERR-001",
+      "ERR-002",
+      "ERR-003",
+      "ERR-004",
+      "GEO-003",
+      "GEO-005",
+      "PROV-001",
+      "QUAL-001",
+      "REF-001",
+      "REF-002",
+      "REF-003",
+      "REF-004",
+      "RES-001",
+      "RES-002",
+      "RES-003",
+      "STR-001",
+      "STR-002",
+      "TEL-001",
+      "TEL-002",
+      "UNC-001",
+      "UNC-002",
+      "UNC-003",
+      "UNC-004",
+      "UNC-005"
+    ]
+  },
+  "package_checks": [
+    {
+      "id": "SPEC-CATALOG-001",
+      "suite": "specification_traceability",
+      "requirement_ids": [
+        "IV-018"
+      ],
+      "purpose": "Verify every normative Image requirement and runtime invariant is linked to executable case definitions with honest status metadata.",
+      "setup": "Parse TRACEABILITY.md, case_catalog.json, and RUNTIME_INVARIANTS.md; compare the explicit requirement/invariant coverage maps with case declarations.",
+      "expected": "Every IV requirement and RI clause has one or more existing case IDs; only the package checker reports its own execution, never a component-case pass.",
+      "definition_status": "defined",
+      "execution_interface": "python3 -I Image/SPEC/harness/check_spec.py"
+    },
+    {
+      "id": "SPEC-SCOPE-001",
+      "suite": "scope_guard",
+      "requirement_ids": [
+        "IV-019"
+      ],
+      "purpose": "Verify Phase 3 changes remain specification/harness artifacts and do not modify Cortex or add image implementation, codec, decoder, or production dependencies.",
+      "setup": "Inspect current repository changes and Image/SPEC tracked file kinds; inspect the standalone harness dependency audit.",
+      "expected": "No Cortex changes or Image component/native/codec/decoder source additions; the only audited dependency closure is the standalone standard-library package checker.",
+      "definition_status": "defined",
+      "execution_interface": "python3 -I Image/SPEC/harness/check_spec.py"
+    },
+    {
+      "id": "SPEC-ADMISSION-001",
+      "suite": "phase4_evidence",
+      "requirement_ids": [
+        "IV-018"
+      ],
+      "purpose": "Validate the bounded Phase 4 admission run artifact against its schema, catalog bindings, and phase boundary.",
+      "setup": "Parse the latest P4 evidence JSON; validate schema, profile hash, exact test/catalog bindings, decoder/P5/Cortex scope, and counts.",
+      "expected": "Evidence is structurally valid and honest; outcomes remain in the run artifact and catalog cases are not marked pass/fail.",
+      "definition_status": "defined",
+      "execution_interface": "python3 -I Image/SPEC/harness/check_spec.py"
+    },
+    {
+      "id": "SPEC-CANONICAL-001",
+      "suite": "phase5_evidence",
+      "requirement_ids": [
+        "IV-018"
+      ],
+      "purpose": "Validate the bounded Phase 5 identity canonical-raster run artifact against its inputs, exact catalog bindings, and phase boundary.",
+      "setup": "Parse the latest P5 evidence; validate proposal-only profile/source hashes, test-to-case bindings, strict builds, sanitizer outcomes, and disabled-operation scope.",
+      "expected": "Evidence records only tested identity-view behavior; all 10 cases pass in normal and ASan/UBSan runs, and no production approval or Phase 6 work is claimed.",
+      "definition_status": "defined",
+      "execution_interface": "python3 -I Image/SPEC/harness/check_spec.py"
+    },
+    {
+      "id": "SPEC-SPATIAL-001",
+      "suite": "phase6_evidence",
+      "requirement_ids": [
+        "IV-018"
+      ],
+      "purpose": "Validate the bounded Phase 6 forward-difference run artifact against its versioned contract, proposal-only profile, exact catalog bindings, source hashes and phase boundary.",
+      "setup": "Parse P6 evidence and fixtures; validate strict normal/sanitizer results, exact case bindings, work and proposal-only scope.",
+      "expected": "All 13 P6 tests pass in normal and ASan/UBSan builds; only the candidate engineering operator is implemented, runtime profile stays disabled, and Phase 7 is not started.",
+      "definition_status": "defined",
+      "execution_interface": "python3 -I Image/SPEC/harness/check_spec.py"
+    },
+    {
+      "id": "SPEC-PHASE-CONTRACT-001",
+      "suite": "phase6_contract",
+      "requirement_ids": [
+        "IV-004",
+        "IV-005",
+        "IV-006",
+        "IV-008"
+      ],
+      "purpose": "Validate the versioned Phase 6 forward-difference mathematics, resources, proposal-only activation boundary and independent literal oracles.",
+      "setup": "Recompute the literal RGB/RGBA/seeded fixture relationships and compare the declared input/output/work contract with the current proposal profile.",
+      "expected": "All equations, shapes, edge rules, ranges, exact oracle values and disabled production features match the contract.",
+      "definition_status": "defined",
+      "execution_interface": "python3 -I Image/SPEC/harness/check_spec.py"
+    }
+  ],
+  "execution_evidence": {
+    "phase": "P4",
+    "latest_artifact": "results/latest.p4.run_evidence.json",
+    "catalog_execution_status_policy": "Case catalog entries remain definitions with not_run/blocked lifecycle metadata; only the dedicated P4 run artifact reports executed test outcomes.",
+    "test_case_bindings": {
+      "ADM-001": [
+        "P4-TEST-001",
+        "P4-TEST-002",
+        "P4-TEST-011",
+        "P4-TEST-013",
+        "P4-TEST-014",
+        "P4-TEST-018",
+        "P4-TEST-019"
+      ],
+      "ADM-002": [
+        "P4-TEST-003"
+      ],
+      "ADM-003": [
+        "P4-TEST-004",
+        "P4-TEST-005",
+        "P4-TEST-007",
+        "P4-TEST-012",
+        "P4-TEST-020",
+        "P4-TEST-026",
+        "P4-TEST-027",
+        "P4-TEST-028"
+      ],
+      "ADM-004": [
+        "P4-TEST-006",
+        "P4-TEST-008"
+      ],
+      "ADM-005": [
+        "P4-TEST-009",
+        "P4-TEST-010",
+        "P4-TEST-016"
+      ],
+      "ADM-006": [
+        "P4-TEST-015",
+        "P4-TEST-032"
+      ],
+      "ADM-007": [
+        "P4-TEST-017",
+        "P4-TEST-029"
+      ],
+      "DEC-001": [
+        "P4-TEST-021",
+        "P4-TEST-022",
+        "P4-TEST-030",
+        "P4-TEST-033"
+      ],
+      "DEC-002": [
+        "P4-TEST-023"
+      ],
+      "DEC-003": [
+        "P4-TEST-024",
+        "P4-TEST-025"
+      ],
+      "DEC-004": [
+        "P4-TEST-031"
+      ]
+    },
+    "p5": {
+      "phase": "P5",
+      "latest_artifact": "results/latest.p5.run_evidence.json",
+      "catalog_execution_status_policy": "Component case entries remain definition metadata (not_run/blocked); only the dedicated P5 run artifact reports executed outcomes.",
+      "test_case_bindings": {
+        "PIX-005": [
+          "P5-TEST-001",
+          "P5-TEST-002",
+          "P5-TEST-003",
+          "P5-TEST-004",
+          "P5-TEST-005",
+          "P5-TEST-006"
+        ],
+        "GEO-006": [
+          "P5-TEST-007"
+        ],
+        "PIX-006": [
+          "P5-TEST-008",
+          "P5-TEST-009",
+          "P5-TEST-010"
+        ]
+      }
+    },
+    "p6": {
+      "phase": "P6",
+      "latest_artifact": "results/latest.p6.run_evidence.json",
+      "catalog_execution_status_policy": "Component case entries remain definition metadata (not_run/blocked); only the dedicated P6 run artifact reports executed outcomes.",
+      "test_case_bindings": {
+        "DIF-001": [
+          "P6-TEST-001",
+          "P6-TEST-002",
+          "P6-TEST-003",
+          "P6-TEST-004",
+          "P6-TEST-005"
+        ],
+        "DIF-002": [
+          "P6-TEST-006",
+          "P6-TEST-007"
+        ],
+        "DIF-003": [
+          "P6-TEST-008",
+          "P6-TEST-009"
+        ],
+        "DIF-004": [
+          "P6-TEST-010",
+          "P6-TEST-011",
+          "P6-TEST-012"
+        ],
+        "DIF-005": [
+          "P6-TEST-013"
+        ]
+      }
+    }
+  }
+}

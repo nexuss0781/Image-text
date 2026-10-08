@@ -1,0 +1,194 @@
+{
+  "build": {
+    "build_configuration": "python3 -I; standard library only; Image VISION implementation not built",
+    "compiler_id": "not_applicable_spec_checker",
+    "dependency_inventory_hash": "b7282a9731da0187296350737f8e2112a00ad30081da2bb51084ca0e1cb3a5e0",
+    "language_boundary": "python_stdlib_only",
+    "subject": "specification_harness"
+  },
+  "case_catalog_summary": {
+    "component_cases_blocked": 28,
+    "component_cases_defined": 66,
+    "component_cases_executed": 0,
+    "component_cases_not_run": 38,
+    "package_checks_defined": 2
+  },
+  "case_results": [
+    {
+      "case_id": "SPEC-JSON-001",
+      "duration_ms": 2.06,
+      "note": "Parsed 11 specification/profile/catalog/fixture JSON files with non-standard numeric constants rejected.",
+      "output_digest": "5d9fecbc5b32d1e3a38decfa2b537a15c334ba921a5a8a61d33135d6d00f44b9",
+      "status": "pass"
+    },
+    {
+      "case_id": "SPEC-JSON-ADVERSARIAL-001",
+      "duration_ms": 0.027,
+      "note": "Duplicate object members and exponent-overflow non-finite numbers reject.",
+      "output_digest": "4678e401992fcb7ee9499836738389df0674bcb63a0eead0c931385269028b54",
+      "status": "pass"
+    },
+    {
+      "case_id": "SPEC-SCHEMA-001",
+      "duration_ms": 1.465,
+      "note": "Validated 4 schema documents, supported-keyword structure, unique IDs, and local references.",
+      "output_digest": "b5262a75fe0a76244b5483175e0b376d5940dc2ebcff997af74f9b7529011ee8",
+      "status": "pass"
+    },
+    {
+      "case_id": "SPEC-PROFILE-001",
+      "duration_ms": 1.069,
+      "note": "Fixture profile conforms; cross-field and forbidden-field negative probes reject as expected.",
+      "output_digest": "653b7bada980195ba2436b834d478bd3cf84cc021c6d984623026eb35295ad31",
+      "status": "pass"
+    },
+    {
+      "case_id": "SPEC-PROPOSAL-001",
+      "duration_ms": 0.34,
+      "note": "Proposal profile conforms; width/pixel, decoded/intermediate bytes, difference elements/output bytes, work units, and disabled-feature reserves agree.",
+      "output_digest": "3c192fe0e293079dd08bc269c248096770f033b1d894a6fe0db5c66fa51e8868",
+      "status": "pass"
+    },
+    {
+      "case_id": "SPEC-CONTRACT-001",
+      "duration_ms": 4.115,
+      "note": "Test-only observation/profile/error records validate; fixture bytes resolve by digest; version, evidence, profile/feature authorization, transform, disabled-uncertainty, atomicity, and retry probes reject.",
+      "output_digest": "d4a1bc115a69c734640cffd0c107d15193f1b0e3df35954b0450df74e96ceea2",
+      "status": "pass"
+    },
+    {
+      "case_id": "SPEC-FIXTURE-001",
+      "duration_ms": 0.086,
+      "note": "Independently hand-derived and tolerance-bound all 7 integer oracles; checker recomputed them as an O(total fixture samples) consistency check.",
+      "output_digest": "f6748d1ac1832a79d9c57d942e643b06a8f4039bcec816b091d7998ba7702fd8",
+      "status": "pass"
+    },
+    {
+      "case_id": "SPEC-CATALOG-001",
+      "duration_ms": 2.261,
+      "note": "66 component definitions; 38 not_run, 28 blocked; 25 requirements and 52 runtime invariants map exhaustively; 2 package checks remain distinct from component execution.",
+      "output_digest": "903e066a5488f80204ab782bb5be8e0d8ef1587fc983ab4e37e64b534baea760",
+      "status": "pass"
+    },
+    {
+      "case_id": "SPEC-SCOPE-001",
+      "duration_ms": 6.438,
+      "note": "Scope guard passed: 30 changed paths are confined to Image/SPEC; no Cortex changes, Image native/component/codec artifacts, or Image dependency manifests were found.",
+      "output_digest": "398ae85ffb9e442bd1f278a75b9361d9563d36061b2c6074760c0023710605ef",
+      "status": "pass"
+    },
+    {
+      "case_id": "SPEC-LINKS-001",
+      "duration_ms": 7.167,
+      "note": "Resolved 117 relative Markdown links within Image/SPEC.",
+      "output_digest": "48b198f0e3ab29c11cbca3e3c8ab6132fcb1cc3754de1717be73cd78734e57a1",
+      "status": "pass"
+    },
+    {
+      "case_id": "SPEC-POLICY-001",
+      "duration_ms": 0.26,
+      "note": "Fixture and candidate profiles retain C++/Assembly, audited-math, no-ML, and no-quadratic policies.",
+      "output_digest": "c27bcf415848b29d11ae5d672c3d5e1c68c536a04775e212337dc0164a50a630",
+      "status": "pass"
+    },
+    {
+      "case_id": "SPEC-DEPENDENCY-001",
+      "duration_ms": 42.083,
+      "note": "Standalone checker uses Python standard-library imports only; its dependency closure is audited. A pre-existing optional TensorFlow extra is recorded at repository scope, not used by this command; Image runtime and binary audits remain unavailable until implementation exists.",
+      "output_digest": "64f722c062916758743112e4ab600e978b69eedb0b4859bed16333ba83191d8a",
+      "status": "pass"
+    },
+    {
+      "case_id": "SPEC-EVIDENCE-001",
+      "note": "Run evidence validates against its declared schema.",
+      "output_digest": "74cb2b0b11ae56e7c0fab4e2a2c585fa4a7d308258fe9102f2a5e8442d897a1f",
+      "status": "pass"
+    }
+  ],
+  "command": "python3 -I Image/SPEC/harness/check_spec.py",
+  "commit": "d3907ca079ed15a3a50a9cabc01ca4b7febd0257",
+  "counts": {
+    "blocked": 0,
+    "defined": 13,
+    "executed": 13,
+    "failed": 0,
+    "not_applicable": 0,
+    "passed": 13
+  },
+  "dependency_audit": {
+    "audit_artifact_ref": "Image/SPEC/harness/results/latest.dependency_audit.json",
+    "binary_audited": false,
+    "harness_dependency_closure_audited": true,
+    "harness_external_dependencies_found": false,
+    "image_runtime_dependency_graph_audited": false,
+    "ml_libraries_frameworks_found": false
+  },
+  "finished_at": "2026-10-07T13:58:49Z",
+  "gate_decision": "blocked",
+  "input_hashes": {
+    "Image/SPEC/DECISIONS.md": "7aa5623e3546d4d8b67f03c7a46f63a87d289a7ab61ad0165868028f5c3685f2",
+    "Image/SPEC/P2_REVIEW_RECORD.md": "261007215e782354c02fc0e3eedce50cd35abfada25e3f0b02f3d519e5d40d26",
+    "Image/SPEC/PHASES.md": "3f43a46c17be34c17ea9961a2c81918775bb79f620eda0f7fc7be2beebfe562b",
+    "Image/SPEC/PROJECT.md": "677329171798bed13c2cb65f164a19d0b49187f9a31dcf91c553137498366889",
+    "Image/SPEC/README.md": "2d614bab9eaa4f9c6164352011cba1a05b33b813ca37e96dc18ff34beb44e680",
+    "Image/SPEC/ROADMAP.md": "3402a38f44fcd3f47ae52bdfa1a8c2db31a6a5884268b1b2171d1262bee7f542",
+    "Image/SPEC/TODO.md": "fe53d4cedef931e095071b7064d4585d7e0a6061ede3af4c14fa6dc63c2a2c3b",
+    "Image/SPEC/TRACEABILITY.md": "7c830c0ae9cdce3f713519f43dfb8d3179dc74bfd1da70eb02f3d6dd5d41358c",
+    "Image/SPEC/contracts/COMPATIBILITY_POLICY.md": "c053344caa3071957f4e8bc9ca4cf58b3c60d546c76008cc63fd2c3d43c63d55",
+    "Image/SPEC/contracts/ERROR_CATALOG.md": "43bd245a4903edf1178e60c4e5f6804703c365d27958595729cd699d647aecb9",
+    "Image/SPEC/contracts/OBSERVATION_FIELDS.md": "699f76219c9b7cb29f61d104fd50c036cf1451be021f2ec96528e1ba1b575c3a",
+    "Image/SPEC/contracts/RUNTIME_INVARIANTS.md": "3288e8dd0b5dee16abd8cda7210c4c6c3257e2cde4f2a1348dc10334830d3e94",
+    "Image/SPEC/contracts/examples/README.md": "e6a55e2ced1af3d9d2f2e9690ecf21866855c4c772b9738bf5593e8a526d0d27",
+    "Image/SPEC/contracts/examples/image_error.fixture.json": "0c08d5d7bcde6519033b117ab927b5fe4117e4bc02541662a3b36bb688bdd949",
+    "Image/SPEC/contracts/examples/image_observation.fixture.json": "20e1ac207da936ecfe681224cffb06c283618c773abfb3b0ca58268c99a7818f",
+    "Image/SPEC/contracts/examples/payload_fixtures.json": "3944e8b9bb50f1debebfeddece732a36d72e206fc9abb697460e716857fd5893",
+    "Image/SPEC/contracts/image_error.schema.json": "a6e3b8aabab846da4b0ab7c8595d2baae04984930f9040bb92a1eaa6d89bb512",
+    "Image/SPEC/contracts/image_observation.schema.json": "b9ceb54ec31622d64d9855a1f84ca88a4b999a7bdfade6a2f16d4cbc06535c8f",
+    "Image/SPEC/contracts/image_profile.schema.json": "bafe3eb22ba59be62ff977bea9ef2209eb6a1878088e751b0f9d329122f67550",
+    "Image/SPEC/harness/HARNESS.md": "87783777e51de4d2f6b10a547a7457854b24e3325842813c3843994664ef2a0a",
+    "Image/SPEC/harness/case_catalog.json": "5c2e547bbe2e210a0aed5f9b2e9ad8064513d57130a3542e7a8af359886bf89a",
+    "Image/SPEC/harness/check_spec.py": "481d5181171dc2094064d036b9acd506517d3dcc4a5cbfbbabde4bd4ce3c3038",
+    "Image/SPEC/harness/fixtures/analytic_patterns.json": "7b0d9c668d06a9114430f5f8da9fc74a8a25c09a6aa3283a39db42a8ebb6a22f",
+    "Image/SPEC/harness/run_evidence.schema.json": "fd4389665c777510aa67c033673171c6d304541455a920b5d70e1f221444cac6",
+    "Image/SPEC/profiles/fixture_profile.example.json": "9c81bca8a13d37d3e2ffc64bd1fe4a9ec5ce4f6f3bb09d2874175895652751f2",
+    "Image/SPEC/profiles/general_still_image.proposal.json": "20774b73e3cd0514b836075b18209b830c590b056871f8b52006b12efd9f6b61",
+    "Image/SPEC/profiles/general_still_image.proposal.md": "c70e44e753297453d3a828c49a10b18211f4c18d1ae061374db6480e8d7bf8b8",
+    "pyproject.toml": "6a83a77a9b40464dcc31facdb765e46c9d76f922f7f28a21e911357efd7edd0b"
+  },
+  "profile_hash": "20774b73e3cd0514b836075b18209b830c590b056871f8b52006b12efd9f6b61",
+  "profile_id": "general-still-image-candidate-v1",
+  "profile_status": "proposal",
+  "profile_usage": "reference_only_no_component_execution",
+  "raw_artifact_ref": "Image/SPEC/harness/results/latest.raw.json",
+  "reproducibility": {
+    "external_services_used": false,
+    "mode": "deterministic",
+    "network_access_required": false,
+    "nondeterministic_inputs": []
+  },
+  "resource_counters": {
+    "elapsed_ms": 82.992,
+    "peak_rss_bytes": 32903168,
+    "scope": "package_checker_process_only"
+  },
+  "reviewer": "assistant (user+assistant model); owner acceptance pending",
+  "run_id": "spec-check-20261007T135849Z",
+  "schema_versions": {
+    "image_error": "urn:agi-core:vision:image-error:0.2.0-draft",
+    "image_observation": "urn:agi-core:vision:image-observation:0.3.1-draft",
+    "image_profile": "urn:agi-core:vision:image-profile:0.2.0-draft",
+    "run_evidence": "urn:agi-core:vision:image-harness-run:0.2.0-draft"
+  },
+  "seed": null,
+  "started_at": "2026-10-07T13:58:49Z",
+  "status": "finished",
+  "target": {
+    "architecture_id": "x86_64",
+    "host_id": "Linux-6.18.38+-x86_64-with-glibc2.39",
+    "runtime_id": "Python 3.12.3"
+  },
+  "working_tree": {
+    "state": "dirty",
+    "status_porcelain_sha256": "bd43b83432f938aae42e18cf9bc7141ce503d70f826f84373b5b50a1e59c3c82"
+  }
+}

@@ -1,0 +1,393 @@
+{
+  "build_runs": [
+    {
+      "case_results": [
+        {
+          "catalog_case_id": "DIF-001",
+          "label": "constant field gives two zero planes",
+          "status": "pass",
+          "test_id": "P6-TEST-001"
+        },
+        {
+          "catalog_case_id": "DIF-001",
+          "label": "center impulse sign and localization",
+          "status": "pass",
+          "test_id": "P6-TEST-002"
+        },
+        {
+          "catalog_case_id": "DIF-001",
+          "label": "horizontal ramp and one-row edge",
+          "status": "pass",
+          "test_id": "P6-TEST-003"
+        },
+        {
+          "catalog_case_id": "DIF-001",
+          "label": "vertical ramp and one-column edge",
+          "status": "pass",
+          "test_id": "P6-TEST-004"
+        },
+        {
+          "catalog_case_id": "DIF-001",
+          "label": "checkerboard and explicit one-by-one",
+          "status": "pass",
+          "test_id": "P6-TEST-005"
+        },
+        {
+          "catalog_case_id": "DIF-002",
+          "label": "RGB HWC channel order and output shape",
+          "status": "pass",
+          "test_id": "P6-TEST-006"
+        },
+        {
+          "catalog_case_id": "DIF-002",
+          "label": "RGBA channel and alpha-position order",
+          "status": "pass",
+          "test_id": "P6-TEST-007"
+        },
+        {
+          "catalog_case_id": "DIF-003",
+          "label": "seeded RGB byte vector literal oracle",
+          "status": "pass",
+          "test_id": "P6-TEST-008"
+        },
+        {
+          "catalog_case_id": "DIF-003",
+          "label": "deterministic replay preserves exact outputs and work",
+          "status": "pass",
+          "test_id": "P6-TEST-009"
+        },
+        {
+          "catalog_case_id": "DIF-004",
+          "label": "pixels channels elements bytes and work limits",
+          "status": "pass",
+          "test_id": "P6-TEST-010"
+        },
+        {
+          "catalog_case_id": "DIF-004",
+          "label": "unsupported channels and malformed metadata",
+          "status": "pass",
+          "test_id": "P6-TEST-011"
+        },
+        {
+          "catalog_case_id": "DIF-004",
+          "label": "checked arithmetic overflow and empty input",
+          "status": "pass",
+          "test_id": "P6-TEST-012"
+        },
+        {
+          "catalog_case_id": "DIF-005",
+          "label": "cancellation and expired deadline are atomic",
+          "status": "pass",
+          "test_id": "P6-TEST-013"
+        }
+      ],
+      "compile_command": [
+        "/usr/bin/x86_64-linux-gnu-g++-13",
+        "-std=c++20",
+        "-Wall",
+        "-Wextra",
+        "-Wpedantic",
+        "-Wconversion",
+        "-Wsign-conversion",
+        "-Wshadow",
+        "-Werror",
+        "-O2",
+        "/workspace/AGI-Core/Image/SPEC/p4/raster_admission.cpp",
+        "/workspace/AGI-Core/Image/SPEC/p5/canonical_raster.cpp",
+        "/workspace/AGI-Core/Image/SPEC/p6/forward_difference.cpp",
+        "/workspace/AGI-Core/Image/SPEC/harness/p6/test_forward_difference.cpp",
+        "-o",
+        "/tmp/image-vision-p6-dr61vp_z/p6-normal"
+      ],
+      "compiler_output": "",
+      "dynamic_link_dependencies": [
+        "linux-vdso.so.1",
+        "libstdc++.so.6",
+        "libc.so.6",
+        "libm.so.6",
+        "/lib64/ld-linux-x86-64.so.2",
+        "libgcc_s.so.1"
+      ],
+      "elapsed_ms": 1.928,
+      "exit_code": 0,
+      "mode": "normal",
+      "status": "pass",
+      "stderr": "",
+      "stdout": "CASE\tP6-TEST-001\tpass\tDIF-001\tconstant field gives two zero planes\nCASE\tP6-TEST-002\tpass\tDIF-001\tcenter impulse sign and localization\nCASE\tP6-TEST-003\tpass\tDIF-001\thorizontal ramp and one-row edge\nCASE\tP6-TEST-004\tpass\tDIF-001\tvertical ramp and one-column edge\nCASE\tP6-TEST-005\tpass\tDIF-001\tcheckerboard and explicit one-by-one\nCASE\tP6-TEST-006\tpass\tDIF-002\tRGB HWC channel order and output shape\nCASE\tP6-TEST-007\tpass\tDIF-002\tRGBA channel and alpha-position order\nCASE\tP6-TEST-008\tpass\tDIF-003\tseeded RGB byte vector literal oracle\nCASE\tP6-TEST-009\tpass\tDIF-003\tdeterministic replay preserves exact outputs and work\nCASE\tP6-TEST-010\tpass\tDIF-004\tpixels channels elements bytes and work limits\nCASE\tP6-TEST-011\tpass\tDIF-004\tunsupported channels and malformed metadata\nCASE\tP6-TEST-012\tpass\tDIF-004\tchecked arithmetic overflow and empty input\nCASE\tP6-TEST-013\tpass\tDIF-005\tcancellation and expired deadline are atomic\nSUMMARY\t13\t13\n"
+    },
+    {
+      "case_results": [
+        {
+          "catalog_case_id": "DIF-001",
+          "label": "constant field gives two zero planes",
+          "status": "pass",
+          "test_id": "P6-TEST-001"
+        },
+        {
+          "catalog_case_id": "DIF-001",
+          "label": "center impulse sign and localization",
+          "status": "pass",
+          "test_id": "P6-TEST-002"
+        },
+        {
+          "catalog_case_id": "DIF-001",
+          "label": "horizontal ramp and one-row edge",
+          "status": "pass",
+          "test_id": "P6-TEST-003"
+        },
+        {
+          "catalog_case_id": "DIF-001",
+          "label": "vertical ramp and one-column edge",
+          "status": "pass",
+          "test_id": "P6-TEST-004"
+        },
+        {
+          "catalog_case_id": "DIF-001",
+          "label": "checkerboard and explicit one-by-one",
+          "status": "pass",
+          "test_id": "P6-TEST-005"
+        },
+        {
+          "catalog_case_id": "DIF-002",
+          "label": "RGB HWC channel order and output shape",
+          "status": "pass",
+          "test_id": "P6-TEST-006"
+        },
+        {
+          "catalog_case_id": "DIF-002",
+          "label": "RGBA channel and alpha-position order",
+          "status": "pass",
+          "test_id": "P6-TEST-007"
+        },
+        {
+          "catalog_case_id": "DIF-003",
+          "label": "seeded RGB byte vector literal oracle",
+          "status": "pass",
+          "test_id": "P6-TEST-008"
+        },
+        {
+          "catalog_case_id": "DIF-003",
+          "label": "deterministic replay preserves exact outputs and work",
+          "status": "pass",
+          "test_id": "P6-TEST-009"
+        },
+        {
+          "catalog_case_id": "DIF-004",
+          "label": "pixels channels elements bytes and work limits",
+          "status": "pass",
+          "test_id": "P6-TEST-010"
+        },
+        {
+          "catalog_case_id": "DIF-004",
+          "label": "unsupported channels and malformed metadata",
+          "status": "pass",
+          "test_id": "P6-TEST-011"
+        },
+        {
+          "catalog_case_id": "DIF-004",
+          "label": "checked arithmetic overflow and empty input",
+          "status": "pass",
+          "test_id": "P6-TEST-012"
+        },
+        {
+          "catalog_case_id": "DIF-005",
+          "label": "cancellation and expired deadline are atomic",
+          "status": "pass",
+          "test_id": "P6-TEST-013"
+        }
+      ],
+      "compile_command": [
+        "/usr/bin/x86_64-linux-gnu-g++-13",
+        "-std=c++20",
+        "-Wall",
+        "-Wextra",
+        "-Wpedantic",
+        "-Wconversion",
+        "-Wsign-conversion",
+        "-Wshadow",
+        "-Werror",
+        "-O2",
+        "-fsanitize=address,undefined",
+        "-fno-omit-frame-pointer",
+        "-g",
+        "/workspace/AGI-Core/Image/SPEC/p4/raster_admission.cpp",
+        "/workspace/AGI-Core/Image/SPEC/p5/canonical_raster.cpp",
+        "/workspace/AGI-Core/Image/SPEC/p6/forward_difference.cpp",
+        "/workspace/AGI-Core/Image/SPEC/harness/p6/test_forward_difference.cpp",
+        "-o",
+        "/tmp/image-vision-p6-dr61vp_z/p6-address_undefined_sanitizers"
+      ],
+      "compiler_output": "",
+      "dynamic_link_dependencies": [
+        "linux-vdso.so.1",
+        "libasan.so.8",
+        "libstdc++.so.6",
+        "libm.so.6",
+        "libubsan.so.1",
+        "libgcc_s.so.1",
+        "libc.so.6",
+        "/lib64/ld-linux-x86-64.so.2"
+      ],
+      "elapsed_ms": 14.586,
+      "exit_code": 0,
+      "mode": "address_undefined_sanitizers",
+      "status": "pass",
+      "stderr": "",
+      "stdout": "CASE\tP6-TEST-001\tpass\tDIF-001\tconstant field gives two zero planes\nCASE\tP6-TEST-002\tpass\tDIF-001\tcenter impulse sign and localization\nCASE\tP6-TEST-003\tpass\tDIF-001\thorizontal ramp and one-row edge\nCASE\tP6-TEST-004\tpass\tDIF-001\tvertical ramp and one-column edge\nCASE\tP6-TEST-005\tpass\tDIF-001\tcheckerboard and explicit one-by-one\nCASE\tP6-TEST-006\tpass\tDIF-002\tRGB HWC channel order and output shape\nCASE\tP6-TEST-007\tpass\tDIF-002\tRGBA channel and alpha-position order\nCASE\tP6-TEST-008\tpass\tDIF-003\tseeded RGB byte vector literal oracle\nCASE\tP6-TEST-009\tpass\tDIF-003\tdeterministic replay preserves exact outputs and work\nCASE\tP6-TEST-010\tpass\tDIF-004\tpixels channels elements bytes and work limits\nCASE\tP6-TEST-011\tpass\tDIF-004\tunsupported channels and malformed metadata\nCASE\tP6-TEST-012\tpass\tDIF-004\tchecked arithmetic overflow and empty input\nCASE\tP6-TEST-013\tpass\tDIF-005\tcancellation and expired deadline are atomic\nSUMMARY\t13\t13\n"
+    }
+  ],
+  "case_results": [
+    {
+      "catalog_case_id": "DIF-001",
+      "label": "constant field gives two zero planes",
+      "status": "pass",
+      "test_id": "P6-TEST-001"
+    },
+    {
+      "catalog_case_id": "DIF-001",
+      "label": "center impulse sign and localization",
+      "status": "pass",
+      "test_id": "P6-TEST-002"
+    },
+    {
+      "catalog_case_id": "DIF-001",
+      "label": "horizontal ramp and one-row edge",
+      "status": "pass",
+      "test_id": "P6-TEST-003"
+    },
+    {
+      "catalog_case_id": "DIF-001",
+      "label": "vertical ramp and one-column edge",
+      "status": "pass",
+      "test_id": "P6-TEST-004"
+    },
+    {
+      "catalog_case_id": "DIF-001",
+      "label": "checkerboard and explicit one-by-one",
+      "status": "pass",
+      "test_id": "P6-TEST-005"
+    },
+    {
+      "catalog_case_id": "DIF-002",
+      "label": "RGB HWC channel order and output shape",
+      "status": "pass",
+      "test_id": "P6-TEST-006"
+    },
+    {
+      "catalog_case_id": "DIF-002",
+      "label": "RGBA channel and alpha-position order",
+      "status": "pass",
+      "test_id": "P6-TEST-007"
+    },
+    {
+      "catalog_case_id": "DIF-003",
+      "label": "seeded RGB byte vector literal oracle",
+      "status": "pass",
+      "test_id": "P6-TEST-008"
+    },
+    {
+      "catalog_case_id": "DIF-003",
+      "label": "deterministic replay preserves exact outputs and work",
+      "status": "pass",
+      "test_id": "P6-TEST-009"
+    },
+    {
+      "catalog_case_id": "DIF-004",
+      "label": "pixels channels elements bytes and work limits",
+      "status": "pass",
+      "test_id": "P6-TEST-010"
+    },
+    {
+      "catalog_case_id": "DIF-004",
+      "label": "unsupported channels and malformed metadata",
+      "status": "pass",
+      "test_id": "P6-TEST-011"
+    },
+    {
+      "catalog_case_id": "DIF-004",
+      "label": "checked arithmetic overflow and empty input",
+      "status": "pass",
+      "test_id": "P6-TEST-012"
+    },
+    {
+      "catalog_case_id": "DIF-005",
+      "label": "cancellation and expired deadline are atomic",
+      "status": "pass",
+      "test_id": "P6-TEST-013"
+    }
+  ],
+  "commit": "b179141e628060bea43cd4a0bae3d7a4c2f8fd42",
+  "counts": {
+    "sanitizer_status": "pass",
+    "tests_defined": 13,
+    "tests_failed_normal": 0,
+    "tests_passed_normal": 13,
+    "tests_run_normal": 13
+  },
+  "evidence_version": "0.1.0-draft",
+  "failures": [],
+  "finished_at": "2026-10-07T16:26:26Z",
+  "implementation": {
+    "compiler_path": "/usr/bin/x86_64-linux-gnu-g++-13",
+    "compiler_version": "x86_64-linux-gnu-g++-13 (Ubuntu 13.3.0-6ubuntu2~24.04.1) 13.3.0",
+    "external_dependencies": [],
+    "language": "C++20",
+    "sanitizer_flags": [
+      "-fsanitize=address,undefined",
+      "-fno-omit-frame-pointer",
+      "-g"
+    ],
+    "source_hashes": {
+      "Image/SPEC/harness/case_catalog.json": "aae39dcbaa21063a44d1926cda71c550d84a4793eb05ff683909d43cbbea5f46",
+      "Image/SPEC/harness/fixtures/p6_forward_difference_vectors.json": "4f1f442a709d2e2c5cc43b18483d7ca93e882890834fd0df6e3cc3da2148f114",
+      "Image/SPEC/harness/p6/p6_evidence.schema.json": "990ef0f07b9412977256fdf06ecaa9285c7c89f6e335cbc932e469e57b6546aa",
+      "Image/SPEC/harness/p6/run_p6.py": "aa1621b7b8a3c26662270050c66711014dcf3fef28d87a2084f015593e9f0117",
+      "Image/SPEC/harness/p6/test_forward_difference.cpp": "27a3a20acd8906a681fe4e74572a109434b15ec9a0c5355ecdeb0877a4c6e132",
+      "Image/SPEC/p4/raster_admission.cpp": "9f15b2bc852554a784990bb355607bbef5daa978e7f76c0ad0edade9fcfa0829",
+      "Image/SPEC/p4/raster_admission.hpp": "c52136d07c631aff7d396e034c600d3de832fcb7409f8f2b605415a22b46ff21",
+      "Image/SPEC/p5/canonical_raster.cpp": "87b338c280c1eaa0f611a9705743232a79e73ef14d85ce66fc810c72151a379a",
+      "Image/SPEC/p5/canonical_raster.hpp": "7a73ca4c2c2f688a145ca8ccf92c8ef0379204d2171a269ceda05f8b2758b834",
+      "Image/SPEC/p6/forward_difference.cpp": "153d853d863bfdbef151531518171f450591424d08c8a446f0db26188f85a68c",
+      "Image/SPEC/p6/forward_difference.hpp": "3abfe5932393b67f66d7d22b854cc92c987b4b473e2905556b6994c6e636ca0f",
+      "Image/SPEC/p6/forward_difference_xy_v1.contract.json": "5b141686695d1fe96fce9645632d4e674ebf05d378bdda92c569b11cc1486020",
+      "Image/SPEC/profiles/general_still_image.proposal.json": "59650032ebd787fde7eed1f3f6606a3e0cc275e8336ad20855c65ecec2c5a2d1"
+    },
+    "strict_flags": [
+      "-std=c++20",
+      "-Wall",
+      "-Wextra",
+      "-Wpedantic",
+      "-Wconversion",
+      "-Wsign-conversion",
+      "-Wshadow",
+      "-Werror",
+      "-O2"
+    ]
+  },
+  "phase": "P6",
+  "phase_completion": "p6_forward_difference_xy_v1_engineering_baseline_profile_proposal_open",
+  "scope": {
+    "act_reverse_rendering_enabled": false,
+    "cortex_modified": false,
+    "engineering_candidate_allowlist": [
+      "candidate_forward_difference_xy_v1"
+    ],
+    "exactly_two_planes": true,
+    "learning_enabled": false,
+    "operator_version": "forward-difference-xy-v1",
+    "patches_enabled": false,
+    "phase7_started": false,
+    "production_approval": false,
+    "profile_hash": "59650032ebd787fde7eed1f3f6606a3e0cc275e8336ad20855c65ecec2c5a2d1",
+    "profile_id": "general-still-image-candidate-v1",
+    "profile_status": "proposal",
+    "regions_enabled": false,
+    "runtime_profile_enabled": false,
+    "semantic_recognition_enabled": false,
+    "token_ids_enabled": false
+  },
+  "started_at": "2026-10-07T16:26:10Z",
+  "status": "finished",
+  "working_tree_state": "dirty",
+  "working_tree_status_sha256": "d04b6916540cb4d088076aafc812ba73f63ef04a22e7621b6bf2074293a0a4bd"
+}

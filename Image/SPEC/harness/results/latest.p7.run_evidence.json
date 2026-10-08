@@ -1,0 +1,486 @@
+{
+  "build_runs": [
+    {
+      "case_results": [
+        {
+          "catalog_case_id": "QUAL-001",
+          "label": "GRAY endpoint fraction exact literal",
+          "status": "pass",
+          "test_id": "P7-TEST-001"
+        },
+        {
+          "catalog_case_id": "QUAL-001",
+          "label": "RGB numerator denominator include all color channels",
+          "status": "pass",
+          "test_id": "P7-TEST-002"
+        },
+        {
+          "catalog_case_id": "QUAL-001",
+          "label": "RGBA excludes alpha from numerator and denominator",
+          "status": "pass",
+          "test_id": "P7-TEST-003"
+        },
+        {
+          "catalog_case_id": "QUAL-001",
+          "label": "controlled one-sample change has exact literal delta",
+          "status": "pass",
+          "test_id": "P7-TEST-004"
+        },
+        {
+          "catalog_case_id": "QUAL-001",
+          "label": "fraction bounds include exact zero and one",
+          "status": "pass",
+          "test_id": "P7-TEST-005"
+        },
+        {
+          "catalog_case_id": "QUAL-001",
+          "label": "method version units scope and descriptive tag are exact",
+          "status": "pass",
+          "test_id": "P7-TEST-006"
+        },
+        {
+          "catalog_case_id": "ERR-003",
+          "label": "caller limits and 24-byte scalar output bound reject atomically",
+          "status": "pass",
+          "test_id": "P7-TEST-007"
+        },
+        {
+          "catalog_case_id": "ERR-003",
+          "label": "malformed dimensions layout and profile metadata reject",
+          "status": "pass",
+          "test_id": "P7-TEST-008"
+        },
+        {
+          "catalog_case_id": "UNC-002",
+          "label": "non-finite transform metadata is typed and atomic",
+          "status": "pass",
+          "test_id": "P7-TEST-009"
+        },
+        {
+          "catalog_case_id": "ERR-003",
+          "label": "cancellation and expired deadline reject atomically",
+          "status": "pass",
+          "test_id": "P7-TEST-010"
+        },
+        {
+          "catalog_case_id": "UNC-005",
+          "label": "disabled uncertainty is omitted; required uncertainty fails",
+          "status": "pass",
+          "test_id": "P7-TEST-011"
+        },
+        {
+          "catalog_case_id": "ERR-004",
+          "label": "stable allowlisted messages do not disclose secret markers",
+          "status": "pass",
+          "test_id": "P7-TEST-012"
+        },
+        {
+          "catalog_case_id": "ERR-002",
+          "label": "injected post-sample failure returns no partial metric",
+          "status": "pass",
+          "test_id": "P7-TEST-013"
+        },
+        {
+          "catalog_case_id": "ERR-002",
+          "label": "injected pre-publication failure discards candidate",
+          "status": "pass",
+          "test_id": "P7-TEST-014"
+        },
+        {
+          "catalog_case_id": "ERR-002",
+          "label": "P4 admission failure has no view or input mutation",
+          "status": "pass",
+          "test_id": "P7-TEST-015"
+        },
+        {
+          "catalog_case_id": "ERR-002",
+          "label": "P5 canonicalization failure has no view or input mutation",
+          "status": "pass",
+          "test_id": "P7-TEST-016"
+        },
+        {
+          "catalog_case_id": "ERR-002",
+          "label": "P6 operator failure has no planes or input mutation",
+          "status": "pass",
+          "test_id": "P7-TEST-017"
+        },
+        {
+          "catalog_case_id": "QUAL-001",
+          "label": "P4-to-P7 supported path is exact and read-only",
+          "status": "pass",
+          "test_id": "P7-TEST-018"
+        }
+      ],
+      "compile_command": [
+        "/usr/bin/x86_64-linux-gnu-g++-13",
+        "-std=c++20",
+        "-Wall",
+        "-Wextra",
+        "-Wpedantic",
+        "-Wconversion",
+        "-Wsign-conversion",
+        "-Wshadow",
+        "-Werror",
+        "-O2",
+        "-DAGI_IMAGE_P7_TESTING",
+        "/workspace/AGI-Core/Image/SPEC/p4/raster_admission.cpp",
+        "/workspace/AGI-Core/Image/SPEC/p5/canonical_raster.cpp",
+        "/workspace/AGI-Core/Image/SPEC/p6/forward_difference.cpp",
+        "/workspace/AGI-Core/Image/SPEC/p7/quality_indicator.cpp",
+        "/workspace/AGI-Core/Image/SPEC/harness/p7/test_quality_indicator.cpp",
+        "-o",
+        "/tmp/image-vision-p7-kvy6opj1/p7-normal"
+      ],
+      "compiler_output": "",
+      "dynamic_link_dependencies": [
+        "linux-vdso.so.1",
+        "libstdc++.so.6",
+        "libc.so.6",
+        "libm.so.6",
+        "/lib64/ld-linux-x86-64.so.2",
+        "libgcc_s.so.1"
+      ],
+      "elapsed_ms": 1.987,
+      "exit_code": 0,
+      "mode": "normal",
+      "status": "pass",
+      "stderr": "",
+      "stdout": "CASE\tP7-TEST-001\tpass\tQUAL-001\tGRAY endpoint fraction exact literal\nCASE\tP7-TEST-002\tpass\tQUAL-001\tRGB numerator denominator include all color channels\nCASE\tP7-TEST-003\tpass\tQUAL-001\tRGBA excludes alpha from numerator and denominator\nCASE\tP7-TEST-004\tpass\tQUAL-001\tcontrolled one-sample change has exact literal delta\nCASE\tP7-TEST-005\tpass\tQUAL-001\tfraction bounds include exact zero and one\nCASE\tP7-TEST-006\tpass\tQUAL-001\tmethod version units scope and descriptive tag are exact\nCASE\tP7-TEST-007\tpass\tERR-003\tcaller limits and 24-byte scalar output bound reject atomically\nCASE\tP7-TEST-008\tpass\tERR-003\tmalformed dimensions layout and profile metadata reject\nCASE\tP7-TEST-009\tpass\tUNC-002\tnon-finite transform metadata is typed and atomic\nCASE\tP7-TEST-010\tpass\tERR-003\tcancellation and expired deadline reject atomically\nCASE\tP7-TEST-011\tpass\tUNC-005\tdisabled uncertainty is omitted; required uncertainty fails\nCASE\tP7-TEST-012\tpass\tERR-004\tstable allowlisted messages do not disclose secret markers\nCASE\tP7-TEST-013\tpass\tERR-002\tinjected post-sample failure returns no partial metric\nCASE\tP7-TEST-014\tpass\tERR-002\tinjected pre-publication failure discards candidate\nCASE\tP7-TEST-015\tpass\tERR-002\tP4 admission failure has no view or input mutation\nCASE\tP7-TEST-016\tpass\tERR-002\tP5 canonicalization failure has no view or input mutation\nCASE\tP7-TEST-017\tpass\tERR-002\tP6 operator failure has no planes or input mutation\nCASE\tP7-TEST-018\tpass\tQUAL-001\tP4-to-P7 supported path is exact and read-only\nSUMMARY\t18\t18\n"
+    },
+    {
+      "case_results": [
+        {
+          "catalog_case_id": "QUAL-001",
+          "label": "GRAY endpoint fraction exact literal",
+          "status": "pass",
+          "test_id": "P7-TEST-001"
+        },
+        {
+          "catalog_case_id": "QUAL-001",
+          "label": "RGB numerator denominator include all color channels",
+          "status": "pass",
+          "test_id": "P7-TEST-002"
+        },
+        {
+          "catalog_case_id": "QUAL-001",
+          "label": "RGBA excludes alpha from numerator and denominator",
+          "status": "pass",
+          "test_id": "P7-TEST-003"
+        },
+        {
+          "catalog_case_id": "QUAL-001",
+          "label": "controlled one-sample change has exact literal delta",
+          "status": "pass",
+          "test_id": "P7-TEST-004"
+        },
+        {
+          "catalog_case_id": "QUAL-001",
+          "label": "fraction bounds include exact zero and one",
+          "status": "pass",
+          "test_id": "P7-TEST-005"
+        },
+        {
+          "catalog_case_id": "QUAL-001",
+          "label": "method version units scope and descriptive tag are exact",
+          "status": "pass",
+          "test_id": "P7-TEST-006"
+        },
+        {
+          "catalog_case_id": "ERR-003",
+          "label": "caller limits and 24-byte scalar output bound reject atomically",
+          "status": "pass",
+          "test_id": "P7-TEST-007"
+        },
+        {
+          "catalog_case_id": "ERR-003",
+          "label": "malformed dimensions layout and profile metadata reject",
+          "status": "pass",
+          "test_id": "P7-TEST-008"
+        },
+        {
+          "catalog_case_id": "UNC-002",
+          "label": "non-finite transform metadata is typed and atomic",
+          "status": "pass",
+          "test_id": "P7-TEST-009"
+        },
+        {
+          "catalog_case_id": "ERR-003",
+          "label": "cancellation and expired deadline reject atomically",
+          "status": "pass",
+          "test_id": "P7-TEST-010"
+        },
+        {
+          "catalog_case_id": "UNC-005",
+          "label": "disabled uncertainty is omitted; required uncertainty fails",
+          "status": "pass",
+          "test_id": "P7-TEST-011"
+        },
+        {
+          "catalog_case_id": "ERR-004",
+          "label": "stable allowlisted messages do not disclose secret markers",
+          "status": "pass",
+          "test_id": "P7-TEST-012"
+        },
+        {
+          "catalog_case_id": "ERR-002",
+          "label": "injected post-sample failure returns no partial metric",
+          "status": "pass",
+          "test_id": "P7-TEST-013"
+        },
+        {
+          "catalog_case_id": "ERR-002",
+          "label": "injected pre-publication failure discards candidate",
+          "status": "pass",
+          "test_id": "P7-TEST-014"
+        },
+        {
+          "catalog_case_id": "ERR-002",
+          "label": "P4 admission failure has no view or input mutation",
+          "status": "pass",
+          "test_id": "P7-TEST-015"
+        },
+        {
+          "catalog_case_id": "ERR-002",
+          "label": "P5 canonicalization failure has no view or input mutation",
+          "status": "pass",
+          "test_id": "P7-TEST-016"
+        },
+        {
+          "catalog_case_id": "ERR-002",
+          "label": "P6 operator failure has no planes or input mutation",
+          "status": "pass",
+          "test_id": "P7-TEST-017"
+        },
+        {
+          "catalog_case_id": "QUAL-001",
+          "label": "P4-to-P7 supported path is exact and read-only",
+          "status": "pass",
+          "test_id": "P7-TEST-018"
+        }
+      ],
+      "compile_command": [
+        "/usr/bin/x86_64-linux-gnu-g++-13",
+        "-std=c++20",
+        "-Wall",
+        "-Wextra",
+        "-Wpedantic",
+        "-Wconversion",
+        "-Wsign-conversion",
+        "-Wshadow",
+        "-Werror",
+        "-O2",
+        "-fsanitize=address,undefined",
+        "-fno-omit-frame-pointer",
+        "-g",
+        "-DAGI_IMAGE_P7_TESTING",
+        "/workspace/AGI-Core/Image/SPEC/p4/raster_admission.cpp",
+        "/workspace/AGI-Core/Image/SPEC/p5/canonical_raster.cpp",
+        "/workspace/AGI-Core/Image/SPEC/p6/forward_difference.cpp",
+        "/workspace/AGI-Core/Image/SPEC/p7/quality_indicator.cpp",
+        "/workspace/AGI-Core/Image/SPEC/harness/p7/test_quality_indicator.cpp",
+        "-o",
+        "/tmp/image-vision-p7-kvy6opj1/p7-address_undefined_sanitizers"
+      ],
+      "compiler_output": "",
+      "dynamic_link_dependencies": [
+        "linux-vdso.so.1",
+        "libasan.so.8",
+        "libstdc++.so.6",
+        "libm.so.6",
+        "libubsan.so.1",
+        "libgcc_s.so.1",
+        "libc.so.6",
+        "/lib64/ld-linux-x86-64.so.2"
+      ],
+      "elapsed_ms": 11.813,
+      "exit_code": 0,
+      "mode": "address_undefined_sanitizers",
+      "status": "pass",
+      "stderr": "",
+      "stdout": "CASE\tP7-TEST-001\tpass\tQUAL-001\tGRAY endpoint fraction exact literal\nCASE\tP7-TEST-002\tpass\tQUAL-001\tRGB numerator denominator include all color channels\nCASE\tP7-TEST-003\tpass\tQUAL-001\tRGBA excludes alpha from numerator and denominator\nCASE\tP7-TEST-004\tpass\tQUAL-001\tcontrolled one-sample change has exact literal delta\nCASE\tP7-TEST-005\tpass\tQUAL-001\tfraction bounds include exact zero and one\nCASE\tP7-TEST-006\tpass\tQUAL-001\tmethod version units scope and descriptive tag are exact\nCASE\tP7-TEST-007\tpass\tERR-003\tcaller limits and 24-byte scalar output bound reject atomically\nCASE\tP7-TEST-008\tpass\tERR-003\tmalformed dimensions layout and profile metadata reject\nCASE\tP7-TEST-009\tpass\tUNC-002\tnon-finite transform metadata is typed and atomic\nCASE\tP7-TEST-010\tpass\tERR-003\tcancellation and expired deadline reject atomically\nCASE\tP7-TEST-011\tpass\tUNC-005\tdisabled uncertainty is omitted; required uncertainty fails\nCASE\tP7-TEST-012\tpass\tERR-004\tstable allowlisted messages do not disclose secret markers\nCASE\tP7-TEST-013\tpass\tERR-002\tinjected post-sample failure returns no partial metric\nCASE\tP7-TEST-014\tpass\tERR-002\tinjected pre-publication failure discards candidate\nCASE\tP7-TEST-015\tpass\tERR-002\tP4 admission failure has no view or input mutation\nCASE\tP7-TEST-016\tpass\tERR-002\tP5 canonicalization failure has no view or input mutation\nCASE\tP7-TEST-017\tpass\tERR-002\tP6 operator failure has no planes or input mutation\nCASE\tP7-TEST-018\tpass\tQUAL-001\tP4-to-P7 supported path is exact and read-only\nSUMMARY\t18\t18\n"
+    }
+  ],
+  "case_results": [
+    {
+      "catalog_case_id": "QUAL-001",
+      "label": "GRAY endpoint fraction exact literal",
+      "status": "pass",
+      "test_id": "P7-TEST-001"
+    },
+    {
+      "catalog_case_id": "QUAL-001",
+      "label": "RGB numerator denominator include all color channels",
+      "status": "pass",
+      "test_id": "P7-TEST-002"
+    },
+    {
+      "catalog_case_id": "QUAL-001",
+      "label": "RGBA excludes alpha from numerator and denominator",
+      "status": "pass",
+      "test_id": "P7-TEST-003"
+    },
+    {
+      "catalog_case_id": "QUAL-001",
+      "label": "controlled one-sample change has exact literal delta",
+      "status": "pass",
+      "test_id": "P7-TEST-004"
+    },
+    {
+      "catalog_case_id": "QUAL-001",
+      "label": "fraction bounds include exact zero and one",
+      "status": "pass",
+      "test_id": "P7-TEST-005"
+    },
+    {
+      "catalog_case_id": "QUAL-001",
+      "label": "method version units scope and descriptive tag are exact",
+      "status": "pass",
+      "test_id": "P7-TEST-006"
+    },
+    {
+      "catalog_case_id": "ERR-003",
+      "label": "caller limits and 24-byte scalar output bound reject atomically",
+      "status": "pass",
+      "test_id": "P7-TEST-007"
+    },
+    {
+      "catalog_case_id": "ERR-003",
+      "label": "malformed dimensions layout and profile metadata reject",
+      "status": "pass",
+      "test_id": "P7-TEST-008"
+    },
+    {
+      "catalog_case_id": "UNC-002",
+      "label": "non-finite transform metadata is typed and atomic",
+      "status": "pass",
+      "test_id": "P7-TEST-009"
+    },
+    {
+      "catalog_case_id": "ERR-003",
+      "label": "cancellation and expired deadline reject atomically",
+      "status": "pass",
+      "test_id": "P7-TEST-010"
+    },
+    {
+      "catalog_case_id": "UNC-005",
+      "label": "disabled uncertainty is omitted; required uncertainty fails",
+      "status": "pass",
+      "test_id": "P7-TEST-011"
+    },
+    {
+      "catalog_case_id": "ERR-004",
+      "label": "stable allowlisted messages do not disclose secret markers",
+      "status": "pass",
+      "test_id": "P7-TEST-012"
+    },
+    {
+      "catalog_case_id": "ERR-002",
+      "label": "injected post-sample failure returns no partial metric",
+      "status": "pass",
+      "test_id": "P7-TEST-013"
+    },
+    {
+      "catalog_case_id": "ERR-002",
+      "label": "injected pre-publication failure discards candidate",
+      "status": "pass",
+      "test_id": "P7-TEST-014"
+    },
+    {
+      "catalog_case_id": "ERR-002",
+      "label": "P4 admission failure has no view or input mutation",
+      "status": "pass",
+      "test_id": "P7-TEST-015"
+    },
+    {
+      "catalog_case_id": "ERR-002",
+      "label": "P5 canonicalization failure has no view or input mutation",
+      "status": "pass",
+      "test_id": "P7-TEST-016"
+    },
+    {
+      "catalog_case_id": "ERR-002",
+      "label": "P6 operator failure has no planes or input mutation",
+      "status": "pass",
+      "test_id": "P7-TEST-017"
+    },
+    {
+      "catalog_case_id": "QUAL-001",
+      "label": "P4-to-P7 supported path is exact and read-only",
+      "status": "pass",
+      "test_id": "P7-TEST-018"
+    }
+  ],
+  "commit": "b179141e628060bea43cd4a0bae3d7a4c2f8fd42",
+  "counts": {
+    "sanitizer_status": "pass",
+    "tests_defined": 18,
+    "tests_failed_normal": 0,
+    "tests_passed_normal": 18,
+    "tests_run_normal": 18
+  },
+  "evidence_version": "0.1.0-draft",
+  "failures": [],
+  "finished_at": "2026-10-07T16:47:26Z",
+  "implementation": {
+    "compiler_path": "/usr/bin/x86_64-linux-gnu-g++-13",
+    "compiler_version": "x86_64-linux-gnu-g++-13 (Ubuntu 13.3.0-6ubuntu2~24.04.1) 13.3.0",
+    "external_dependencies": [],
+    "language": "C++20",
+    "sanitizer_flags": [
+      "-fsanitize=address,undefined",
+      "-fno-omit-frame-pointer",
+      "-g"
+    ],
+    "source_hashes": {
+      "Image/SPEC/harness/case_catalog.json": "aae39dcbaa21063a44d1926cda71c550d84a4793eb05ff683909d43cbbea5f46",
+      "Image/SPEC/harness/fixtures/p7_endpoint_code_fraction_vectors.json": "3796ca42910ec0d04b80b64c27152fb4a638c47ad710bda6265768d8982eae51",
+      "Image/SPEC/harness/p7/case_bindings.json": "c160a73ffc70bbcf018073d7528cc95435501ec7a25a9449cc64f1c2fe854aef",
+      "Image/SPEC/harness/p7/p7_evidence.schema.json": "6de0fdbd4adeb016b23f0d0029f11a71f96c092fe7a66e192f61d4290548a0f0",
+      "Image/SPEC/harness/p7/run_p7.py": "078d4fd45375d7ac537a309e2c0c3eae2d0b6af22cf7014b7b35e386db068b5f",
+      "Image/SPEC/harness/p7/test_quality_indicator.cpp": "f10854c197a1d478fd2afaafd58ef04971c773d471209b5b0a6384d750f2f068",
+      "Image/SPEC/p4/raster_admission.cpp": "9f15b2bc852554a784990bb355607bbef5daa978e7f76c0ad0edade9fcfa0829",
+      "Image/SPEC/p4/raster_admission.hpp": "c52136d07c631aff7d396e034c600d3de832fcb7409f8f2b605415a22b46ff21",
+      "Image/SPEC/p5/canonical_raster.cpp": "87b338c280c1eaa0f611a9705743232a79e73ef14d85ce66fc810c72151a379a",
+      "Image/SPEC/p5/canonical_raster.hpp": "7a73ca4c2c2f688a145ca8ccf92c8ef0379204d2171a269ceda05f8b2758b834",
+      "Image/SPEC/p6/forward_difference.cpp": "153d853d863bfdbef151531518171f450591424d08c8a446f0db26188f85a68c",
+      "Image/SPEC/p6/forward_difference.hpp": "3abfe5932393b67f66d7d22b854cc92c987b4b473e2905556b6994c6e636ca0f",
+      "Image/SPEC/p7/endpoint_code_fraction_v1.contract.json": "97583d013f7ad83029f9904caed421c50269f83d2c53e3777a6575501f42de6e",
+      "Image/SPEC/p7/quality_indicator.cpp": "b313782043021d51098487925ce7d6b12602e670ed993dc4acc5559b29c1b4b9",
+      "Image/SPEC/p7/quality_indicator.hpp": "8014e733fb2586720c2556dbda2b880848db971d6d7fb27b7fd55966573bad20",
+      "Image/SPEC/profiles/general_still_image.proposal.json": "59650032ebd787fde7eed1f3f6606a3e0cc275e8336ad20855c65ecec2c5a2d1"
+    },
+    "strict_flags": [
+      "-std=c++20",
+      "-Wall",
+      "-Wextra",
+      "-Wpedantic",
+      "-Wconversion",
+      "-Wsign-conversion",
+      "-Wshadow",
+      "-Werror",
+      "-O2"
+    ]
+  },
+  "phase": "P7",
+  "phase_completion": "p7_endpoint_code_fraction_v1_engineering_slice_profile_proposal_open",
+  "scope": {
+    "cortex_modified": false,
+    "features_enabled": [],
+    "metric": "endpoint_code_fraction",
+    "metric_enabled_in_profile": false,
+    "persistent_state_api": false,
+    "phase8_started": false,
+    "production_approval": false,
+    "profile_hash": "59650032ebd787fde7eed1f3f6606a3e0cc275e8336ad20855c65ecec2c5a2d1",
+    "profile_id": "general-still-image-candidate-v1",
+    "profile_status": "proposal",
+    "reverse_image_rendering_started": false,
+    "uncertainty_emitted_by_default": false,
+    "uncertainty_estimator_present": false,
+    "uncertainty_mode": "disabled"
+  },
+  "started_at": "2026-10-07T16:47:06Z",
+  "status": "finished",
+  "working_tree_state": "dirty",
+  "working_tree_status_sha256": "8518a8d9101652552dda2b71a80ff39e9dd7baefc61b0ba61707a031b1349b48"
+}
